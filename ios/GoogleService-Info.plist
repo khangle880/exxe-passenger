@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>690440815969-0p381cs4btspsmd0nrkse0gdeeaedv5r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.690440815969-0p381cs4btspsmd0nrkse0gdeeaedv5r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBBk_IqLrZ0mJoXJYWS7vvZNnHHVpzn6vw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>690440815969</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.exxe.passenger</string>
+	<key>PROJECT_ID</key>
+	<string>exxe-47e9d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>exxe-47e9d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:690440815969:ios:6663eff1f8441901347120</string>
+	<key>DATABASE_URL</key>
+	<string>https://exxe-47e9d-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>

@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "690440815969",
+    "firebase_url": "https://exxe-47e9d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "exxe-47e9d",
+    "storage_bucket": "exxe-47e9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690440815969:android:fa6f556611b28de7347120",
+        "android_client_info": {
+          "package_name": "com.exxe.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "690440815969-5fs2o57h7f0nod5jbce7o4n0khui9o90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIdkkjKUkg0G6qKUnqxh_41SYKCSJR44Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "690440815969-5fs2o57h7f0nod5jbce7o4n0khui9o90.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "690440815969-0p381cs4btspsmd0nrkse0gdeeaedv5r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.exxe.passenger"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690440815969:android:f90d151161241505347120",
+        "android_client_info": {
+          "package_name": "com.exxe.passenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "690440815969-5fs2o57h7f0nod5jbce7o4n0khui9o90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIdkkjKUkg0G6qKUnqxh_41SYKCSJR44Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "690440815969-5fs2o57h7f0nod5jbce7o4n0khui9o90.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "690440815969-0p381cs4btspsmd0nrkse0gdeeaedv5r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.exxe.passenger"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

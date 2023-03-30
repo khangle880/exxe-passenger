@@ -1,0 +1,21 @@
+<svg width="342" height="184" viewBox="0 0 342 184" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M41.5 12C41.5 5.37258 46.8726 0 53.5 0H288.5C295.127 0 300.5 5.37258 300.5 12V32H41.5V12Z" fill="#573CFF"/>
+<path d="M41.5 12C41.5 5.37258 46.8726 0 53.5 0H288.5C295.127 0 300.5 5.37258 300.5 12V32H41.5V12Z" fill="white" fill-opacity="0.2"/>
+<path d="M41.5 32H300.5V143C300.5 149.627 295.127 155 288.5 155H53.5C46.8726 155 41.5 149.627 41.5 143V32Z" fill="#573CFF"/>
+<path d="M41.5 32H300.5V143C300.5 149.627 295.127 155 288.5 155H53.5C46.8726 155 41.5 149.627 41.5 143V32Z" fill="white" fill-opacity="0.95"/>
+<rect x="57.5" y="56" width="75" height="75" rx="37.5" fill="#573CFF"/>
+<rect x="57.5" y="56" width="75" height="75" rx="37.5" fill="white" fill-opacity="0.2"/>
+<ellipse cx="95.0006" cy="108.855" rx="19.5417" ry="9.77083" stroke="#573CFF" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="95.0006" cy="108.855" rx="19.5417" ry="9.77083" stroke="white" stroke-opacity="0.95" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="95.0006" cy="79.5417" r="11.1667" stroke="#573CFF" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="95.0006" cy="79.5417" r="11.1667" stroke="white" stroke-opacity="0.95" stroke-width="3" stroke-linejoin="round"/>
+<rect width="132" height="12" transform="translate(152.5 56)" fill="#573CFF"/>
+<rect width="132" height="12" transform="translate(152.5 56)" fill="white" fill-opacity="0.8"/>
+<rect width="132" height="12" transform="translate(152.5 77)" fill="#573CFF"/>
+<rect width="132" height="12" transform="translate(152.5 77)" fill="white" fill-opacity="0.8"/>
+<rect width="132" height="12" transform="translate(152.5 98)" fill="#573CFF"/>
+<rect width="132" height="12" transform="translate(152.5 98)" fill="white" fill-opacity="0.8"/>
+<rect width="80" height="12" transform="translate(152.5 119)" fill="#573CFF"/>
+<rect width="80" height="12" transform="translate(152.5 119)" fill="white" fill-opacity="0.8"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M277.566 119.192C280.371 114.269 287.631 114.269 290.435 119.192L314.73 161.836C317.456 166.62 313.908 172.5 308.296 172.5H259.706C254.093 172.5 250.545 166.62 253.271 161.836L277.566 119.192ZM287.167 159.833C287.167 161.582 285.749 163 284 163C282.252 163 280.834 161.582 280.834 159.833C280.834 158.084 282.252 156.667 284 156.667C285.749 156.667 287.167 158.084 287.167 159.833ZM286.375 134.5C286.375 133.188 285.312 132.125 284 132.125C282.689 132.125 281.625 133.188 281.625 134.5V150.333C281.625 151.645 282.689 152.708 284 152.708C285.312 152.708 286.375 151.645 286.375 150.333V134.5Z" fill="#ED9526"/>
+</svg>

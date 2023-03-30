@@ -1,0 +1,638 @@
+{
+  "journal": [
+    {
+      "journal_id": 45,
+      "journal_name": "Passenger Bank Wallet: USER-0987147539",
+      "journal_type": "bank",
+      "journal_owner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "wallet_type": false,
+      "remains_amount": 26158320.0
+    },
+    {
+      "journal_id": 96,
+      "journal_name": "Passenger Cash Wallet: USER-0987147539",
+      "journal_type": "cash",
+      "journal_owner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "wallet_type": false,
+      "remains_amount": 5311280.0
+    }
+  ],
+  "transaction": [
+    {
+      "payment_id": 1513,
+      "date": "2022-09-29",
+      "amount": 4000000.0,
+      "ref": "USER-0987147539 makes wallet recharge request. Amount: 4,000,000",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_wallet_recharge",
+      "payment_code": "20220929073600-grfSp5i1gj",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 1501,
+      "date": "2022-09-22",
+      "amount": 233800.0,
+      "ref": "Pay for GC-HCM.ANG-20220930-T6LYG.P8T Compounding Car",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "customer_invoice",
+      "payment_code": "20220922141845-0YMgFPUC5I",
+      "is_make_withdrawing_request": false,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 803,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1500,
+      "date": "2022-09-22",
+      "amount": 233800.0,
+      "ref": "Pay for GC-HCM.ANG-20220930-T6LYG.JA6 Compounding Car",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "customer_invoice",
+      "payment_code": "20220922141844-fwMGFs2IkV",
+      "is_make_withdrawing_request": false,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 803,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1495,
+      "date": "2022-09-22",
+      "amount": 233800.0,
+      "ref": "Deposit for #GC-HCM.ANG-20220930-T6LYG.P8T Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220922141329-uEczpMsJGV",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 803,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1494,
+      "date": "2022-09-22",
+      "amount": 233800.0,
+      "ref": "Deposit for #GC-HCM.ANG-20220930-T6LYG.P8T Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220922141329-czA1oleqy8",
+      "is_make_withdrawing_request": true,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 803,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1230,
+      "date": "2022-09-20",
+      "amount": 278400.0,
+      "ref": "Pay for GC-HCM.ANG-20220922-I817Y.SGS Compounding Car",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "customer_invoice",
+      "payment_code": "20220920152116-u5q7pkZDlS",
+      "is_make_withdrawing_request": false,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 638,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1229,
+      "date": "2022-09-20",
+      "amount": 264480.0,
+      "ref": "Pay for GC-HCM.ANG-20220922-I817Y.U2H Compounding Car",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "customer_invoice",
+      "payment_code": "20220920152116-u0dU8ANbpx",
+      "is_make_withdrawing_request": false,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 638,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1228,
+      "date": "2022-09-20",
+      "amount": 278400.0,
+      "ref": "Pay for GC-HCM.ANG-20220922-I817Y.M3B Compounding Car",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "customer_invoice",
+      "payment_code": "20220920152116-uz8uSI022Y",
+      "is_make_withdrawing_request": false,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 638,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1215,
+      "date": "2022-09-20",
+      "amount": 278400.0,
+      "ref": "Deposit for #GC-HCM.ANG-20220922-I817Y.SGS Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220920140026-YvV8BLV9zw",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 638,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1214,
+      "date": "2022-09-20",
+      "amount": 278400.0,
+      "ref": "Deposit for #GC-HCM.ANG-20220922-I817Y.SGS Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220920140026-s3Ht2arCXE",
+      "is_make_withdrawing_request": true,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 638,
+        "compounding_car_name": "Ghép chuyến: From TP Hồ Chí Minh to An Giang"
+      }
+    },
+    {
+      "payment_id": 1213,
+      "date": "2022-09-20",
+      "amount": 177600.0,
+      "ref": "USER-0987147539 makes wallet recharge request. Amount: 177,600.0",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220920140002-9rpURFPz5x",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 1204,
+      "date": "2022-09-20",
+      "amount": 642000.0,
+      "ref": "Pay for GC-BTR.ANG-20220921-V0IS1.JYY Compounding Car",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "customer_invoice",
+      "payment_code": "20220920110822-zyzItHC9ag",
+      "is_make_withdrawing_request": false,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": 641,
+        "compounding_car_name": "Ghép chuyến: From Bến Tre to An Giang"
+      }
+    },
+    {
+      "payment_id": 1199,
+      "date": "2022-09-20",
+      "amount": 642000.0,
+      "ref": "USER-0987147539 makes wallet recharge request. Amount: 642,000.0",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220920104845-dC9f0x8VqB",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 1198,
+      "date": "2022-09-20",
+      "amount": 718800.0,
+      "ref": "USER-0987147539 makes wallet recharge request. Amount: 718,800.0",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220920104453-eQ324WaPYv",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 1182,
+      "date": "2022-09-20",
+      "amount": 264480.0,
+      "ref": "USER-0987147539 makes wallet recharge request. Amount: 264,480.0",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220920074958-C2WkT1ODAC",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 936,
+      "date": "2022-09-05",
+      "amount": 21600.0,
+      "ref": "Deposit for #False Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220905095712-En7RZftX5s",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 935,
+      "date": "2022-09-05",
+      "amount": 21600.0,
+      "ref": "Deposit for #False Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220905095712-acF4J6UYSw",
+      "is_make_withdrawing_request": true,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 934,
+      "date": "2022-09-05",
+      "amount": 21600.0,
+      "ref": "Deposit for #False Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220905095711-Ml14C9sOrk",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 933,
+      "date": "2022-09-05",
+      "amount": 21600.0,
+      "ref": "Deposit for #False Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 96,
+        "journal_name": "Passenger Cash Wallet: USER-0987147539",
+        "journal_type": "cash"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220905095711-xZzzkMo8DB",
+      "is_make_withdrawing_request": true,
+      "payment_type": "outbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    },
+    {
+      "payment_id": 932,
+      "date": "2022-09-05",
+      "amount": 21600.0,
+      "ref": "Deposit for #False Compounding Car Customer",
+      "state": "posted",
+      "partner_id": {
+        "partner_id": 50,
+        "partner_name": "USER-0987147539",
+        "phone": "0987147539",
+        "avatar_url": {
+          "image_id": 231,
+          "image_url": "/manage_detail_data/static/src/img/stored-attachment-module-ceSiVSqnc1AnW1eqvzsSKtwoMK8gttH9-1660278564-ouFKmADFWhLUpS7z7QSWdRPXWRRClYIn-1660278564.png"
+        }
+      },
+      "journal_id": {
+        "journal_id": 45,
+        "journal_name": "Passenger Bank Wallet: USER-0987147539",
+        "journal_type": "bank"
+      },
+      "payment_purpose": "passenger_deposit",
+      "payment_code": "20220905095711-NTE3qEDhIz",
+      "is_make_withdrawing_request": false,
+      "payment_type": "inbound",
+      "partner_type": "customer",
+      "compounding_car": {
+        "compounding_car_id": false,
+        "compounding_car_name": false
+      }
+    }
+  ]
+}
