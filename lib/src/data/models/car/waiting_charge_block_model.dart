@@ -9,9 +9,10 @@ class WaitingChargeBlockModel {
     this.blockId,
     this.blockName,
     this.numberHour,
-    this.numberHourBeforeBlock,
     this.maxDistance,
     this.maxDuration,
+    this.minDate,
+    this.maxDate,
     this.priceUnit,
     this.priority = false,
   });
@@ -28,9 +29,10 @@ class WaitingChargeBlockModel {
   num? blockId;
   String? blockName;
   num? numberHour;
-  num? numberHourBeforeBlock;
   num? maxDistance;
   num? maxDuration;
+  DateTime? minDate;
+  DateTime? maxDate;
   num? priceUnit;
   bool? priority;
 
@@ -38,19 +40,20 @@ class WaitingChargeBlockModel {
     num? blockId,
     String? blockName,
     num? numberHour,
-    num? numberHourBeforeBlock,
     num? maxDistance,
     num? maxDuration,
+    DateTime? minDate,
+    DateTime? maxDate,
     num? priceUnit,
   }) =>
       WaitingChargeBlockModel(
         blockId: blockId ?? this.blockId,
         blockName: blockName ?? this.blockName,
         numberHour: numberHour ?? this.numberHour,
-        numberHourBeforeBlock:
-            numberHourBeforeBlock ?? this.numberHourBeforeBlock,
         maxDistance: maxDistance ?? this.maxDistance,
         maxDuration: maxDuration ?? this.maxDuration,
+        minDate: minDate ?? this.minDate,
+        maxDate: maxDate ?? this.maxDate,
         priceUnit: priceUnit ?? this.priceUnit,
       );
 

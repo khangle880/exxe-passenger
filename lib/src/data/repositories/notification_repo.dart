@@ -131,13 +131,18 @@ class NotificationRepo extends INotificationRepo {
   }
 
   @override
-  Future<Either<Failure, dynamic>> missedCall(String phone) async {
+  Future<Either<Failure, dynamic>> missedCall(
+      String phone, String compoundingCarCustomerCode) async {
     final token = await BoxesUser.instance.getDataTokenUser();
     final request = _networkUtility.request(
       Apis.missedCall,
       Method.POST,
       data: {
-        "params": {"token": token, "phone": phone}
+        "params": {
+          "token": token,
+          "phone": phone,
+          "compounding_car_customer_code": compoundingCarCustomerCode,
+        }
       },
     );
 

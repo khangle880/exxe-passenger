@@ -15,7 +15,7 @@ abstract class BaseResponse {
     map = JsonUtils.getMap(response.data)['result'] ?? {};
     if (serverError != null) {
       error = serverError["data"]["message"] ?? serverError["message"];
-    } else if (!map['success']) {
+    } else if (map['success'] == false) {
       error = map['message'];
     }
 

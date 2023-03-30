@@ -74,7 +74,14 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
         .ref("location/${widget.driver.partnerId ?? ""}");
     _locationRef.onValue.listen(
       (DatabaseEvent event) {
-        updateLocation(event.snapshot.value);
+        final payload = event.snapshot.value as Map?;
+        log("Location $payload");
+
+        final driverLat = payload?['latitude'];
+        final driverLong = payload?['longitude'];
+        if (driverLat != null && driverLong != null) {
+          updateLocation(driverLat, driverLong);
+        }
       },
       onError: (Object error) {
         log("location $error");
@@ -82,8 +89,7 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     );
   }
 
-  updateLocation(payload) async {
-    log("Location $payload");
+  updateLocation(double lat, double long) async {
     if (driverIncomingPolyline == null &&
         [
           CompoundingCarCustomerState.startRunning,
@@ -91,8 +97,8 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
           CompoundingCarCustomerState.startReturn
         ].contains(state)) {
       driverIncomingPolyline = await getPolyLine(
-        startLat: payload['latitude'],
-        startLong: payload['longitude'],
+        startLat: lat,
+        startLong: long,
         endLat: double.parse(widget.startLatitude),
         endLong: double.parse(widget.startLongitude),
         key: "driver incoming",
@@ -105,14 +111,13 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
 
     // update driver marker
     final icon = await createCurrentMarkerIcon();
-    final driverLat = payload?['latitude'];
-    final driverLong = payload?['longitude'];
-    if (driverLat != null && driverLong != null) {
+
+    if (lat != null && long != null) {
       markers.add(
         Marker(
           icon: icon,
           markerId: const MarkerId('current_location'),
-          position: LatLng(driverLat, driverLong),
+          position: LatLng(lat, long),
         ),
       );
     }
@@ -121,7 +126,7 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     }
 
     updateCamera(
-      LatLng(driverLat, driverLong),
+      LatLng(lat, long),
       LatLng(
         double.parse(widget.startLatitude),
         double.parse(widget.startLongitude),

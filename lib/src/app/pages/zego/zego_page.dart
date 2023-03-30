@@ -53,15 +53,15 @@ class CallInvitationPage extends StatelessWidget {
           final code = GetIt.I<AppState>().callingCompoundingCustomerCode;
           if (callee.isNotEmpty && code != null) {
             cacheNumberMissingCall(callee.first.id, code);
-            GetIt.I<INotificationRepo>().missedCall(callee.first.id);
+            GetIt.I<INotificationRepo>().missedCall(callee.first.id, code);
           }
         },
         onOutgoingCallRejectedCauseBusy: (callId, callee) {
-          log("onOutgoingCallRejectedCauseBusy");
-          final code = GetIt.I<AppState>().callingCompoundingCustomerCode;
-          if (code != null) {
-            cacheNumberMissingCall(callee.id, code);
-          }
+          // log("onOutgoingCallRejectedCauseBusy");
+          // final code = GetIt.I<AppState>().callingCompoundingCustomerCode;
+          // if (code != null) {
+          //   cacheNumberMissingCall(callee.id, code);
+          // }
         },
         onOutgoingCallDeclined: (callId, called) {
           log("onOutgoingCallDeclined");

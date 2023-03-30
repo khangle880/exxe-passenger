@@ -1,3 +1,5 @@
+import 'dart:math' show max;
+
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -140,7 +142,9 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
       );
       cardPrincesResult.fold(
         (failure) {
-          emitError(failure);
+          Future.delayed(const Duration(milliseconds: 100), () {
+            emitError(failure);
+          });
         },
         (data) {
           listCardPrices = data;
@@ -162,7 +166,9 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
         selectedCarPriceModel: selectedPriceModel ?? listCardPrices!.first,
       ));
     } else {
-      emitError(UnknownFailure('Google không tìm được đường đi từ hai trạm'));
+      Future.delayed(const Duration(milliseconds: 100), () {
+        emitError(UnknownFailure('Google không tìm được đường đi từ hai trạm'));
+      });
     }
   }
 
@@ -180,6 +186,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
           isInDay: false,
           expectedPickingUpDate: Nullable(null)),
     );
+    calculateMaxMinOfBlock(state.waitingCharges ?? []);
   }
 
   getExpectedPickingUpDate(DateTime? dateTime, {bool? isInDay}) {
@@ -293,7 +300,9 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     emitWaiting(false);
     return result.fold(
       (failure) {
-        emitError(failure);
+        Future.delayed(const Duration(milliseconds: 100), () {
+          emitError(failure);
+        });
       },
       (data) {
         emit(state.copyWith(
@@ -323,7 +332,9 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     emitWaiting(false);
     return result.fold(
       (failure) {
-        emitError(failure);
+        Future.delayed(const Duration(milliseconds: 100), () {
+          emitError(failure);
+        });
       },
       (data) {
         emit(state.copyWith(
@@ -358,7 +369,9 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     emitWaiting(false);
     return result.fold(
       (failure) {
-        emitError(failure);
+        Future.delayed(const Duration(milliseconds: 100), () {
+          emitError(failure);
+        });
       },
       (data) {
         emit(state.copyWith(
@@ -375,19 +388,45 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     var result = await compoundingCarCtrlRepo.getWaitingChargeBlock(distance);
     return result.fold(
       (failure) {
-        emitError(failure);
+        Future.delayed(const Duration(milliseconds: 100), () {
+          emitError(failure);
+        });
         return null;
       },
       (data) {
-        final result = data
+        final blocks = data
           ..sort((a, b) => a.maxDuration!.compareTo(b.maxDuration!));
-        for (var i = 1; i < result.length; i++) {
-          result[i].numberHourBeforeBlock = result[i - 1].numberHour;
-        }
-        result.lastOrNull?.priority = true;
-        return result;
+        blocks.lastOrNull?.priority = true;
+        calculateMaxMinOfBlock(blocks);
+        return blocks;
       },
     );
+  }
+
+  calculateMaxMinOfBlock(List<WaitingChargeBlockModel> blocks) {
+    for (var i = 0; i < blocks.length; i++) {
+      final block = blocks[i];
+      final maxMilliseconds =
+          block.endBlockTime(state.expectedGoingOnDate!.time.inMilliseconds) -
+              (state.duration ?? 0).hourToMilliseconds;
+
+      block.maxDate = block.priority == true
+          ? null
+          : state.expectedGoingOnDate!.date
+              .add(Duration(milliseconds: maxMilliseconds));
+
+      if (i > 0) {
+        final minMilliseconds =
+            max(state.duration!, blocks[i - 1].numberHour! - state.duration!)
+                .hourToMilliseconds;
+
+        block.minDate = state.expectedGoingOnDate!
+            .add(Duration(milliseconds: minMilliseconds));
+      } else {
+        block.minDate = state.expectedGoingOnDate!
+            .add(Duration(milliseconds: state.duration!.hourToMilliseconds));
+      }
+    }
   }
 
   bool checkBlockValid(WaitingChargeBlockModel item) {

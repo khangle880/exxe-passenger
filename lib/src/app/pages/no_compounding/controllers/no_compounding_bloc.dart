@@ -24,7 +24,7 @@ class NoCompoundingBloc
         ) {
     on<LoadDefaultGoingOnDate>((event, emit) {
       final minutes = (DateTime.now().time.inMinutes + 3 * 60).roundUp(15).ceil();
-      final time = minutes < 12 * 60
+      final time = minutes < 18 * 60
           ? DateTime.now().date.add(Duration(minutes: minutes))
           : DateTime.now().date.add(const Duration(days: 1, hours: 8));
       emit(state.copyWith(expectedGoingOnDate: time));

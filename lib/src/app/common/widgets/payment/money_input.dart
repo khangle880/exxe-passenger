@@ -157,10 +157,10 @@ class _MoneyInputWidgetState extends State<MoneyInputWidget> {
                               result = "Số dư trong tài khoản không đủ";
                             } else if (amount < PaymentLimit.min) {
                               result =
-                                  "Số tiền tối thiểu là ${PaymentLimit.min.currencyFormat}";
+                                  "Số tiền tối thiểu trong một giao dịch là ${PaymentLimit.min.currencyFormat}";
                             } else if (amount > PaymentLimit.max) {
                               result =
-                                  "Số tiền đa là ${PaymentLimit.max.currencyFormat}";
+                                  "Số tiền tối đa trong một giao dịch ${PaymentLimit.max.currencyFormat}";
                             } else {
                               result = null;
                             }

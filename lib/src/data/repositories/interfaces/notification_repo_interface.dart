@@ -25,5 +25,6 @@ abstract class INotificationRepo {
 
   Future<Either<Failure, dynamic>> call(String phone);
 
-  Future<Either<Failure, dynamic>> missedCall(String phone);
+  Future<Either<Failure, dynamic>> missedCall(
+      String phone, String compoundingCarCustomerCode);
 }

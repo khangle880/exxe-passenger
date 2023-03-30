@@ -18,30 +18,30 @@ class CompoundingItem extends StatelessWidget {
             height: 50,
           ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Chuyến đi - ${data.compoundingCarCustomerCode ?? ""}',
-              style: AppStyles.s16w6.withColor(data.read == false
-                  ? AppColors.primaryMain
-                  : AppColors.gray95x06),
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            SizedBox(
-              height: 60,
-              width: MediaQuery.of(context).size.width * 2 / 3,
-              child: Text(
-                data.messageContent!,
-                style: AppStyles.s14w6.withColor(
-                  data.read == false ? AppColors.gray95 : AppColors.gray60x52,
-                ),
-                maxLines: 3,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                (data.messageTitle ?? "").toLowerCase().capitalize(),
+                style: AppStyles.s16w6.withColor(data.read == false
+                    ? AppColors.primaryMain
+                    : AppColors.gray95x06),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 4,
+              ),
+              SizedBox(
+                // height: 60,
+                child: Text(
+                  data.messageContent!,
+                  style: AppStyles.s14w6.withColor(
+                    data.read == false ? AppColors.gray95 : AppColors.gray60x52,
+                  ),
+                ),
+              ),
+            ],
+          ),
         )
       ],
     );

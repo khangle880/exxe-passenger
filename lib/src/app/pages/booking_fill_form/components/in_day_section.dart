@@ -36,29 +36,23 @@ class InDaySection extends StatelessWidget {
     return BlocBuilder<BookingFillFormCubit, BookingFillFormState>(
       builder: (context, state) {
         DateTime? maxDate;
+        DateTime? minDate;
+
         if (state.currentWaitingBlock != null) {
           // maxTime = endBlock - ride duration
-          final maxMilliseconds = state.currentWaitingBlock!
-                  .endBlockTime(goingDate.time.inMilliseconds) -
-              (state.duration ?? 0).hourToMilliseconds;
-
-          maxDate = state.currentWaitingBlock!.priority == true
-              ? null
-              : goingDate.date.add(Duration(milliseconds: maxMilliseconds));
-        }
-
-        final minMilliseconds = max(state.duration!,
-                state.currentWaitingBlock?.numberHourBeforeBlock ?? 0)
-            .hourToMilliseconds;
-
-        final minDate = goingDate.add(Duration(milliseconds: minMilliseconds));
-        if (state.expectedPickingUpDate != null &&
-            (state.expectedPickingUpDate!.isBefore(minDate) ||
-                (maxDate != null &&
-                    state.expectedPickingUpDate!.isAfter(maxDate)))) {
-          final minutes = (minDate.time.inMinutes).roundUp(15).ceil();
-          final pickupDate = minDate.date.add(Duration(minutes: minutes));
-          bloc.getExpectedPickingUpDate(pickupDate);
+          maxDate = state.currentWaitingBlock?.maxDate;
+          minDate = state.currentWaitingBlock?.minDate;
+          if (minDate != null) {
+            if (state.expectedPickingUpDate != null &&
+                state.isInDay == true &&
+                (state.expectedPickingUpDate!.isBefore(minDate) ||
+                    (maxDate != null &&
+                        state.expectedPickingUpDate!.isAfter(maxDate)))) {
+              final minutes = (minDate.time.inMinutes).roundUp(15).ceil();
+              final pickupDate = minDate.date.add(Duration(minutes: minutes));
+              bloc.getExpectedPickingUpDate(pickupDate);
+            }
+          }
         }
 
         return AnimatedContainer(
@@ -180,20 +174,23 @@ class InDaySection extends StatelessWidget {
         },
         type: CalendarViewType.time,
         minDate: minDate,
-        initDate: goingDate
-            .add(Duration(milliseconds: state.duration!.hourToMilliseconds)),
+        initDate: state.expectedPickingUpDate ??
+            goingDate.add(
+                Duration(milliseconds: state.duration!.hourToMilliseconds)),
         maxDate: maxDate,
       );
     } else {
+      final tomorrow = goingDate.add(const Duration(days: 1)).date;
       CustomCalendar.showCalendar(
         context,
         (date) {
           bloc.getExpectedPickingUpDate(date);
         },
         type: CalendarViewType.dateTime,
-        minDate: returnDateMin,
-        initDate: goingDate
-            .add(Duration(milliseconds: state.duration!.hourToMilliseconds)),
+        minDate: returnDateMin.isBefore(tomorrow) ? tomorrow : returnDateMin,
+        initDate: state.expectedPickingUpDate ??
+            goingDate.add(
+                Duration(milliseconds: state.duration!.hourToMilliseconds)),
       );
     }
   }

@@ -38,8 +38,7 @@ class _ItemReadState extends State<ItemRead> {
         )
       ]),
       child: Container(
-        height: MediaQuery.of(context).size.width * 0.28,
-        padding: const EdgeInsets.only(top: 16, left: 16, right: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
           color: widget.data.read!
               ? AppColors.white
