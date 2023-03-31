@@ -40,10 +40,10 @@ class CategoriesTripHome extends StatelessWidget {
         _buildItemCategoryRide(
           models: CategoriesTripModels(
             name: CompoundingType.convenient.name,
-            color: Colors.orange,
+            color: AppColors.accOrgangeMain,
             assets: AppIcons.oneWay,
           ),
-          iconColor: Colors.orange,
+          iconColor: AppColors.accOrgangeMain,
           onClicked: () {
             GetIt.I<LocationHelper>().handleLocation(context,
                 routeName: Routes.joinConvenientTrip,
@@ -53,12 +53,12 @@ class CategoriesTripHome extends StatelessWidget {
         _buildItemCategoryRide(
           models: CategoriesTripModels(
             name: CompoundingType.compounding.name,
-            color: Colors.red,
-            assets: AppIcons.joinWay,
+            color: AppColors.secondaryMain,
+            assets: AppIcons.promo,
           ),
+          iconColor: AppColors.secondaryMain,
           onClicked: () {
-            AppDialog.I
-                .showNotification(message: "Chức năng này hiện chưa hỗ trợ");
+            Navigator.pushNamed(context, Routes.promotionHomePage);
           },
         ),
       ],

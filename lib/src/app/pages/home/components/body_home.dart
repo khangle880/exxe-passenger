@@ -6,7 +6,6 @@ import 'package:exxe/src/app/pages/home/components/top_nav_bar_home.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 
 import '../../../../data/data.dart';
-import 'list_news_home.dart';
 
 class BodyHomePage extends StatefulWidget {
   const BodyHomePage({Key? key, required this.jumpToWallet}) : super(key: key);
@@ -60,7 +59,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
             const SizedBox(height: 4.0),
             const SuggestTripHome(),
             const PromotionHome(),
-            const ListNews(),
+            // const ListNews(),
             const SizedBox(height: 12.0),
           ],
         ),

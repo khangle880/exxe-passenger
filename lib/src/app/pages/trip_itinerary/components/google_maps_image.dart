@@ -72,7 +72,7 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
   setListener() async {
     _locationRef = FirebaseDatabase.instance
         .ref("location/${widget.driver.partnerId ?? ""}");
-    _locationRef.onValue.listen(
+    _locationSubscription = _locationRef.onValue.listen(
       (DatabaseEvent event) {
         final payload = event.snapshot.value as Map?;
         log("Location $payload");
@@ -94,7 +94,7 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
         [
           CompoundingCarCustomerState.startRunning,
           CompoundingCarCustomerState.waitingCustomer,
-          CompoundingCarCustomerState.startReturn
+          CompoundingCarCustomerState.startReturn,
         ].contains(state)) {
       driverIncomingPolyline = await getPolyLine(
         startLat: lat,
@@ -112,15 +112,13 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     // update driver marker
     final icon = await createCurrentMarkerIcon();
 
-    if (lat != null && long != null) {
-      markers.add(
-        Marker(
-          icon: icon,
-          markerId: const MarkerId('current_location'),
-          position: LatLng(lat, long),
-        ),
-      );
-    }
+    markers.add(
+      Marker(
+        icon: icon,
+        markerId: const MarkerId('current_location'),
+        position: LatLng(lat, long),
+      ),
+    );
     if (mounted) {
       setState(() {});
     }

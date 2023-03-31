@@ -295,8 +295,15 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: maxWidth,
+        Container(
+          width: maxWidth * .8,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors.primaryMain +
+                  AppColors.primaryLight.withOpacity(0.4),
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: MapImageThumbnail(
             lat: location.lat!,
             long: location.lng!,

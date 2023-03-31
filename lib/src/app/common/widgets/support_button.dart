@@ -74,7 +74,7 @@ class _SupportButtonState extends State<SupportButton> {
           label: 'Gọi hỗ trợ',
           onTap: () {
             launchUrl(
-              Uri.parse('tel:0915691231'),
+              Uri.parse('tel:19004744'),
             );
           },
         ),

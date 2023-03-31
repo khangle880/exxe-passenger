@@ -82,6 +82,8 @@ class DriverInfo extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: SvgPicture.asset(
                   AppIcons.message,
+                  height: 28,
+                  width: 28,
                   color: AppColors.primaryMain,
                 ),
               ).inkWell(
@@ -92,7 +94,7 @@ class DriverInfo extends StatelessWidget {
                   }
                 },
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 2),
               ZegoCallInviteButton(
                 phone: carDriver!.phone.toString(),
                 name: carDriver!.partnerName!,
