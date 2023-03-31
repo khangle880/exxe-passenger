@@ -1,6 +1,5 @@
 import '../../../data_chat/data_chat.dart';
 import '../../../utils/export/ui_export.dart';
-import '../../common/widgets/widgets.dart';
 import 'components/bottom_bar.dart';
 import 'components/chat_item.dart';
 import 'controllers/chat_room_cubit.dart';
@@ -80,19 +79,22 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           } else {
             return Scaffold(
               appBar: AppBar(
-                leading: Navigator.canPop(context)
-                    ? Container(
-                        margin: const EdgeInsets.only(left: 16),
-                        child: SvgPicture.asset(
-                          AppIcons.chevronLeft,
-                          color: AppColors.black,
-                        ).inkWell(
-                          onTap: () {
-                            onPop();
-                          },
-                        ),
-                      )
-                    : null,
+                leading: Container(
+                  margin: const EdgeInsets.only(left: 16),
+                  child: SvgPicture.asset(
+                    AppIcons.chevronLeft,
+                    color: AppColors.black,
+                  ).inkWell(
+                    padding: const EdgeInsets.all(4),
+                    onTap: () {
+                      if (Navigator.canPop(context)) {
+                        onPop();
+                      } else {
+                        Navigator.pushReplacementNamed(context, Routes.home);
+                      }
+                    },
+                  ),
+                ),
                 titleSpacing: 0.0,
                 title: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -233,7 +235,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 Text(cubit.partner!.userName ?? "", style: AppStyles.s18w7),
                 if (cubit.room.dependId != null)
                   Text(
-                    "Chuyến đi #${cubit.room.dependId}",
+                    "#${cubit.room.dependId}",
                     style: AppStyles.s14w4.copyWith(color: AppColors.gray70x76),
                     overflow: TextOverflow.ellipsis,
                   ),

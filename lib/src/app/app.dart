@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
     }, (data) {
       navigatorKey.currentState?.pushNamedAndRemoveUntil(
         Routes.tripDetail,
-        ModalRoute.withName(Routes.home),
+        ModalRoute.withName(Routes.tripDetail),
         arguments: data,
       );
     });
@@ -125,7 +125,7 @@ class _MyAppState extends State<MyApp> {
     if (room != null) {
       navigatorKey.currentState?.pushNamedAndRemoveUntil(
         Routes.chatRoom,
-        ModalRoute.withName(Routes.home),
+        ModalRoute.withName(Routes.chatRoom),
         arguments: room,
       );
     }

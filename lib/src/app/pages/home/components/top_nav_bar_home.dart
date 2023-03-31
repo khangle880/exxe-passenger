@@ -78,8 +78,12 @@ class _TopNavBarHomeState extends State<TopNavBarHome> {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            SvgPicture.asset("assets/icons/notification.svg",
-                color: AppColors.black),
+            SvgPicture.asset(
+              "assets/icons/notification.svg",
+              color: AppColors.black,
+              height: 28,
+              width: 28,
+            ),
             GetIt.I<AppState>().currentState.notificationCount > 0
                 ? Positioned(
                     right: 0,
