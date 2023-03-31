@@ -108,6 +108,7 @@ class LocationHelper {
     BuildContext context, {
     String? routeName,
     Function()? callBack,
+    bool isShowLoading = true,
     Object? args,
   }) async {
     await loadLocation(context).then((value) {
@@ -143,8 +144,11 @@ class LocationHelper {
     });
   }
 
-  Future<LocationPermissionEnum> loadLocation(BuildContext context) async {
-    AppDialog.I.showLoadingLocation(msg: 'Đang lấy vị trí...');
+  Future<LocationPermissionEnum> loadLocation(BuildContext context,
+      {isShowLoading = true}) async {
+    if (isShowLoading) {
+      AppDialog.I.showLoadingLocation(msg: 'Đang lấy vị trí...');
+    }
     return await GoogleMapService.instance.enableLocation().then((value) async {
       log('Position: $value');
       LocationModel? locationModel = await _createLocationModel(value);

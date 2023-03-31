@@ -22,7 +22,7 @@ class _SuggestTripHomeState extends State<SuggestTripHome> {
         });
       }
     });
-    GetIt.I<LocationHelper>().loadLocation(context);
+    GetIt.I<LocationHelper>().loadLocation(context, isShowLoading: false);
     super.initState();
   }
 
@@ -40,14 +40,23 @@ class _SuggestTripHomeState extends State<SuggestTripHome> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
-              TextWidget(
-                text: "Các chuyến gần tôi",
-                fontSize: AppDimens.text21,
-                weight: FontWeight.w700,
-              )
+              const SizedBox(width: 8),
+              Text(
+                "Các chuyến tiện chuyến",
+                style: AppStyles.s21w7,
+              ),
+              const Spacer(),
+              SvgPicture.asset(AppIcons.searchOutline).inkWell(
+                padding: const EdgeInsets.all(8),
+                onTap: () {
+                  GetIt.I<LocationHelper>().handleLocation(context,
+                      routeName: Routes.joinConvenientTrip,
+                      args: {'compoundingType': CompoundingType.convenient});
+                },
+              ),
             ],
           ),
         ),

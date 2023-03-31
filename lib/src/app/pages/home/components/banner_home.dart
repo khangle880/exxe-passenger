@@ -3,7 +3,7 @@ import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 final List<String> imgList = [
-  'assets/images/banner/ban1.jpg',
+  'assets/images/banner/ban1.png',
   'assets/images/banner/ban2.jpg',
   'assets/images/banner/ban3.jpg',
 ];
@@ -90,14 +90,14 @@ class _BannerHomeState extends State<BannerHome> {
               duration: const Duration(milliseconds: 500),
               switchInCurve: Curves.easeOut,
               switchOutCurve: Curves.easeOut,
-              child: _buildBannnerItem(context)),
+              child: _buildBannerItem(context)),
         );
       },
       valueListenable: current,
     );
   }
 
-  Widget _buildBannnerItem(BuildContext context) {
+  Widget _buildBannerItem(BuildContext context) {
     return Container(
       key: ValueKey('${current.value}'),
       margin: const EdgeInsets.symmetric(horizontal: 24.0),

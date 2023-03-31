@@ -1,8 +1,12 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../app_state.dart';
 
 String prettyJsonStr(Map<dynamic, dynamic> json) {
   final encoder = JsonEncoder.withIndent('  ', (data) => data.toString());
@@ -29,11 +33,20 @@ class LoggerFbInterceptor extends Interceptor {
 
   void sendPhotoByText(String text, bool success) {
     final now = DateTime.now();
-    final key = "${now.hour} ${now.day} ${now.month}";
+    // final key = "${now.hour} ${now.day} ${now.month}";
 
-    final url =
-        'https://exxe-47e9d-default-rtdb.asia-southeast1.firebasedatabase.app/logger_passenger $key.json';
-    http.post(Uri.parse(url), body: text);
+    final user = GetIt.I<AppState>().currentState.user;
+
+    try {
+      final decoded = jsonDecode(text);
+
+      FirebaseDatabase.instance
+          .ref(
+              "passenger/${user?.partnerId}_${user?.partnerName}/${now.toString().replaceAll(':', "-").replaceAll(".", " ")}")
+          .set(decoded is Map ? decoded : text);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @override

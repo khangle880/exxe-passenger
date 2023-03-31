@@ -79,9 +79,9 @@ class _ServicesOurProfileState extends State<ServicesOurProfile> {
     } else {
       EmailContent email = EmailContent(
         to: [
-          'exxevn2022@gmail.com',
+          'cskh@exxe.vn',
         ],
-        subject: 'Hỗ trợ',
+        subject: 'Hỗ trợ tài xế Exxe',
       );
       showDialog(
           context: context,

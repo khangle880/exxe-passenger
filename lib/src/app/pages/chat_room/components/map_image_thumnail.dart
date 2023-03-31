@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get_it/get_it.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/export/logic_export.dart';
 
