@@ -5,16 +5,16 @@ class WarningDialog extends StatelessWidget {
       {Key? key,
       this.onConfirm,
       required this.onCancel,
-      this.cancelTilte,
-      this.confirmTilte,
+      this.cancelTitle,
+      this.confirmTitle,
       required this.message,
       this.hasCancel = false})
       : super(key: key);
   final Function()? onConfirm;
   final bool hasCancel;
   final Function()? onCancel;
-  final String? cancelTilte;
-  final String? confirmTilte;
+  final String? cancelTitle;
+  final String? confirmTitle;
   final String message;
 
   @override
@@ -44,7 +44,7 @@ class WarningDialog extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  if (hasCancel)
+                  if (hasCancel) ...[
                     Expanded(
                       child: ButtonWidget(
                         onClick: onCancel ??
@@ -55,13 +55,14 @@ class WarningDialog extends StatelessWidget {
                         backgroundColor: AppColors.primaryMain +
                             AppColors.primaryLight.withOpacity(0.95),
                         child: Text(
-                          cancelTilte ?? "Hủy",
+                          cancelTitle ?? "Hủy",
                           style:
                               AppStyles.s16w6.withColor(AppColors.primaryMain),
                         ),
                       ),
                     ),
-                  const SizedBox(width: 16),
+                    const SizedBox(width: 16),
+                  ],
                   Expanded(
                     child: ButtonWidget(
                       onClick: onConfirm ??
@@ -71,7 +72,7 @@ class WarningDialog extends StatelessWidget {
                       radius: 12,
                       backgroundColor: AppColors.primaryMain,
                       child: Text(
-                        confirmTilte ?? "Đồng ý",
+                        confirmTitle ?? "Đồng ý",
                         style:
                             AppStyles.s16w6.withColor(AppColors.primaryLight),
                       ),

@@ -59,4 +59,6 @@ abstract class IWalletRepo {
     required String bankOwner,
     required DateTime bankExpireDate,
   });
+
+  Future<Either<Failure, bool>> hasBankInfo();
 }

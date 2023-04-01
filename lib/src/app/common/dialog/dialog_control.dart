@@ -1,6 +1,6 @@
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../../utils/export/ui_export.dart';
-
+import 'check_password_dialog.dart';
 
 class AppDialog {
   static AppDialog instance = AppDialog();
@@ -71,8 +71,8 @@ class AppDialog {
         content: WarningDialog(
           onConfirm: onConfirm ?? closeDialog,
           onCancel: onCancel ?? closeDialog,
-          confirmTilte: confirmTitle,
-          cancelTilte: cancelTitle,
+          confirmTitle: confirmTitle,
+          cancelTitle: cancelTitle,
           message: message,
           hasCancel: hasCancel,
         ));
@@ -192,5 +192,13 @@ class AppDialog {
         );
       },
     );
+  }
+
+  void showCheckPasswordDialog({
+    bool? barrierDismissible,
+    required Function() onConfirm,
+  }) {
+    final content = CheckPasswordDialog(onConfirm: onConfirm);
+    showCustomDialog(content: content, barrierDismissible: barrierDismissible);
   }
 }

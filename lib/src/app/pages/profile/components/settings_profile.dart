@@ -30,7 +30,12 @@ class SettingsProfile extends StatelessWidget {
         OptionRow(
           title: 'Thông tin ngân hàng',
           onTap: () {
-            Navigator.pushNamed(context, Routes.changeBankInfo);
+            AppDialog.I.showCheckPasswordDialog(
+              onConfirm: () {
+                AppDialog.I.closeDialog();
+                Navigator.pushNamed(context, Routes.changeBankInfo);
+              },
+            );
           },
         ),
         OptionRow(

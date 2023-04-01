@@ -63,6 +63,9 @@ class Apis {
   static const String updateAccountBank =
       '/wallet_controller/update_account_bank';
 
+  // check has bank info
+  static const String checkBankInfo = '/wallet_controller/check_account_bank';
+
   //? User apis
   static const String endPointApiUserInformationController =
       '/user_information_controller';
@@ -110,6 +113,10 @@ class Apis {
   /// Lấy lại mật khẩu thông qua sms
   static const String resetPassword =
       '/user_information_controller/reset-password';
+
+  /// Kiểm tra password
+  static const String checkPassword =
+      '/user_information_controller/check_password';
 
   //? User Info Apis
   /// Tạo mới thông tin Người Dùng (Account User).

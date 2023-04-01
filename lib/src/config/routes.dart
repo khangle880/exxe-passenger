@@ -210,9 +210,14 @@ class Routes {
           ),
         );
       case Routes.otp:
-        var data = settings.arguments as String;
+        final args = settings.arguments as Map;
+        final phoneNumber = args['phoneNumber'] as String;
+        final sendPurpose = args['sendPurpose'] as String?;
         return MaterialPageRoute(
-          builder: (_) => OTPPage(data),
+          builder: (_) => OTPPage(
+            phoneNumber,
+            sendPurpose: sendPurpose,
+          ),
         );
       case Routes.formRegister:
         Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
