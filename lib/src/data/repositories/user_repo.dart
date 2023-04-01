@@ -259,4 +259,19 @@ class UserRepo extends IUserRepo {
     });
     return ParserHelper.singleParseDefault(request, TokenModel.fromJson);
   }
+
+  @override
+  Future<Either<Failure, bool>> checkPassword(String password) async {
+    final token = await BoxesUser.instance.getDataTokenUser();
+    final request =
+        _networkUtility.request(Apis.checkPassword, Method.POST, data: {
+      "params": {
+        "token": token,
+        "password": password,
+      }
+    });
+
+    return ParserHelper.singleParseDefault(
+        request, (data) => data['access_password']);
+  }
 }

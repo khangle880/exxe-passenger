@@ -38,4 +38,6 @@ abstract class IUserRepo {
     required String newPass,
     required String rePass,
   });
+
+  Future<Either<Failure, bool>> checkPassword(String password);
 }

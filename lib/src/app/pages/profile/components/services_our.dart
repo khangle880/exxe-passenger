@@ -99,7 +99,7 @@ class _ServicesOurProfileState extends State<ServicesOurProfile> {
         Navigator.pushNamed(
           context,
           Routes.otp,
-          arguments: user!.phone!.convertToCountryPhoneCode(),
+          arguments: {"phoneNumber": user!.phone!.convertToCountryPhoneCode()},
         ).then((value) {
           if (value is String) {
             AppDialog.I.showWarning(

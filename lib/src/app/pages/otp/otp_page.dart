@@ -6,8 +6,10 @@ import '../../../data/data.dart';
 import '../../../utils/export/ui_export.dart';
 
 class OTPPage extends StatefulWidget {
-  const OTPPage(this.phoneNumber, {Key? key}) : super(key: key);
+  const OTPPage(this.phoneNumber, {Key? key, this.sendPurpose})
+      : super(key: key);
   final String phoneNumber;
+  final String? sendPurpose;
 
   @override
   State<OTPPage> createState() => _OTPPageState();

@@ -169,4 +169,5 @@ class AppIcons {
   static String supportBot = 'assets/images/support_bot.png';
   static String promo = 'assets/icons/promo.svg';
   static String searchOutline = 'assets/icons/search_outline.svg';
+  static String lock = 'assets/icons/lock.png';
 }

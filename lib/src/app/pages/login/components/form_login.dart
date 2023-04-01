@@ -167,7 +167,7 @@ class _FormPhoneLoginState extends State<FormPhoneLogin> {
   }
 
   Widget buildButton(
-    GlobalKey<FormState> formkey,
+    GlobalKey<FormState> formKey,
     BuildContext context,
     MethodLogin methodLogin,
   ) {
@@ -183,14 +183,17 @@ class _FormPhoneLoginState extends State<FormPhoneLogin> {
         onClick: context.watch<AuthLoginBloc>().state.phone.length < 10
             ? null
             : () async {
-                if (formkey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   if (methodLogin == MethodLogin.PhoneAndPassword) {
                     authLoginBloc.add(SubmitFormPhonePasswordEvent());
                   } else {
                     await Navigator.pushNamed(
                       context,
                       Routes.otp,
-                      arguments: phoneControl.text.convertToCountryPhoneCode(),
+                      arguments: {
+                        "phoneNumber":
+                            phoneControl.text.convertToCountryPhoneCode(),
+                      },
                     ).then((value) async {
                       if (value is String) {
                         authLoginBloc.add(SubmitFormOTPEvent(value));
@@ -224,7 +227,10 @@ class _FormPhoneLoginState extends State<FormPhoneLogin> {
                 Navigator.pushNamed(
                   context,
                   Routes.otp,
-                  arguments: phoneNumber.convertToCountryPhoneCode(),
+                  arguments: {
+                    "phoneNumber": phoneNumber.convertToCountryPhoneCode(),
+                    "sendPurpose": "reset_password",
+                  },
                 ).then((value) {
                   if (value is String) {
                     Navigator.pushNamed(

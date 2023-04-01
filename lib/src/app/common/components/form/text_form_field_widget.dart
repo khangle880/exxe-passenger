@@ -93,8 +93,8 @@ class TextFormFieldBuilder extends TextFormField {
     required Function(String) onChanged,
     String? Function(String?)? validator,
     Function(String)? onSubmit,
-    List<TextInputFormatter>? inputFormaters,
-    required TextEditingController controller,
+    List<TextInputFormatter>? inputFormatters,
+    TextEditingController? controller,
     TextInputType? keyboardType,
     TextInputAction? textInputAction,
     EdgeInsetsGeometry? contentPadding,
@@ -113,7 +113,7 @@ class TextFormFieldBuilder extends TextFormField {
           onChanged: onChanged,
           validator: validator,
           onFieldSubmitted: onSubmit,
-          inputFormatters: inputFormaters,
+          inputFormatters: inputFormatters,
           controller: controller,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
@@ -129,27 +129,32 @@ class TextFormFieldBuilder extends TextFormField {
             hintText: hintText,
             disabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: outlineColor ?? AppColors.gray70x76, width: 0.5),
+                  color: outlineColor ?? AppColors.gray70x76, width: 1),
               borderRadius: BorderRadius.circular(8),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: outlineColor ?? AppColors.gray70x76, width: 0.5),
+                  color: outlineColor ?? AppColors.gray70x76, width: 1),
               borderRadius: BorderRadius.circular(8),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: outlineColor ?? AppColors.gray70x76, width: 0.5),
+                  color: outlineColor ?? AppColors.gray70x76, width: 1),
               borderRadius: BorderRadius.circular(8),
             ),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: outlineColor ?? AppColors.gray70x76, width: 0.5),
+                  color: outlineColor ?? AppColors.gray70x76, width: 1),
               borderRadius: BorderRadius.circular(8),
             ),
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: outlineColor ?? AppColors.utilRed, width: 0.5),
+                  color: outlineColor ?? AppColors.utilRed, width: 1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: outlineColor ?? AppColors.utilRed, width: 1.5),
               borderRadius: BorderRadius.circular(8),
             ),
             filled: true,

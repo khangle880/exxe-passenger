@@ -227,4 +227,19 @@ class WalletRepo extends IWalletRepo {
     );
     return ParserHelper.listParseDefault(request, (value) => null);
   }
+
+  @override
+  Future<Either<Failure, bool>> hasBankInfo() async {
+    final token = await BoxesUser.instance.getDataTokenUser();
+    final request = _networkUtility.request(
+      Apis.checkBankInfo,
+      Method.POST,
+      data: {
+        "params": {"token": token}
+      },
+    );
+
+    return ParserHelper.singleParseDefault(
+        request, (data) => data['has_account_bank']);
+  }
 }

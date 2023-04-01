@@ -60,3 +60,54 @@ class _PasswordFieldState extends State<PasswordField> {
     );
   }
 }
+
+class PasswordFieldOutline extends StatefulWidget {
+  const PasswordFieldOutline(this.onChanged, {Key? key, this.validator})
+      : super(key: key);
+  final Function(String value) onChanged;
+  final String? Function(String? value)? validator;
+
+  @override
+  State<PasswordFieldOutline> createState() => _PasswordFieldOutlineState();
+}
+
+class _PasswordFieldOutlineState extends State<PasswordFieldOutline> {
+  bool obscureText = true;
+
+  toggleObscureText() {
+    obscureText = !obscureText;
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormFieldBuilder.outlineBorder(
+      onChanged: widget.onChanged,
+      obscureText: obscureText,
+      validator: widget.validator,
+      hintText: 'Nhập mật khẩu của bạn',
+      keyboardType: TextInputType.visiblePassword,
+      suffixIcon: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: InkWell(
+          onTap: toggleObscureText,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            padding: const EdgeInsets.all(4),
+            child: (obscureText)
+                ? const Icon(
+                    Icons.visibility_off,
+                    size: 18.0,
+                  )
+                : const Icon(
+                    Icons.visibility_outlined,
+                    size: 18.0,
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+}

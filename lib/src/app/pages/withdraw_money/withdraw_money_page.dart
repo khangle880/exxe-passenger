@@ -103,36 +103,7 @@ class _WithdrawMoneyPageState
             onClick: state.amount != null
                 ? () {
                     if (_formKey.currentState!.validate()) {
-                      final phoneNumber =
-                          GetIt.I<AppState>().currentState.user?.phone;
-                      if (phoneNumber == null) {
-                        AppDialog.I.showWarning(
-                            message:
-                                "Bạn không thể rút tiền vì chưa đăng ký số điện thoại");
-                      } else {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.otp,
-                          arguments: phoneNumber.convertToCountryPhoneCode(),
-                        ).then((value) {
-                          if (value is String) {
-                            bloc.createPaymentRequest().then((value) {
-                              GetIt.I
-                                  .get<AppState>()
-                                  .createAction(ActionStateEnum.withdraw);
-                              Navigator.pushReplacementNamed(
-                                context,
-                                Routes.transactionDetail,
-                                arguments: {'paymentId': value.paymentId},
-                              );
-                            }).catchError((failure) {
-                              if (failure is Failure) {
-                                failure.showDefaultDialog();
-                              }
-                            });
-                          }
-                        });
-                      }
+                      onWithDraw();
                     }
                   }
                 : null,
@@ -141,6 +112,48 @@ class _WithdrawMoneyPageState
           ),
         ),
       ),
+    );
+  }
+
+  onWithDraw() {
+    AppDialog.I.showCheckPasswordDialog(
+      onConfirm: () async {
+        AppDialog.I.closeDialog();
+
+        // Check bank
+        AppDialog.I.showLoading();
+        final checkBankResult = await GetIt.I<IWalletRepo>().hasBankInfo();
+        AppDialog.I.closeDialog();
+
+        checkBankResult.fold((l) {
+          l.showDefaultDialog();
+        }, (r) {
+          if (r) {
+            bloc.createPaymentRequest().then((value) {
+              GetIt.I.get<AppState>().createAction(ActionStateEnum.withdraw);
+              Navigator.pushReplacementNamed(
+                context,
+                Routes.transactionDetail,
+                arguments: {'paymentId': value.paymentId},
+              );
+            }).catchError((failure) {
+              if (failure is Failure) {
+                failure.showDefaultDialog();
+              }
+            });
+          } else {
+            AppDialog.I.showWarning(
+              message:
+                  "Bạn chưa đăng ký thông tin tài khoản ngân hàng, vui lòng đăng ký trước khi thực hiện rút tiền.",
+              confirmTitle: "Tài khoản ngân hàng",
+              onConfirm: () {
+                AppDialog.I.closeDialog();
+                Navigator.pushNamed(context, Routes.changeBankInfo);
+              },
+            );
+          }
+        });
+      },
     );
   }
 }

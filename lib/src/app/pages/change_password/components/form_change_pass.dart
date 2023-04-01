@@ -139,7 +139,11 @@ class FormChangePass extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             Routes.otp,
-                            arguments: phoneNumber.convertToCountryPhoneCode(),
+                            arguments: {
+                              "phoneNumber":
+                                  phoneNumber.convertToCountryPhoneCode(),
+                              "sendPurpose": "reset_password",
+                            },
                           ).then((value) {
                             if (value is String) {
                               cubit.updateFormField(stringeeToken: value);
