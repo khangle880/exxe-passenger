@@ -1,9 +1,6 @@
-import 'package:exxe/src/app/pages/form_register/controllers/form_register_bloc.dart';
-
 import '../../../../core/base_state.dart';
 import '../../../../data/models/models.dart';
 import '../../../../utils/export/ui_export.dart';
-import '../../../common/widgets/search_list_view.dart';
 import '../components/form_page.dart';
 import '../components/pickup_date_field.dart';
 import '../components/pickup_image_page.dart';
@@ -47,6 +44,13 @@ class _BodyIdentityCardPageState
                   return PickupImagePage(
                     cameraDescription:
                         'Vui lòng hướng CMND/CCCD của bạn vào giữa màn hình để chụp ảnh',
+                    canIgnore:
+                        state.frontImage == null || state.backImage == null,
+                    onIgnoreTap: () {
+                      _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn);
+                    },
                     onNext: () {
                       _pageController.nextPage(
                           duration: const Duration(milliseconds: 300),
@@ -250,24 +254,6 @@ class _BodyIdentityCardPageState
               child: Text(
                 "Bắt đầu",
                 style: AppStyles.s16w6.withColor(AppColors.primaryLight),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ButtonWidget(
-              backgroundColor: AppColors.primaryLight,
-              onClick: () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                } else {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    Routes.home,
-                    (_) => false,
-                  );
-                }
-              },
-              child: Text(
-                "Bỏ qua",
-                style: AppStyles.s16w6.withColor(AppColors.primaryMain),
               ),
             ),
             const SizedBox(height: 24),

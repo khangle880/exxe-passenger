@@ -35,9 +35,13 @@ class _OTPPageState extends State<OTPPage> {
   }
 
   sendOtp() async {
-    await repo.sendOtp(widget.phoneNumber.clearWhiteSpace).then((either) {
+    await repo
+        .sendOtp(widget.phoneNumber.clearWhiteSpace,
+            sendPurpose: widget.sendPurpose)
+        .then((either) {
       either.fold((failure) {
         log(failure.toString());
+        failure.showDefaultDialog();
       }, (data) {
         waitingStreamController.add(true);
       });
@@ -100,8 +104,8 @@ class _OTPPageState extends State<OTPPage> {
         .then((either) {
       controller.clear();
       either.fold((failure) {
-        failure.showDefaultDialog();
         log(failure.toString());
+        failure.showDefaultDialog();
         isValidateFailed = true;
       }, (data) {
         log(data);
@@ -178,49 +182,6 @@ class _OTPPageState extends State<OTPPage> {
               style: AppStyles.s14w6.withColor(AppColors.primaryMain)),
         );
       },
-    );
-  }
-
-  Widget _buildPopupErrorOTP(BuildContext context) {
-    return Center(
-      child: Material(
-        color: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.primaryLight,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          width: double.infinity,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Có lỗi',
-                style: AppStyles.s18w6.withColor(AppColors.utilRed),
-              ),
-              const SizedBox(height: 4.0),
-              Text(
-                'Mã xác thực của bạn không hợp lệ\n hoặc không còn hiệu lực',
-                style: AppStyles.s15w4.withColor(AppColors.utilRed),
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16.0),
-              ButtonWidget(
-                  radius: 12,
-                  onClick: () => Navigator.of(context).pop(),
-                  backgroundColor: AppColors.primaryMain,
-                  child: Text(
-                    'Xong',
-                    style: AppStyles.s16w6.withColor(AppColors.primaryLight),
-                  )),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

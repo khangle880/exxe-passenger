@@ -714,4 +714,17 @@ class CompoundingCarControllerRepo extends ICompoundingCarCtrlRepo {
       );
     });
   }
+
+  @override
+  Future<Either<Failure, List<CompoundingCarCustomerModel>>>
+      getNeedPaymentRides() async {
+    final token = await BoxesUser.instance.getDataTokenUser();
+    final request =
+        _networkUtility.request(Apis.getNeedPaymentRides, Method.POST, data: {
+      "params": {"token": token}
+    });
+
+    return ParserHelper.listParseDefault(
+        request, CompoundingCarCustomerModel.fromJson);
+  }
 }

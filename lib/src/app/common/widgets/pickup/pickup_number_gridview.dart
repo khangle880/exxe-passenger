@@ -113,7 +113,7 @@ class _PickupNumberGridViewState extends State<PickupNumberGridView> {
           ),
           const SizedBox(height: 16),
           ExpandablePageView(
-            physics: const NeverScrollableScrollPhysics(),
+            // physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: List.generate(
               totalPage,
@@ -175,10 +175,15 @@ class PickupNumberPage extends StatelessWidget {
       itemCount: list.length,
       itemBuilder: (BuildContext ctx, index) {
         final item = list[index];
-        return Text(
-          item.toString(),
-          style: AppStyles.s18w4.withColor(
-              selected == item ? AppColors.primaryLight : AppColors.gray60x9d),
+        return Container(
+          width: 92,
+          alignment: Alignment.center,
+          child: Text(
+            item.toString(),
+            style: AppStyles.s18w5.withColor(selected == item
+                ? AppColors.primaryLight
+                : AppColors.gray60x9d),
+          ),
         ).inkWell(
           decoration: selected == item
               ? BoxDecoration(

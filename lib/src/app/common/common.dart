@@ -13,7 +13,6 @@ export './components/checkbox/chip_choose_widget.dart';
 export './components/container_widget/type_way_widget.dart';
 export './components/custom_widget/custom_appbar_widget.dart';
 export './components/form/custom_form_field.dart';
-export './components/form/form_function_widget.dart';
 export './components/form/form_label_widget.dart';
 export './components/form/form_phone_country_code.dart';
 export './components/form/password_field.dart';

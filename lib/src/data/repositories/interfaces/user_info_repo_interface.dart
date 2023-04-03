@@ -53,9 +53,9 @@ abstract class IUserInfoRepo {
   Future<Either<Failure, VerifyPhoneModel>> getVerifiedNumberPhone();
 
   Future<Either<Failure, IdentityCardModel>> createIdentityCard({
-    required num frontImageId,
+    num? frontImageId,
+    num? backImageId,
     required String name,
-    required num backImageId,
     required String identityNumber,
     required DateTime issuedDate,
     DateTime? expiredDate,

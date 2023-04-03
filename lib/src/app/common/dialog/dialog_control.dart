@@ -1,6 +1,8 @@
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import '../../../data/data.dart';
 import '../../../utils/export/ui_export.dart';
 import 'check_password_dialog.dart';
+import 'ride_payment_dialog.dart';
 
 class AppDialog {
   static AppDialog instance = AppDialog();
@@ -199,6 +201,22 @@ class AppDialog {
     required Function() onConfirm,
   }) {
     final content = CheckPasswordDialog(onConfirm: onConfirm);
+    showCustomDialog(content: content, barrierDismissible: barrierDismissible);
+  }
+
+  void showNeedPaymentDialog({
+    required List<CompoundingCarCustomerModel> customerCars,
+    bool? barrierDismissible,
+    Function()? onConfirm,
+    String? confirmTitle,
+    Widget? icon,
+    required BuildContext rootContext,
+  }) {
+    final content = RideNeedPaymentDialog(
+      compoundingCustomerCars: customerCars,
+      onConfirm: onConfirm ?? closeDialog,
+      rootContext: rootContext,
+    );
     showCustomDialog(content: content, barrierDismissible: barrierDismissible);
   }
 }

@@ -19,8 +19,8 @@ class ListHashTag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
-      spacing: 10.0,
-      runSpacing: 20.0,
+      spacing: 8.0,
+      runSpacing: 8.0,
       children: hasTags.map((item) => _buildHashTag(item)).toList(),
     );
     //   Column(

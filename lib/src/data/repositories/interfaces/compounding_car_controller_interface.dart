@@ -166,4 +166,7 @@ abstract class ICompoundingCarCtrlRepo {
 
   Future<Either<Failure, dynamic>> depositTimeOutCarCustomer(
       {required num compoundingCarCustomerId});
+
+  Future<Either<Failure, List<CompoundingCarCustomerModel>>>
+      getNeedPaymentRides();
 }

@@ -17,6 +17,7 @@ part 'token_state.dart';
 
 class TokenCubit extends Cubit<TokenState> {
   final UserInfoRepo userRepo = GetIt.I();
+
   TokenCubit() : super(TokenInitial());
 
   Future<bool> _checkHasPassword() async {
@@ -138,5 +139,6 @@ class TokenCubit extends Cubit<TokenState> {
     await BoxesUser.instance.deleteDataUser();
     await TransactionHiveBox.instance.clearAllTransaction();
     GetIt.I.get<AppState>().logOut();
+    OneSignalNotificationHelper.I.notiSaved = null;
   }
 }

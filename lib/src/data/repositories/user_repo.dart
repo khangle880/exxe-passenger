@@ -81,13 +81,12 @@ class UserRepo extends IUserRepo {
   }
 
   @override
-  Future<Either<Failure, dynamic>> sendOtp(String phone) async {
+  Future<Either<Failure, dynamic>> sendOtp(String phone,
+      {String? sendPurpose}) async {
     try {
       final response =
           await _networkUtility.request(Apis.sendOtp, Method.POST, data: {
-        "params": {
-          "phone": phone,
-        }
+        "params": {"phone": phone, "send_purpose": sendPurpose}.getCleanNull
       });
 
       StatusResponse result = StatusResponse(response);
@@ -187,15 +186,6 @@ class UserRepo extends IUserRepo {
       if (result.error != null) {
         return Left(ServerFailure(result.error!));
       }
-
-      final chatUserRepo = ChatUserRepo();
-      await chatUserRepo.checkPassword().then((checkPassEither) {
-        checkPassEither.fold((l) => null, (data) {
-          if (!data) {
-            chatUserRepo.createPassword(password, rePassword);
-          }
-        });
-      });
       return const Right(null);
     } catch (e) {
       return Left(UnknownFailure(e.toString()));
@@ -226,17 +216,6 @@ class UserRepo extends IUserRepo {
         return Left(ServerFailure(result.error!));
       }
 
-      final chatUserRepo = ChatUserRepo();
-      await chatUserRepo.checkPassword().then((checkPassEither) {
-        checkPassEither.fold((l) => null, (data) {
-          if (data) {
-            chatUserRepo.updatePassword(
-                oldPass: old, newPass: newPass, rePass: rePass);
-          } else {
-            chatUserRepo.createPassword(newPass, rePass);
-          }
-        });
-      });
       return const Right(null);
     } catch (e) {
       return Left(UnknownFailure(e.toString()));

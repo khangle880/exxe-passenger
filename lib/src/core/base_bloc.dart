@@ -38,9 +38,14 @@ abstract class BaseController<T> {
   }
 
   void emitError(Failure failure) {
-    log(failure.toString());
-    if (_errorController.isClosed) return;
-    _errorController.sink.add(failure);
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        log(failure.toString());
+        if (_errorController.isClosed) return;
+        _errorController.sink.add(failure);
+      },
+    );
   }
 }
 

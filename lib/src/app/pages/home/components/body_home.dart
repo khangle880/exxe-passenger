@@ -36,7 +36,19 @@ class _BodyHomePageState extends State<BodyHomePage> {
   void initState() {
     _getAvailableMoney();
     _getListNotification();
+    getRideToPayments();
     super.initState();
+  }
+
+  getRideToPayments() async {
+    final either =
+        await GetIt.I<ICompoundingCarCtrlRepo>().getNeedPaymentRides();
+    either.fold((l) => l.toString(), (r) {
+      if (r.isNotEmpty) {
+        AppDialog.I
+            .showNeedPaymentDialog(customerCars: r, rootContext: context);
+      }
+    });
   }
 
   @override

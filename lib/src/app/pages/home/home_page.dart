@@ -5,10 +5,7 @@ import 'package:exxe/src/app/pages/pages.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 
 import '../../../controllers/token/token_cubit.dart';
-import '../../common/dialog/invalid_token_dialog.dart';
-import '../../common/widgets/keep_alive_page.dart';
 
-// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -70,6 +67,13 @@ class _HomePageState extends State<HomePage> {
         .listen((ConnectivityResult result) {});
 
     _handleListenAppState();
+
+    final notiHelper = OneSignalNotificationHelper.I;
+    if (notiHelper.notiSaved != null) {
+      notiHelper.openedHandler?.call(notiHelper.notiSaved!);
+      notiHelper.notiSaved = null;
+    }
+
     super.initState();
   }
 

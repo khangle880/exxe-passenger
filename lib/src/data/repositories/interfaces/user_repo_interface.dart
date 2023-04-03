@@ -13,7 +13,7 @@ abstract class IUserRepo {
 
   Future<Either<Failure, dynamic>> deleteAccount(String stringeeToken);
 
-  Future<Either<Failure, dynamic>> sendOtp(String phone);
+  Future<Either<Failure, dynamic>> sendOtp(String phone, {String? sendPurpose});
 
   Future<Either<Failure, String>> verifyOtp(String phone, String otpCode);
 

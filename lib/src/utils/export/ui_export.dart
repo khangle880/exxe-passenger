@@ -22,3 +22,4 @@ export '../constants/enum/enum.dart';
 export '../extensions/extensions.dart';
 export '../utils.dart';
 export 'package:shimmer/shimmer.dart';
+export 'package:get/get.dart' show Get;

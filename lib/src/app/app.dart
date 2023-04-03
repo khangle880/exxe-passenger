@@ -1,11 +1,13 @@
-import 'package:exxe/src/data_chat/data_chat.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:get/get.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../config/themes.dart';
 import '../controllers/token/token_cubit.dart';
 import '../data/data.dart';
+import '../data_chat/data_chat.dart';
 import '../utils/export/main_app.dart';
 import 'pages/pages.dart';
 
@@ -51,28 +53,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   handleNotification() {
-    // FireBaseNotificationHelper.I.init(
-    //     onInitMessage: (message) {},
-    //     onOpenedMessage: (message) {},
-    //     onLocalNotiMessage: (message) {},
-    //     onForeGroundMessage: (message) {});
-    OneSignalNotificationHelper.I.openedHandler = (data) async {
-      final appState = GetIt.I<AppState>().currentState;
-      if (appState.state == UserStateEnum.notSignIn) {
-        OneSignalNotificationHelper.I.notiSaved = data;
-      } else if (data.additionalData != null) {
+    final notiHelper = OneSignalNotificationHelper.I;
+    notiHelper.openedHandler = (data) async {
+      if (data.additionalData != null) {
         final roomId = data.additionalData?['room_id'];
         if (roomId != null) {
-          _openChatRoom(roomId);
+          _openChatRoom(roomId, data);
         }
-        final compoundingCarCustomerId =
-            data.additionalData?['compounding_car_customer_id'];
+        final num? compoundingCarCustomerId =
+            int.tryParse(data.additionalData?['compounding_car_customer_id']);
         if (compoundingCarCustomerId != null) {
-          _openRideDetail(compoundingCarCustomerId);
+          _openRideDetail(compoundingCarCustomerId, data);
         }
       }
     };
-    OneSignalNotificationHelper.I.onForeGroundMessage = (data) {
+    notiHelper.onForeGroundMessage = (data) {
       final appState = GetIt.I<AppState>().currentState;
       if (appState.state == UserStateEnum.signIn &&
           data.additionalData != null) {
@@ -83,7 +78,7 @@ class _MyAppState extends State<MyApp> {
         }
       }
     };
-    OneSignalNotificationHelper.I.init();
+    notiHelper.init();
   }
 
   _syncTrip(num compoundingCarCustomerId) async {
@@ -94,22 +89,26 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  _openRideDetail(num compoundingCarCustomerId) async {
+  _openRideDetail(num compoundingCarCustomerId, OSNotification data) async {
     final either = await GetIt.I<ICompoundingCarCtrlRepo>()
         .getDetailCompoundingCarCustomer(compoundingCarCustomerId);
 
-    either.fold((failure) {
-      failure.showDefaultDialog();
+    either.fold((l) {
+      l.showDefaultDialog();
+      if (l.toString() == "Token không có hiệu lực!") {
+        OneSignalNotificationHelper.I.notiSaved = data;
+      }
     }, (data) {
-      navigatorKey.currentState?.pushNamedAndRemoveUntil(
-        Routes.tripDetail,
-        ModalRoute.withName(Routes.tripDetail),
-        arguments: data,
-      );
+      Future.delayed(const Duration(seconds: 2), () {
+        navigatorKey.currentState?.pushNamed(
+          Routes.tripDetail,
+          arguments: data,
+        );
+      });
     });
   }
 
-  void _openChatRoom(roomId) async {
+  void _openChatRoom(roomId, OSNotification data) async {
     var room = ChatSocketHelper.I.controller.items
         .firstWhereOrNull((element) => element.roomId == roomId);
     if (room == null) {
@@ -123,11 +122,12 @@ class _MyAppState extends State<MyApp> {
       });
     }
     if (room != null) {
-      navigatorKey.currentState?.pushNamedAndRemoveUntil(
-        Routes.chatRoom,
-        ModalRoute.withName(Routes.chatRoom),
-        arguments: room,
-      );
+      Future.delayed(const Duration(seconds: 2), () {
+        navigatorKey.currentState?.pushNamed(
+          Routes.chatRoom,
+          arguments: room,
+        );
+      });
     }
   }
 
@@ -143,7 +143,7 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         navigatorKey: navigatorKey,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

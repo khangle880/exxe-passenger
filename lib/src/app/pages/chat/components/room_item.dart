@@ -208,7 +208,9 @@ class RoomItemWidget extends StatelessWidget {
                 (item) => InkWell(
                   onTap: () {
                     _controller.hideMenu();
-                    item.onTap();
+                    Future.delayed(const Duration(milliseconds: 100), () {
+                      item.onTap();
+                    });
                   },
                   child: Row(
                     children: <Widget>[

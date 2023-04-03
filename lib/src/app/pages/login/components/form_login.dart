@@ -183,6 +183,7 @@ class _FormPhoneLoginState extends State<FormPhoneLogin> {
         onClick: context.watch<AuthLoginBloc>().state.phone.length < 10
             ? null
             : () async {
+                FocusManager.instance.primaryFocus?.unfocus();
                 if (formKey.currentState!.validate()) {
                   if (methodLogin == MethodLogin.PhoneAndPassword) {
                     authLoginBloc.add(SubmitFormPhonePasswordEvent());

@@ -101,79 +101,88 @@ class Routes {
   //reason cancel
   static const String cancelReason = 'cancelReason';
 
+  static String? currentRoute;
+
   static Map<String, Widget Function(BuildContext)> mapRoutes() {
-    return {
-      //splash
-      Routes.splash: (_) => const SplashPage(),
+    return {};
+  }
+
+  static Route<dynamic> mapGenerateRoutes(RouteSettings settings) {
+    MaterialPageRoute mPage(widget) => MaterialPageRoute(
+          builder: (_) => widget,
+          settings: settings,
+        );
+
+    currentRoute = settings.name;
+
+    switch (settings.name) {
+      case Routes.splash:
+        return mPage(const SplashPage());
       //home
-      //Routes.home: (_) => const TestRepoPage(),
-      Routes.home: (context) {
-        return const CallInvitationPage(child: HomePage());
-      },
-      Routes.promotionHomePage: (context) {
-        return const PromotionHomePage();
-      },
-      Routes.news: (context) {
-        return const NewsPage();
-      },
-      //Routes.login: (context) => const LoginPage(),
-      Routes.login: (context) {
-        return BlocProvider<AuthLoginBloc>(
+      case Routes.home:
+        return mPage(const CallInvitationPage(child: HomePage()));
+      case Routes.promotionHomePage:
+        return mPage(const PromotionHomePage());
+
+      case Routes.news:
+        return mPage(const NewsPage());
+
+      case Routes.login:
+        return mPage(BlocProvider<AuthLoginBloc>(
           create: (context) => AuthLoginBloc(GetIt.I(), GetIt.I()),
           // ignore: prefer_const_constructors
           child: LoginPage(),
-        );
-      },
-      //profile
-      Routes.profile: (context) {
-        return const ProfilePage();
-      },
+        ));
 
-      Routes.changeBankInfo: (context) {
-        return BlocProvider(
+      //profile
+      case Routes.profile:
+        return mPage(const ProfilePage());
+
+      case Routes.changeBankInfo:
+        return mPage(BlocProvider(
           create: (context) => RegisterBankAccountCubit(GetIt.I())
             ..getBankAccountInformation()
             ..getListBanks(),
           child: const RegisterFormBankAccountPage(),
-        );
-      },
+        ));
+
       //my trip
-      Routes.myTrip: (context) {
-        return const MyTripPage();
-      },
-      Routes.detailDriver: (context) => const DriverDetailPage(),
-      //one way
+      case Routes.myTrip:
+        return mPage(const MyTripPage());
+
+      case Routes.detailDriver:
+        return mPage(const DriverDetailPage());
 
       //wallet
-      Routes.walletMainPage: (context) {
-        return BlocProvider(
+      case Routes.walletMainPage:
+        return mPage(BlocProvider(
           create: (_) => MyWalletBloc(GetIt.I())..add(const LoadWalletEvent()),
           child: const WalletPage(),
-        );
-      },
-      Routes.rechargePage: (context) {
-        return BlocProvider(
+        ));
+
+      case Routes.rechargePage:
+        return mPage(BlocProvider(
           create: (context) =>
               RechargeMoneyCubit(GetIt.I())..getListRechargeMethod(),
           child: const RechargeMoneyPage(),
-        );
-      },
-      Routes.withdrawPage: (context) {
-        return BlocProvider(
+        ));
+
+      case Routes.withdrawPage:
+        return mPage(BlocProvider(
           create: (context) => WithdrawMoneyCubit(GetIt.I()),
           child: const WithdrawMoneyPage(),
-        );
-      },
-      //Notify
-      Routes.notification: (context) => NotifyPage(),
-      //chat
-      Routes.chat: (context) => const ChatPage(),
-      Routes.relationList: (context) => const RelationshipListPage(),
-    };
-  }
+        ));
 
-  static Route<dynamic> mapGenerateRoutes(RouteSettings settings) {
-    switch (settings.name) {
+      //Notify
+      case Routes.notification:
+        return mPage(const NotifyPage());
+
+      //chat
+      case Routes.chat:
+        return mPage(const ChatPage());
+      case Routes.relationList:
+        return mPage(const RelationshipListPage());
+
       case Routes.chatRoom:
         var data = settings.arguments as ChatRoomModel;
         return MaterialPageRoute(

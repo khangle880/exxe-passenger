@@ -7,7 +7,6 @@ import 'package:state_notifier/state_notifier.dart';
 import '../data/data.dart';
 import '../data_chat/data_chat.dart';
 import '../storage/models/user.dart';
-import '../utils/helpers/onesignal_notification_helper.dart';
 export 'package:state_notifier/state_notifier.dart' show RemoveListener;
 
 enum UserStateEnum { signIn, notSignIn }
@@ -95,13 +94,6 @@ class AppState extends StateNotifier<UserState> {
       token: token.token!,
       refreshToken: token.refreshToken!,
     ));
-    final notiHelper = OneSignalNotificationHelper.I;
-    if (notiHelper.notiSaved != null) {
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        notiHelper.openedHandler?.call(notiHelper.notiSaved!);
-        notiHelper.notiSaved = null;
-      });
-    }
 
     log(token.token!);
   }

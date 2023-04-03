@@ -66,8 +66,8 @@ class VerifyIdentityCardBloc
       } else {
         emitWaiting(true);
         final result = await repo.createIdentityCard(
-          frontImageId: state.frontImage!.id!,
-          backImageId: state.backImage!.id!,
+          frontImageId: state.frontImage?.id,
+          backImageId: state.backImage?.id,
           identityNumber: state.cardNumber!,
           issuedDate: state.issuedDate!,
           expiredDate: state.expiredDate,
@@ -77,7 +77,7 @@ class VerifyIdentityCardBloc
         );
         emitWaiting(false);
         result.fold((failure) {
-          log(failure.toString());
+          emitError(failure);
         }, (data) {
           GetIt.I<AppState>()
               .updateUser(userInfo.copyWith(identityCardId: data));

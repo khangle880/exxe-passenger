@@ -1,4 +1,5 @@
 import 'package:exxe/src/data/data.dart';
+import 'package:exxe/src/utils/export/logic_export.dart';
 import 'package:get_it/get_it.dart';
 
 import '../utils/helpers/location_helper.dart';
@@ -28,5 +29,7 @@ class RepoDependencies {
     //google map helper
     injector
         .registerSingleton<LocationHelper>(LocationHelper()..getListProvince());
+    injector
+        .registerSingleton<OneSignalNotificationHelper>(OneSignalNotificationHelper());
   }
 }

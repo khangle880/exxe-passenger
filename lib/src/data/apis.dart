@@ -374,4 +374,7 @@ class Apis {
 
   static const String missedCall =
       "/compounding_car_controller/missing_call_notification";
+
+  static const String getNeedPaymentRides =
+      "/compounding_car_controller/needing_payment_compounding_car_customer";
 }

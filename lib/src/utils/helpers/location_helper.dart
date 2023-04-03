@@ -1,7 +1,6 @@
 import 'dart:ui' as ui;
 
 import 'package:app_settings/app_settings.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -152,7 +151,7 @@ class LocationHelper {
     return await GoogleMapService.instance.enableLocation().then((value) async {
       log('Position: $value');
       LocationModel? locationModel = await _createLocationModel(value);
-      SmartDialog.dismiss();
+      if (isShowLoading) AppDialog.I.closeDialog();
 
       if (locationModel == null) {
         return LocationPermissionEnum.locationInvalid;
@@ -161,8 +160,7 @@ class LocationHelper {
         return LocationPermissionEnum.locationValid;
       }
     }).catchError((e) {
-      log(e.toString());
-      SmartDialog.dismiss();
+      if (isShowLoading) AppDialog.I.closeDialog();
       return LocationPermissionEnum.couldNotGetLocation;
     });
   }

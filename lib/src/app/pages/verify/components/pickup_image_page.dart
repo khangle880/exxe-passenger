@@ -12,10 +12,14 @@ class PickupImagePage extends StatelessWidget {
     required this.onNext,
     required this.onPickedFront,
     required this.onPickedBack,
+    this.canIgnore = false,
+    this.onIgnoreTap,
   }) : super(key: key);
   final String? title;
   final String cameraDescription;
   final Function() onNext;
+  final bool canIgnore;
+  final Function()? onIgnoreTap;
   final ImageModel? initFrontImage;
   final ImageModel? initBackImage;
   final Function(ImageModel value) onPickedFront;
@@ -59,13 +63,37 @@ class PickupImagePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: ButtonWidget(
-        onClick:
-            (initFrontImage != null && initBackImage != null) ? onNext : null,
-        radius: 12,
-        child: Text("Tiếp tục",
-            style: AppStyles.s16w6.withColor(AppColors.primaryLight)),
-      ).bottomSingle(),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+        width: double.maxFinite,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ButtonWidget(
+              onClick: (initFrontImage != null && initBackImage != null)
+                  ? onNext
+                  : null,
+              radius: 12,
+              child: Text("Tiếp tục",
+                  style: AppStyles.s16w6.withColor(AppColors.primaryLight)),
+            ),
+            if (canIgnore) ...[
+              const SizedBox(height: 12),
+              ButtonWidget(
+                backgroundColor: AppColors.primaryMain +
+                    AppColors.primaryLight.withOpacity(.95),
+                onClick: () {
+                  onIgnoreTap?.call();
+                },
+                child: Text(
+                  "Bổ sung sau",
+                  style: AppStyles.s16w6.withColor(AppColors.primaryMain),
+                ),
+              ),
+            ]
+          ],
+        ),
+      ),
     );
   }
 }

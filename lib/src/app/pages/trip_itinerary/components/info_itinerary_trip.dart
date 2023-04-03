@@ -47,7 +47,6 @@ class _InfoTripPanelState extends State<InfoTripPanel> {
               width: size.width,
               height: isView ? size.height * 0.8 : size.height * 0.29,
               alignment: Alignment.topCenter,
-              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: AppColors.primaryLight,
                 borderRadius: AppStyles.borderTop20LeftRight,
@@ -56,9 +55,12 @@ class _InfoTripPanelState extends State<InfoTripPanel> {
                 ],
               ),
               child: SingleChildScrollView(
-                child: BodyInfoPanel(
-                  carCustomer: widget.carCustomer,
-                  onRefresh: widget.onRefresh,
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  child: BodyInfoPanel(
+                    carCustomer: widget.carCustomer,
+                    onRefresh: widget.onRefresh,
+                  ),
                 ),
               ),
             ),

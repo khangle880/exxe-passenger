@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalNotificationHelper {
@@ -62,7 +63,7 @@ class OneSignalNotificationHelper {
 
   static OneSignalNotificationHelper instance = OneSignalNotificationHelper();
 
-  static OneSignalNotificationHelper get I => instance;
+  static OneSignalNotificationHelper get I => GetIt.I<OneSignalNotificationHelper>();
 
   OneSignalNotificationHelper();
 }

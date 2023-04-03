@@ -47,6 +47,8 @@ class AppStyles {
       _kNunitosw700.copyWith(fontSize: AppDimens.text18);
   static final TextStyle s18w6 =
       _kNunitosw600.copyWith(fontSize: AppDimens.text18);
+  static final TextStyle s18w5 =
+  _kNunitosw500.copyWith(fontSize: AppDimens.text18);
   static final TextStyle s18w4 =
       _kNunitosw400.copyWith(fontSize: AppDimens.text18);
   static final TextStyle s17w6 =

@@ -142,9 +142,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
       );
       cardPrincesResult.fold(
         (failure) {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            emitError(failure);
-          });
+          emitError(failure);
         },
         (data) {
           listCardPrices = data;
@@ -166,9 +164,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
         selectedCarPriceModel: selectedPriceModel ?? listCardPrices!.first,
       ));
     } else {
-      Future.delayed(const Duration(milliseconds: 100), () {
-        emitError(UnknownFailure('Google không tìm được đường đi từ hai trạm'));
-      });
+      emitError(UnknownFailure('Google không tìm được đường đi từ hai trạm'));
     }
   }
 
@@ -300,9 +296,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     emitWaiting(false);
     return result.fold(
       (failure) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          emitError(failure);
-        });
+        emitError(failure);
       },
       (data) {
         emit(state.copyWith(
@@ -332,9 +326,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     emitWaiting(false);
     return result.fold(
       (failure) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          emitError(failure);
-        });
+        emitError(failure);
       },
       (data) {
         emit(state.copyWith(
@@ -369,9 +361,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     emitWaiting(false);
     return result.fold(
       (failure) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          emitError(failure);
-        });
+        emitError(failure);
       },
       (data) {
         emit(state.copyWith(
@@ -388,9 +378,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     var result = await compoundingCarCtrlRepo.getWaitingChargeBlock(distance);
     return result.fold(
       (failure) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          emitError(failure);
-        });
+        emitError(failure);
         return null;
       },
       (data) {

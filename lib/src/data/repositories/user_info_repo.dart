@@ -206,15 +206,16 @@ class UserInfoRepo extends IUserInfoRepo {
   }
 
   @override
-  Future<Either<Failure, IdentityCardModel>> createIdentityCard(
-      {required num frontImageId,
-      required String name,
-      required num backImageId,
-      required String identityNumber,
-      required DateTime issuedDate,
-      DateTime? expiredDate,
-      required String placeOfIssue,
-      required String address}) async {
+  Future<Either<Failure, IdentityCardModel>> createIdentityCard({
+    num? frontImageId,
+    num? backImageId,
+    required String name,
+    required String identityNumber,
+    required DateTime issuedDate,
+    DateTime? expiredDate,
+    required String placeOfIssue,
+    required String address,
+  }) async {
     final token = await BoxesUser.instance.getDataTokenUser();
     final params = {
       "token": token,

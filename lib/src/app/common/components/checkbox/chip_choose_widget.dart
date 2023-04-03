@@ -21,10 +21,11 @@ class ChoiceChipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return ConstrainedBox(
       constraints: BoxConstraints(
         minWidth: minWidth ?? 50,
-        maxWidth: maxWidth ?? 200,
+        maxWidth: maxWidth ?? (size.width - 56) / 2,
       ),
       child: Container(
         padding: padding ??
