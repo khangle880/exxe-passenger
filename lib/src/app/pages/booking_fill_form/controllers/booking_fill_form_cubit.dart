@@ -1,7 +1,6 @@
 import 'dart:math' show max;
 
 import 'package:equatable/equatable.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/base_bloc.dart';
 import '../../../../core/core.dart';
@@ -115,14 +114,10 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
     DirectionsModel? directionsModel;
     emitWaiting(true);
     var directionsModelResult = await placesRepository.getDirection(
-      LatLng(
-        state.pickupPoint!.coordinate!.latitude!,
-        state.pickupPoint!.coordinate!.longitude!,
-      ),
-      LatLng(
-        state.destinationPoint!.coordinate!.latitude!,
-        state.destinationPoint!.coordinate!.longitude!,
-      ),
+      fromLat: state.pickupPoint!.coordinate!.latitude!,
+      fromLong: state.pickupPoint!.coordinate!.longitude!,
+      toLat: state.destinationPoint!.coordinate!.latitude!,
+      toLong: state.destinationPoint!.coordinate!.longitude!,
     );
     directionsModelResult.fold(
       (failure) {

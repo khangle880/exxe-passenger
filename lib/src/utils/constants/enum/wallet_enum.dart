@@ -92,7 +92,7 @@ enum PaymentPurposeGroup {
 }
 
 class PaymentLimit {
-  static const max = 5000000;
+  static const max = 3000000;
   static const min = 50000;
 }
 

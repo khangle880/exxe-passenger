@@ -1,5 +1,4 @@
 import 'package:exxe/src/utils/export/ui_export.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../data/data.dart';
 import '../../../storage/models/suggestive_province.dart';
@@ -93,14 +92,11 @@ class _JoinConvenientTripPageState extends State<JoinConvenientTripPage> {
         listener: (context, state) async {
           if (state.pickupPoint != null && state.destinationPoint != null) {
             var distance = await GetIt.I<PlaceRepository>().getDirection(
-              LatLng(
-                double.parse(state.pickupPoint!.province!.latitude!),
-                double.parse(state.pickupPoint!.province!.longitude!),
-              ),
-              LatLng(
-                double.parse(state.destinationPoint!.province!.latitude!),
-                double.parse(state.destinationPoint!.province!.longitude!),
-              ),
+              fromLat: double.parse(state.pickupPoint!.province!.latitude!),
+              fromLong: double.parse(state.pickupPoint!.province!.longitude!),
+              toLat: double.parse(state.destinationPoint!.province!.latitude!),
+              toLong:
+                  double.parse(state.destinationPoint!.province!.longitude!),
             );
             distance.fold(
               (failure) {

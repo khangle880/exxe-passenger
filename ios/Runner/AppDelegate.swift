@@ -34,7 +34,7 @@ import GoogleMaps
         })
 
         GeneratedPluginRegistrant.register(with: self)
-        GMSServices.provideAPIKey("AIzaSyCZeUDm5bI9Xnn17hKQ98wjkHp3Huxmjg0")
+        GMSServices.provideAPIKey("AIzaSyD_TTAqTmIi9zChrM0o09uG127n7o9kNZo")
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
@@ -45,9 +45,9 @@ import GoogleMaps
         
         let fromVC = self.window.rootViewController//bắt buộc
         let scheme = "exxe" //bắt buộc, tên scheme bạn tự đặt theo app
-        let isSandbox = true //bắt buộc, YES <=> môi trường test, NO <=> môi trường live
+        let isSandbox = false //bắt buộc, YES <=> môi trường test, NO <=> môi trường live
         let paymentUrl = url //@"https://sandbox.vnpayment.vn/tryitnow/Home/CreateOrder"; //bắt buộc, VNPAY cung cấp
-        let tmn_code = "EXXEVN03" //bắt buộc, VNPAY cung cấp
+        let tmn_code = "EXXEAPP1" //bắt buộc, VNPAY cung cấp
         let backAction = true //bắt buộc, YES <=> bấm back sẽ thoát SDK, NO <=> bấm back thì trang web sẽ back lại trang trước đó, nên set là YES, nên set là YES, vì trang thanh toán không nên cho người dùng back về trang trước
         let backAlert = "" //không bắt buộc, thông báo khi người dùng bấm back
         let title = "VNPAY" //bắt buộc, title của trang thanh toán

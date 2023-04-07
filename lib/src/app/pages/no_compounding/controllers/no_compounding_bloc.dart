@@ -1,8 +1,4 @@
-// ignore: depend_on_referenced_packages
-
 import 'package:equatable/equatable.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../../../../utils/export/logic_export.dart';
 
 part 'no_compounding_event.dart';
@@ -23,7 +19,8 @@ class NoCompoundingBloc
           NoCompoundingState(expectedGoingOnDate: DateTime.now()),
         ) {
     on<LoadDefaultGoingOnDate>((event, emit) {
-      final minutes = (DateTime.now().time.inMinutes + 3 * 60).roundUp(15).ceil();
+      final minutes =
+          (DateTime.now().time.inMinutes + 3 * 60).roundUp(15).ceil();
       final time = minutes < 18 * 60
           ? DateTime.now().date.add(Duration(minutes: minutes))
           : DateTime.now().date.add(const Duration(days: 1, hours: 8));
@@ -57,14 +54,10 @@ class NoCompoundingBloc
       DirectionsModel? directionsModel;
       emit(state.copyWith(currentCarPrice: Nullable(null)));
       var directionsModelResult = await placesRepository.getDirection(
-        LatLng(
-          state.pickupPoint!.coordinate!.latitude!,
-          state.pickupPoint!.coordinate!.longitude!,
-        ),
-        LatLng(
-          state.destinationPoint!.coordinate!.latitude!,
-          state.destinationPoint!.coordinate!.longitude!,
-        ),
+        fromLat: state.pickupPoint!.coordinate!.latitude!,
+        fromLong: state.pickupPoint!.coordinate!.longitude!,
+        toLat: state.destinationPoint!.coordinate!.latitude!,
+        toLong: state.destinationPoint!.coordinate!.longitude!,
       );
       directionsModelResult.fold(
         (failure) {

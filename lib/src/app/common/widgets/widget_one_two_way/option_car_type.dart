@@ -2,7 +2,6 @@ import 'package:exxe/src/utils/export/ui_export.dart';
 
 import '../../../../data/data.dart';
 
-// ignore: must_be_immutable
 class OptionCarType extends StatelessWidget {
   const OptionCarType({
     Key? key,
@@ -80,14 +79,15 @@ class OptionCarType extends StatelessWidget {
   }
 
   Expanded _buildLeft(CarModel type, BuildContext context) {
+    final numberSeat = type.numberSeat ?? 0;
     return Expanded(
       child: Row(
         key: key,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          type.carId == 2
+          numberSeat < 6
               ? SvgPicture.asset(AppIcons.car)
-              : type.carId == 1
+              : numberSeat < 8
                   ? SvgPicture.asset(AppIcons.car7)
                   : SvgPicture.asset(AppIcons.car16),
           Padding(
@@ -95,19 +95,17 @@ class OptionCarType extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextWidget(
-                  text: 'Loại xe',
-                  fontSize: 14.0,
-                  colorText: AppColors.gray70x76,
+                Text(
+                  'Loại xe',
+                  style: AppStyles.s14w5.withColor(AppColors.gray70x76),
                 ),
-                TextWidget(
-                  text: type.carId == 2
+                Text(
+                  numberSeat < 6
                       ? 'XE 5 CHỖ'
-                      : type.carId == 1
+                      : numberSeat < 8
                           ? 'XE 7 CHỖ'
                           : 'XE 16 CHỖ',
-                  fontSize: AppDimens.text14,
-                  weight: FontWeight.w600,
+                  style: AppStyles.s14w6,
                 )
               ],
             ),

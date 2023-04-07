@@ -119,12 +119,12 @@ class FormRegisterBloc extends BaseBloc<FormRegisterEvent, FormRegisterState> {
         userInfo.dateOfBirth == state.birthDate! &&
         userInfo.gender == state.gender &&
         userInfo.email == state.email &&
-        userInfo.provinceId!.provinceId! ==
-            state.location!.province!.provinceId! &&
-        userInfo.districtId!.districtId! ==
-            state.location!.district!.districtId! &&
-        userInfo.wardId!.wardId! == state.location!.ward!.wardId! &&
-        userInfo.street == state.location!.address) {
+        userInfo.provinceId?.provinceId ==
+            state.location?.province?.provinceId &&
+        userInfo.districtId?.districtId ==
+            state.location?.district?.districtId &&
+        userInfo.wardId?.wardId == state.location?.ward?.wardId &&
+        userInfo.street == state.location?.address) {
       return true;
     }
     return false;

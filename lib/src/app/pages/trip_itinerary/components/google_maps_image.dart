@@ -265,8 +265,12 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     required String key,
     Color? color,
   }) async {
-    var result = await GetIt.I<IPlacesRepository>()
-        .getDirection(LatLng(startLat, startLong), LatLng(endLat, endLong));
+    var result = await GetIt.I<IPlacesRepository>().getDirection(
+      fromLat: startLat,
+      fromLong: startLong,
+      toLat: endLat,
+      toLong: endLong,
+    );
     return result.fold((failure) {
       log(failure.toString());
       return Future.error(failure);

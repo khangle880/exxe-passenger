@@ -144,6 +144,8 @@ class ZegoCallInviteButton extends StatelessWidget {
     GetIt.I<INotificationRepo>().call(phone);
     GetIt.I<AppState>().callingCompoundingCustomerCode =
         compoundingCarCustomerCode;
+    GetIt.I<AppState>().callingId = phone;
+
     if (errorInvitees.isNotEmpty) {
       var message = 'Người dùng đang không hoạt động';
       if (code.isNotEmpty) {

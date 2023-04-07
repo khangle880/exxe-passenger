@@ -38,7 +38,7 @@ class _MoneyInputWidgetState extends State<MoneyInputWidget> {
 
   List<int> genRecommends(int? base) {
     List<int> recommends = [];
-    final defaultRecommends = [200000, 500000, 1000000];
+    final defaultRecommends = [200000, 300000, 500000];
 
     if (base != null) {
       int temp = base;

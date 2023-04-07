@@ -24,10 +24,11 @@ class ListOptionCar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: carTypes!.map((e) {
+              final numberSeat = e.carId!.numberSeat ?? 0;
               return _buildItemList(
-                e.carId!.carId == 2
+                numberSeat < 6
                     ? AppIcons.car
-                    : e.carId!.carId == 1
+                    : numberSeat < 8
                         ? AppIcons.car7
                         : AppIcons.car16,
                 e.carId!.name!,

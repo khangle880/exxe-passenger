@@ -2,8 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../../core/core.dart';
 import '../data.dart';
 
@@ -68,16 +66,20 @@ class PlaceRepository extends IPlacesRepository {
   }
 
   @override
-  Future<Either<Failure, DirectionsModel>> getDirection(
-      LatLng origin, LatLng destination) async {
+  Future<Either<Failure, DirectionsModel>> getDirection({
+    required num fromLat,
+    required num fromLong,
+    required num toLat,
+    required num toLong,
+  }) async {
     try {
       const String baseUrl =
           'https://maps.googleapis.com/maps/api/directions/json?';
       final response = await Dio().get(
         baseUrl,
         queryParameters: {
-          'origin': '${origin.latitude},${origin.longitude}',
-          'destination': '${destination.latitude},${destination.longitude}',
+          'origin': '$fromLat,$fromLong',
+          'destination': '$toLat,$toLong',
           'mode': 'driving',
           'language': 'vi',
           'region': 'vi',

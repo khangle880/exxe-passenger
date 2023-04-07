@@ -25,7 +25,8 @@ T? safeParse<T>(dynamic data, {dynamic payload}) {
       try {
         return double.parse(text) as T;
       } catch (e) {
-        rethrow;
+        log(e.toString());
+        return null;
       }
     }
   }

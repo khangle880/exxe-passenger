@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:exxe/src/storage/models/photo.dart';
 import 'package:exxe/src/storage/models/suggestive_province.dart';
 import 'package:exxe/src/storage/models/transaction.dart';
@@ -8,7 +6,6 @@ import 'package:exxe/src/storage/models/user_chat.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -42,17 +39,6 @@ void main() async {
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   // Hive.init();
   await AppDependencies.init();
-
-  FlutterError.onError = (errorDetails) {
-    GetIt.I<LoggerFbInterceptor>()
-        .sendPhotoByText(errorDetails.toString(), true);
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  PlatformDispatcher.instance.onError = (error, stack) {
-    GetIt.I<LoggerFbInterceptor>().sendPhotoByText("$error $stack", true);
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
 
   // await precachePicture(
   //   ExactAssetPicture(

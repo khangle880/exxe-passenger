@@ -4,8 +4,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 final List<String> imgList = [
   'assets/images/banner/ban1.png',
-  'assets/images/banner/ban2.jpg',
-  'assets/images/banner/ban3.jpg',
+  'assets/images/banner/ban2.png',
+  'assets/images/banner/ban3.png',
 ];
 
 class BannerHome extends StatefulWidget {

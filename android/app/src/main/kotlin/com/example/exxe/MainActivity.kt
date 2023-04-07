@@ -77,9 +77,9 @@ class MainActivity : FlutterActivity(), OnMapsSdkInitializedCallback {
     private fun openSdk(url: String) {
         val intent = Intent(this, VNP_AuthenticationActivity::class.java)
         intent.putExtra("url", url) //bắt buộc, VNPAY cung cấp
-        intent.putExtra("tmn_code", "EXXEVN03") //bắt buộc, VNPAY cung cấp
+        intent.putExtra("tmn_code", "EXXEAPP1") //bắt buộc, VNPAY cung cấp
         intent.putExtra("scheme", "exxe") //bắt buộc, scheme để mở lại app khi có kết quả thanh toán từ mobile banking
-        intent.putExtra("is_sandbox", true) //bắt buộc, true <=> môi trường test, true <=> môi trường live
+        intent.putExtra("is_sandbox", false) //bắt buộc, true <=> môi trường test, true <=> môi trường live
         VNP_AuthenticationActivity.setSdkCompletedCallback(VNP_SdkCompletedCallback { action ->
             {
                 Log.wtf("SplashActivity", "action: $action")

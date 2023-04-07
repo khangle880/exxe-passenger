@@ -73,8 +73,8 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
       },
       (data) {
         final appState = GetIt.I<AppState>();
-        if (calculateTotalMoney(data.journal) !=
-            calculateTotalMoney(appState.currentState.wallet?.journal)) {
+        if (checkMoneyChanged(
+            data.journal, appState.currentState.wallet?.journal)) {
           appState.updateWallet(data);
         }
         return data.transaction ?? [];
@@ -82,11 +82,16 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
     );
   }
 
-  int? calculateTotalMoney(List<JournalModel>? journals) {
-    return journals
-        ?.map((e) => e.remainsAmount)
-        .reduce((value, element) => (value ?? 0) + (element ?? 0))
-        ?.ceil();
+  bool checkMoneyChanged(
+      List<JournalModel>? journals, List<JournalModel>? afterJournals) {
+    return journals?.map<bool>((a) {
+          final hasChanged = afterJournals?.firstWhereOrNull((b) =>
+                  a.journalId == b.journalId &&
+                  a.remainsAmount != b.remainsAmount) !=
+              null;
+          return hasChanged;
+        }).reduce((value, element) => value || element) ??
+        false;
   }
 
   @override

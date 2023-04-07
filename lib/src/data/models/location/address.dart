@@ -13,7 +13,7 @@ class WardModel {
     String? wardName,
     String? wardVietnameseName,
     String? wardVietnameseCode,
-    num? ghnWardId,
+    String? ghnWardId,
   }) {
     _wardId = wardId;
     _wardName = wardName;
@@ -34,14 +34,14 @@ class WardModel {
   String? _wardName;
   String? _wardVietnameseName;
   String? _wardVietnameseCode;
-  num? _ghnWardId;
+  String? _ghnWardId;
 
   WardModel copyWith({
     num? wardId,
     String? wardName,
     String? wardVietnameseName,
     String? wardVietnameseCode,
-    num? ghnWardId,
+    String? ghnWardId,
   }) =>
       WardModel(
         wardId: wardId ?? _wardId,
@@ -59,7 +59,7 @@ class WardModel {
 
   String? get wardVietnameseCode => _wardVietnameseCode;
 
-  num? get ghnWardId => _ghnWardId;
+  String? get ghnWardId => _ghnWardId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

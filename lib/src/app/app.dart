@@ -1,6 +1,5 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:get/get.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -143,7 +142,7 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ],
-      child: GetMaterialApp(
+      child: MaterialApp(
         navigatorKey: navigatorKey,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
