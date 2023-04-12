@@ -1,5 +1,4 @@
 import '../../../../utils/export/ui_export.dart';
-import '../../../common/components/note/note_widget.dart';
 
 class NoteInput extends StatefulWidget {
   const NoteInput({Key? key, this.note, required this.onChanged})

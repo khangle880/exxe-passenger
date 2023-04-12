@@ -111,7 +111,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
 
   getDistanceAndCarFareTable() async {
     List<CarPriceModel>? listCardPrices;
-    DirectionsModel? directionsModel;
+    DirectionModel? directionsModel;
     emitWaiting(true);
     var directionsModelResult = await placesRepository.getDirection(
       fromLat: state.pickupPoint!.coordinate!.latitude!,
@@ -177,6 +177,9 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
           isInDay: false,
           expectedPickingUpDate: Nullable(null)),
     );
+    Future.delayed(const Duration(milliseconds: 100), () {
+      getDistanceAndCarFareTable();
+    });
     calculateMaxMinOfBlock(state.waitingCharges ?? []);
   }
 

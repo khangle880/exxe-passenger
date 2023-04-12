@@ -1,5 +1,4 @@
 import '../../../../utils/export/ui_export.dart';
-import '../../../common/widgets/custom_checkbox.dart';
 import '../controllers/cancel_reason_cubit.dart';
 
 class CancelReasons extends StatelessWidget {

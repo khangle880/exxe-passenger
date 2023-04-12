@@ -279,7 +279,7 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
         polylineId: PolylineId(key),
         color: color ?? AppColors.secondaryMain,
         width: 5,
-        points: data.polylinePoints,
+        points: data.overviewPolylinePoints,
         geodesic: true,
       );
     });

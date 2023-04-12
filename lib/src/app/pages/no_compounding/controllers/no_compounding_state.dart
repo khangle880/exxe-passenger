@@ -7,7 +7,7 @@ class NoCompoundingState extends Equatable {
   final LocationModel? pickupPoint;
   final LocationModel? destinationPoint;
   final DateTime expectedGoingOnDate;
-  final DirectionsModel? directionsModel;
+  final DirectionModel? directionsModel;
   final List<CompoundingCarModel>? carModels;
 
   @override
@@ -37,7 +37,7 @@ class NoCompoundingState extends Equatable {
     LocationModel? pickupPoint,
     LocationModel? destinationPoint,
     DateTime? expectedGoingOnDate,
-    DirectionsModel? directionsModel,
+    DirectionModel? directionsModel,
     List<CompoundingCarModel>? carModels,
   }) {
     return NoCompoundingState(

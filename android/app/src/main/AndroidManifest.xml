@@ -103,10 +103,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <!-- set upp google map -->
+        <!-- set up google map -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD_TTAqTmIi9zChrM0o09uG127n7o9kNZo" />
+            android:value="" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

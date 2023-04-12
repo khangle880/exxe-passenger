@@ -1,17 +1,15 @@
-import 'package:exxe/src/app/pages/chat_room/controllers/chat_room_cubit.dart';
-import 'package:exxe/src/app/pages/pages.dart';
-import 'package:exxe/src/app/pages/share_location.dart/share_location_page.dart';
-import 'package:exxe/src/app/pages/trip_rating/view_trip_rating_page.dart';
-import 'package:exxe/src/app/pages/verify/verify_relationship/controllers/verify_relationship_cubit.dart';
-import 'package:exxe/src/app/pages/verify/verify_relationship/relationship_list_page.dart';
-import 'package:exxe/src/app/pages/verify/verify_relationship/verify_relationship_page.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
-
 import '../app/pages/chat_room/chat_room_page.dart';
+import '../app/pages/chat_room/controllers/chat_room_cubit.dart';
 import '../app/pages/home/components/promotion/promotion_home_page.dart';
 import '../app/pages/my_trip/components/ride_detail.dart';
+import '../app/pages/pages.dart';
 import '../app/pages/select_province_station/controller/select_province_station_cubit.dart';
 import '../app/pages/select_province_station/select_province_station_page.dart';
+import '../app/pages/trip_rating/view_trip_rating_page.dart';
+import '../app/pages/verify/verify_relationship/controllers/verify_relationship_cubit.dart';
+import '../app/pages/verify/verify_relationship/relationship_list_page.dart';
+import '../app/pages/verify/verify_relationship/verify_relationship_page.dart';
 import '../data/data.dart';
 import '../data_chat/data_chat.dart';
 
@@ -455,13 +453,6 @@ class Routes {
           builder: (context) => BlocProvider<NewsCubit>(
             create: (context) => NewsCubit()..getNewsDetail(args['postId']),
             child: const NewsDetailPage(),
-          ),
-        );
-      case Routes.shareLocationPage:
-        Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (context) => ShareLocationPage(
-            callBack: args['callBack'],
           ),
         );
 

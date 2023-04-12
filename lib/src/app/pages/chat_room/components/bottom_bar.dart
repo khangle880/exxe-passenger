@@ -1,6 +1,5 @@
 import '../../../../data_chat/data_chat.dart';
 import '../../../../utils/export/ui_export.dart';
-import '../../../common/builders/rich_text_controller.dart';
 import '../controllers/chat_room_cubit.dart';
 import 'package:lottie/lottie.dart';
 

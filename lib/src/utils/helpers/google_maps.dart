@@ -28,7 +28,7 @@ class GoogleMapService {
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.medium,
-      timeLimit: const Duration(seconds: 10),
+      timeLimit: const Duration(seconds: 15),
     );
   }
 }

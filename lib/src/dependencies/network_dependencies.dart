@@ -44,5 +44,10 @@ class NetworkDependencies {
               injector<LoggerFbInterceptor>(),
             ]),
         instanceName: NetworkConstant.chatDomain);
+
+    injector.registerLazySingleton<INetworkUtility>(
+      () => NetworkUtility("https://rsapi.goong.io"),
+      instanceName: NetworkConstant.mapDomain,
+    );
   }
 }

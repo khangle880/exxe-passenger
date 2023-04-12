@@ -1,6 +1,5 @@
 import '../../../../data/models/models.dart';
 import '../../../../utils/export/ui_export.dart';
-import '../measure_size.dart';
 
 class BookingInfoWidget extends StatefulWidget {
   const BookingInfoWidget({
@@ -291,7 +290,7 @@ class SeparateSectionHasClipDraw extends CustomPainter {
     Paint paint_1_stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 0.004189944;
-    paint_1_stroke.color = Color(0xffE7E7E7).withOpacity(1.0);
+    paint_1_stroke.color = const Color(0xffE7E7E7).withOpacity(1.0);
 
     const int dashWidth = 8;
     const int dashSpace = 8;
@@ -327,7 +326,7 @@ class SeparateSectionDraw extends CustomPainter {
     Paint paint_1_stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 0.004189944;
-    paint_1_stroke.color = Color(0xffE7E7E7).withOpacity(1.0);
+    paint_1_stroke.color = const Color(0xffE7E7E7).withOpacity(1.0);
 
     const int dashWidth = 8;
     const int dashSpace = 8;

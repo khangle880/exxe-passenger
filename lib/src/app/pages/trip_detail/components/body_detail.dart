@@ -1,4 +1,3 @@
-import 'package:exxe/src/app/common/widgets/booking/ride_payment_info.dart';
 import 'package:exxe/src/data/models/car/compounding_car_customer_model.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 

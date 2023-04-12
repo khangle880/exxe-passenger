@@ -1,5 +1,3 @@
-import 'package:exxe/src/app/common/widgets/booking/ride_payment_info.dart';
-
 import '../../../data/data.dart';
 import '../../../storage/models/transaction.dart';
 import '../../../utils/export/ui_export.dart';

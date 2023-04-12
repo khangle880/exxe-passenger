@@ -1,8 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:exxe/src/data/models/car/car_driver_model.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 
-import '../../../common/widgets/widgets.dart';
 import 'rating_list.dart';
 
 class CommentCustomer extends StatefulWidget {

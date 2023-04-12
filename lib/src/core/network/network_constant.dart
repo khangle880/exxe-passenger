@@ -4,4 +4,5 @@ class NetworkConstant {
   static const String newsDomain = 'newsDomain';
   static const String chatDomain = 'chatDomain';
   static const String socketDomain = 'publicDomain';
+  static const String mapDomain = 'mapDomain';
 }

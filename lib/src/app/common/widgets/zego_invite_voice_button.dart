@@ -55,7 +55,7 @@ class _InviteVoiceButtonState extends State<InviteVoiceButton> {
       builder: (context) {
         if (preferences == null) return const SizedBox();
         if (getNumberMissingCall(
-                widget.phone, widget.compoundingCarCustomerCode) <=
+                widget.phone, widget.compoundingCarCustomerCode) <
             3) {
           return ZegoCallInviteButton(
             phone: widget.phone,
@@ -144,7 +144,6 @@ class ZegoCallInviteButton extends StatelessWidget {
     GetIt.I<INotificationRepo>().call(phone);
     GetIt.I<AppState>().callingCompoundingCustomerCode =
         compoundingCarCustomerCode;
-    GetIt.I<AppState>().callingId = phone;
 
     if (errorInvitees.isNotEmpty) {
       var message = 'Người dùng đang không hoạt động';

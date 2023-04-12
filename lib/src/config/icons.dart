@@ -170,4 +170,5 @@ class AppIcons {
   static String promo = 'assets/icons/promo.svg';
   static String searchOutline = 'assets/icons/search_outline.svg';
   static String lock = 'assets/icons/lock.png';
+  static String locationPng = 'assets/images/location.png';
 }

@@ -1,6 +1,5 @@
 import '../../../../core/base_state.dart';
 import '../../../../utils/export/ui_export.dart';
-import '../../../common/widgets/dropdown_field.dart';
 import '../components/required_text_field.dart';
 import 'controllers/verify_relationship_cubit.dart';
 

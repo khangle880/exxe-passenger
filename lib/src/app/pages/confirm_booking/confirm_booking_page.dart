@@ -1,7 +1,6 @@
 import 'package:exxe/src/utils/export/ui_export.dart';
 import '../../../core/base_state.dart';
 import '../../../data/data.dart';
-import '../../common/widgets/booking/ride_payment_info.dart';
 import '../deposit/components/invoice_checker.dart';
 import 'components/components.dart';
 import 'controllers/confirm_booking_cubit.dart';

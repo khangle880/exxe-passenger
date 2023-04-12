@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/export/ui_export.dart';
-import '../../../common/widgets/custom_checkbox.dart';
 import '../controllers/confirm_booking_cubit.dart';
 
 class ExxeRuleChecker extends StatelessWidget {

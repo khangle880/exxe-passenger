@@ -31,9 +31,7 @@ class SearchPlaceBloc extends Bloc<SearchPlaceEvent, SearchPlaceState> {
         }
         final searchTerm = event.searchText;
         final results = await _placeRepository.getAutocomplete(searchTerm);
-        results.fold((failure) {
-          log('google auto search co loi');
-        }, (data) {
+        results.fold((failure) {}, (data) {
           emit(state.copyWith(suggestivePlaces: data));
         });
       },
@@ -49,14 +47,18 @@ class SearchPlaceBloc extends Bloc<SearchPlaceEvent, SearchPlaceState> {
           ProvinceModel? provinceModel = await GetIt.I<LocationHelper>()
               .fromGoogleAddressToProvinceModel(data.formattedAddress!);
           locationModel = LocationModel(
-            address: data.formattedAddress,
-            coordinate: data.coordinate,
+            address: data.name,
+            coordinate: CoordinateModel(
+              latitude: data.geometry?.location?.lat?.toDouble() ?? 16,
+              longitude: data.geometry?.location?.lng?.toDouble() ?? 16,
+            ),
             provinceId: provinceModel?.provinceId?.ceil(),
             province: provinceModel,
             stations: provinceModel?.pickingUpStations!,
           );
         },
       );
+
       if (locationModel != null && locationModel?.province != null) {
         emit(
           state.copyWith(

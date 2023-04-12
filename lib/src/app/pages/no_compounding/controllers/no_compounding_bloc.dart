@@ -46,12 +46,19 @@ class NoCompoundingBloc
     });
 
     on<GetScheduleEvent>(
-      (event, emit) => emit(state.copyWith(expectedGoingOnDate: event.time)),
+      (event, emit) {
+        emit(state.copyWith(expectedGoingOnDate: event.time));
+        if (state.pickupPoint != null && state.destinationPoint != null) {
+          add(GetOptionFareTableAndDistance());
+        }
+      },
     );
 
     on<GetOptionFareTableAndDistance>((event, emit) async {
       List<CarPriceModel>? listCardPrices;
-      DirectionsModel? directionsModel;
+      DirectionModel? directionsModel;
+
+      final currentCarPrice = state.currentCarPrice;
       emit(state.copyWith(currentCarPrice: Nullable(null)));
       var directionsModelResult = await placesRepository.getDirection(
         fromLat: state.pickupPoint!.coordinate!.latitude!,
@@ -67,6 +74,7 @@ class NoCompoundingBloc
           directionsModel = data;
         },
       );
+
       if (directionsModel != null) {
         var cardPrincesResult = await dataControllerRepo.getCarFareTable(
           distance: directionsModel!.getDistanceKm,
@@ -85,16 +93,17 @@ class NoCompoundingBloc
       }
 
       if (directionsModel != null && listCardPrices != null) {
+        final currentCarUpdated = listCardPrices!
+                .where((element) =>
+                    element.carId?.carId == currentCarPrice?.carId?.carId)
+                .firstOrNull ??
+            listCardPrices!.first;
+
         emit(
           state.copyWith(
             directionsModel: directionsModel,
             carPriceModels: listCardPrices,
-            currentCarPrice: Nullable(listCardPrices!
-                    .where((element) =>
-                        element.carId?.carId ==
-                        state.currentCarPrice?.carId?.carId)
-                    .firstOrNull ??
-                listCardPrices!.first),
+            currentCarPrice: Nullable(currentCarUpdated),
           ),
         );
       }

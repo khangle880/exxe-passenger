@@ -1,7 +1,6 @@
 import '../../../../data/data.dart';
 import 'dart:convert';
 import '../../../../utils/export/ui_export.dart';
-import '../../../common/widgets/username_widget.dart';
 
 class UserInfoCard extends StatefulWidget {
   const UserInfoCard({Key? key}) : super(key: key);

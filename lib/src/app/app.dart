@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
           _openChatRoom(roomId, data);
         }
         final num? compoundingCarCustomerId =
-            int.tryParse(data.additionalData?['compounding_car_customer_id']);
+            data.additionalData?['compounding_car_customer_id'];
         if (compoundingCarCustomerId != null) {
           _openRideDetail(compoundingCarCustomerId, data);
         }

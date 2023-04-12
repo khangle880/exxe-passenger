@@ -250,7 +250,7 @@ class CompoundingCarCustomerModel {
     this.carPriceModels,
     LocationModel? from,
     LocationModel? to,
-    DirectionsModel? directionsModel,
+    DirectionModel? directionsModel,
   }) {
     // from
     fromProvince = from?.province;

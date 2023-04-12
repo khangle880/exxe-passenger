@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import '../../../../utils/export/ui_export.dart';
-import '../available_money.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 class MoneyInputWidget extends StatefulWidget {

@@ -155,7 +155,7 @@ class _RidePaymentInfoState extends State<RidePaymentInfo> {
         ),
         const SizedBox(height: 8),
         RideInfoRow(
-          "Số tiền cần thanh toán",
+          "Số tiền còn lại",
           value: ((widget.data.amountDue ?? 0) + tip).ceil().currencyFormat,
           bold: true,
         ),

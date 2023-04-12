@@ -193,9 +193,9 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                       ),
                     ),
                     Text(
-                      item.paymentPurpose!.getStatusTitle,
+                      item.paymentPurpose?.getStatusTitle ?? "",
                       style: AppStyles.s12w5
-                          .withColor(item.paymentPurpose!.getStatusColor),
+                          .withColor(item.paymentPurpose?.getStatusColor),
                     ),
                   ],
                 )
@@ -204,10 +204,10 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
           ),
           const SizedBox(width: 16),
           Text(
-            item.paymentPurpose!.getSign +
+            (item.paymentPurpose?.getSign ?? "") +
                 item.amount!.ceil().currencyFormat.toString(),
             style:
-                AppStyles.s16w6.withColor(item.paymentPurpose!.getStatusColor),
+                AppStyles.s16w6.withColor(item.paymentPurpose?.getStatusColor),
           ),
         ],
       ),

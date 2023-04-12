@@ -1,7 +1,5 @@
 import 'package:exxe/src/utils/export/logic_export.dart';
 import '../../../../utils/export/ui_export.dart';
-import 'recommend_grid_item.dart';
-import 'recommend_list_item.dart';
 
 class CompoundingCarRecommend extends StatefulWidget {
   const CompoundingCarRecommend({

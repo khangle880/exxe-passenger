@@ -10,14 +10,19 @@ abstract class AuthLoginEvent extends Equatable {
 
 class ChangedPhoneLoginEvent extends AuthLoginEvent {
   final String phone;
+  final MethodLogin? method;
 
-  const ChangedPhoneLoginEvent({required this.phone});
+  const ChangedPhoneLoginEvent({required this.phone, this.method});
 }
 
 class ChangedPasswordLoginEvent extends AuthLoginEvent {
   final String password;
 
   const ChangedPasswordLoginEvent({required this.password});
+}
+
+class CheckPhoneHasRegister extends AuthLoginEvent {
+  const CheckPhoneHasRegister();
 }
 
 class ResetPhoneEvent extends AuthLoginEvent {
@@ -49,5 +54,11 @@ class SubmitFormOTPEvent extends AuthLoginEvent {
 }
 
 class LoginEvent extends AuthLoginEvent {}
+
+class UpdateStatusEvent extends AuthLoginEvent {
+  final FormLoginStatus status;
+
+  const UpdateStatusEvent(this.status);
+}
 
 class CheckHasPassEvent extends AuthLoginEvent {}

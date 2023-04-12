@@ -3,7 +3,6 @@ import 'package:exxe/src/utils/export/ui_export.dart';
 
 import '../../../../data/models/models.dart';
 import '../../../../data_chat/data_chat.dart';
-import '../../../common/widgets/widgets.dart';
 
 class DriverInfo extends StatelessWidget {
   const DriverInfo({
