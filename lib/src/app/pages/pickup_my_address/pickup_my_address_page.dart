@@ -1,6 +1,5 @@
 import '../../../data/models/models.dart';
 import '../../../utils/export/ui_export.dart';
-import '../../common/widgets/search_list_view.dart';
 import 'controllers/pickup_address_bloc.dart';
 
 class PickupMyAddressPage extends StatelessWidget {
@@ -56,7 +55,6 @@ class PickupMyAddressPage extends StatelessWidget {
                   const SizedBox(height: 4),
                   TextFormFieldBuilder.search(
                     style: AppStyles.s16w4,
-                    textInputAction: TextInputAction.search,
                     hintText: "Nhập địa chỉ nhà cụ thể",
                     hintStyle: AppStyles.s16w4.withColor(
                       AppColors.gray50,

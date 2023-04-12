@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
-import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../core/core.dart';
-import '../data.dart';
+import '../../utils/export/logic_export.dart';
+import '../../utils/json_utils.dart';
 
 class PlaceRepository extends IPlacesRepository {
   final String key = dotenv.maybeGet('GOONG_API_KEY', fallback: null) ?? "";

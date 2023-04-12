@@ -60,6 +60,7 @@ class _CropImagePageState extends State<CropImagePage> {
       backgroundColor: Colors.black.withAlpha(100),
       body: Crop.file(
         File.fromRawPath(widget.imageData),
+        aspectRatio: widget.ratio,
         key: cropKey,
       ),
     );

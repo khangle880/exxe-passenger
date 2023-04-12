@@ -22,7 +22,7 @@ extension GenderExt on Gender {
 // ---- female: Nữ
 // ---- no_info:Không cung cấp
 
-enum MethodLogin { OTP, PhoneAndPassword }
+enum MethodLogin { checkPhone, phoneAndPassword }
 
 enum CarAccountType { carDriver, customer }
 

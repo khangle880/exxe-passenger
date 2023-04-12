@@ -1,6 +1,4 @@
 import 'package:exxe/src/utils/export/ui_export.dart';
-
-import '../../common/widgets/keep_alive_page.dart';
 import 'components/ride_list.dart';
 import 'components/top_nav.dart';
 

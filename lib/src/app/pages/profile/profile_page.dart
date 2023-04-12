@@ -1,7 +1,5 @@
 import 'package:exxe/src/app/pages/profile/components/body_profile.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
-
-import '../../common/widgets/available_money.dart';
 import 'components/user_info_card.dart';
 
 class ProfilePage extends StatelessWidget {

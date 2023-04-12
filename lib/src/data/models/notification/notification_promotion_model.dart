@@ -1,5 +1,4 @@
 import '../../../utils/export/ui_export.dart';
-import '../../../utils/parser_utils.dart';
 import '../models.dart';
 
 class NotificationPromotionModel extends NotificationModel {

@@ -121,8 +121,8 @@ class TripDistanceDetail extends StatelessWidget {
       hasSeparate: true,
       separateHeight: 12,
       leftTitle: Text(
-        "Trạng thái chuyến đi",
-        style: AppStyles.s11w4.withColor(AppColors.gray70x76),
+        "#${customer.compoundingCarCustomerCode!}",
+        style: AppStyles.s14w6.withColor(AppColors.gray70x76),
       ),
       rightTitle: Container(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),

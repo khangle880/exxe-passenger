@@ -1,6 +1,5 @@
 import '../../../data/data.dart';
 import '../../../utils/export/ui_export.dart';
-import '../pages.dart';
 
 class SearchBankPage extends StatefulWidget {
   final List<BankModel> banks;

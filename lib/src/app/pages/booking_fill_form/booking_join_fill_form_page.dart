@@ -1,5 +1,3 @@
-import 'package:exxe/src/app/common/components/note/note_widget.dart';
-
 import '../../../core/base_state.dart';
 import '../../../data/models/models.dart';
 import '../../../utils/export/ui_export.dart';

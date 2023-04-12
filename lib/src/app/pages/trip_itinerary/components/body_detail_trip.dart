@@ -34,11 +34,7 @@ class BodyDetailTrip extends StatelessWidget {
             onRefresh: onRefresh,
           ),
         ),
-        Positioned(
-          right: 10,
-          top: size.height / 2 - 30,
-          child: GetIt.I<SupportButton>(),
-        ),
+        const DraggableSupportButton(),
       ],
     );
   }

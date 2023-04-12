@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 
-import '../location/coordinate_model.dart';
+import 'package:exxe/src/data/data.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DirectionModel {
   DirectionModel({
@@ -72,36 +72,36 @@ class DirectionModel {
     );
   }
 
-  List<LatLng> get overviewPolylinePoints {
-    return PolylinePoints()
-        .decodePolyline(routes?.first.overviewPolyline?.points ?? "")
-        .map((PointLatLng point) => LatLng(point.latitude, point.longitude))
-        .toList();
-  }
+  // List<LatLng> get overviewPolylinePoints {
+  //   return PolylinePoints()
+  //       .decodePolyline(routes?.first.overviewPolyline?.points ?? "")
+  //       .map((PointLatLng point) => LatLng(point.latitude, point.longitude))
+  //       .toList();
+  // }
 
-// List<LatLng> get overviewPolylinePoints {
-//   List<LatLng> coordinates = [];
-//   for (final leg in (routes?.first.legs ?? [])) {
-//     for (final step in (leg.steps ?? [])) {
-//       List<PointLatLng> result =
-//           PolylinePoints().decodePolyline(step.polyline.points);
-//
-//       List<LatLng> stepCoordinates = result
-//           .map((PointLatLng point) => LatLng(point.latitude, point.longitude))
-//           .toList();
-//
-//       if (coordinates.length > 1) {
-//         if (coordinates.last == stepCoordinates.first) {
-//           coordinates.removeLast();
-//         }
-//       }
-//
-//       coordinates.addAll(stepCoordinates);
-//     }
-//   }
-//
-//   return coordinates;
-// }
+  List<LatLng> get overviewPolylinePoints {
+    List<LatLng> coordinates = [];
+    for (final leg in (routes?.first.legs ?? [])) {
+      for (final step in (leg.steps ?? [])) {
+        List<PointLatLng> result =
+            PolylinePoints().decodePolyline(step.polyline.points);
+
+        List<LatLng> stepCoordinates = result
+            .map((PointLatLng point) => LatLng(point.latitude, point.longitude))
+            .toList();
+
+        if (coordinates.length > 1) {
+          if (coordinates.last == stepCoordinates.first) {
+            coordinates.removeLast();
+          }
+        }
+
+        coordinates.addAll(stepCoordinates);
+      }
+    }
+
+    return coordinates;
+  }
 }
 
 class MapRouteModel {

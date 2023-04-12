@@ -177,6 +177,9 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
           isInDay: false,
           expectedPickingUpDate: Nullable(null)),
     );
+    Future.delayed(const Duration(milliseconds: 100), () {
+      getDistanceAndCarFareTable();
+    });
     calculateMaxMinOfBlock(state.waitingCharges ?? []);
   }
 

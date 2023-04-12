@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:hive/hive.dart';
 
 import '../../utils/constants/constants.dart';
-import '../../utils/helpers/encrypt_data_helper.dart';
 
 part 'transaction.g.dart';
 

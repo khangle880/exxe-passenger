@@ -1,4 +1,3 @@
-import 'package:exxe/src/app/common/components/note/note_widget.dart';
 import 'package:exxe/src/app/pages/trip_rating/components/list_hashtag.dart';
 import 'package:exxe/src/app/pages/trip_rating/controller/rating_cubit.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';

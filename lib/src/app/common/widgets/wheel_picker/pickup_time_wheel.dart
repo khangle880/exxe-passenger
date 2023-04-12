@@ -1,5 +1,3 @@
-import 'package:exxe/src/app/common/widgets/wheel_picker/wheel_picker.dart';
-
 import '../../../../utils/export/ui_export.dart';
 
 class PickupTimeWheel extends StatefulWidget {

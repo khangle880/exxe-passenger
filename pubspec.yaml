@@ -114,10 +114,8 @@ dependencies:
   shared_preferences: ^2.0.17
 
   #google_maps
-#  google_maps_flutter: ^2.2.4
-  mapbox_gl: ^0.16.0
+  google_maps_flutter: ^2.2.4
   image_crop: ^0.4.1
-  flutter_map: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -129,6 +127,7 @@ dev_dependencies:
   from_css_color: ^2.0.0
   flutter_countdown_timer: ^4.1.0
   onesignal_flutter: ^3.5.0
+  flutter_launcher_icons: ^0.12.0
 
 flutter_icons:
   android: true

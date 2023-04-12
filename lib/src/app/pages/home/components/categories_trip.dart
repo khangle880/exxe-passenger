@@ -52,7 +52,7 @@ class CategoriesTripHome extends StatelessWidget {
         ),
         _buildItemCategoryRide(
           models: CategoriesTripModels(
-            name: CompoundingType.compounding.name,
+            name: "Khuyến mãi",
             color: AppColors.secondaryMain,
             assets: AppIcons.promo,
           ),

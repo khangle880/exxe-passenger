@@ -49,20 +49,24 @@ class CallInvitationPage extends StatelessWidget {
       plugins: [ZegoUIKitSignalingPlugin()],
       events: ZegoUIKitPrebuiltCallInvitationEvents(
         onOutgoingCallTimeout: (callId, callee) {
-          log("onOutgoingCallTimeout");
           final code = GetIt.I<AppState>().callingCompoundingCustomerCode;
           if (callee.isNotEmpty && code != null) {
             cacheNumberMissingCall(callee.first.id, code);
             GetIt.I<INotificationRepo>().missedCall(callee.first.id, code);
           }
         },
-        onOutgoingCallCancelButtonPressed: () {
-          log("onOutgoingCallCancelButtonPressed");
+        onOutgoingCallRejectedCauseBusy: (callId, callee) {
           final code = GetIt.I<AppState>().callingCompoundingCustomerCode;
-          final callingId = GetIt.I<AppState>().callingId;
-          if (callingId != null && code != null) {
-            cacheNumberMissingCall(callingId, code);
-            GetIt.I<INotificationRepo>().missedCall(callingId, code);
+          if (code != null) {
+            cacheNumberMissingCall(callee.id, code);
+            GetIt.I<INotificationRepo>().missedCall(callee.id, code);
+          }
+        },
+        onOutgoingCallDeclined: (callId, callee) {
+          final code = GetIt.I<AppState>().callingCompoundingCustomerCode;
+          if (code != null) {
+            cacheNumberMissingCall(callee.id, code);
+            GetIt.I<INotificationRepo>().missedCall(callee.id, code);
           }
         },
       ),

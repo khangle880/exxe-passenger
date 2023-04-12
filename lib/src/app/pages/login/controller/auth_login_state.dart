@@ -10,17 +10,16 @@ class AuthLoginState extends Equatable {
     this.verificationId = '',
     this.resendToken = 0,
     this.message = '',
+    this.methodLogin = MethodLogin.checkPhone,
   });
 
   final String phone;
   final String password;
   final FormLoginStatus formState;
-
-  //field  otp
+  final MethodLogin methodLogin;
   final String? smsCode;
   final String? verificationId;
   final int? resendToken;
-
   final String message;
 
   @override
@@ -31,17 +30,20 @@ class AuthLoginState extends Equatable {
         smsCode!,
         verificationId!,
         resendToken!,
-        message
+        message,
+        methodLogin,
       ];
 
-  AuthLoginState copyWith(
-      {String? phone,
-      String? password,
-      FormLoginStatus? formState,
-      String? smsCode,
-      String? verificationId,
-      int? resendToken,
-      String? message}) {
+  AuthLoginState copyWith({
+    String? phone,
+    String? password,
+    FormLoginStatus? formState,
+    String? smsCode,
+    String? verificationId,
+    int? resendToken,
+    String? message,
+    MethodLogin? methodLogin,
+  }) {
     return AuthLoginState(
       phone: phone ?? this.phone,
       password: password ?? this.password,
@@ -50,6 +52,7 @@ class AuthLoginState extends Equatable {
       verificationId: verificationId ?? this.verificationId,
       resendToken: resendToken ?? this.resendToken,
       message: message ?? this.message,
+      methodLogin: methodLogin ?? this.methodLogin,
     );
   }
 }

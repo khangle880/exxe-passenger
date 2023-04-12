@@ -1,6 +1,4 @@
-// ignore: depend_on_referenced_packages
 import 'package:equatable/equatable.dart';
-
 import '../../../../core/core.dart';
 import '../../../../data_chat/data_chat.dart';
 import '../../../../storage/models/user_chat.dart';
@@ -16,8 +14,16 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
 
   AuthLoginBloc(this.userRepo, this.userInfoRepo)
       : super(const AuthLoginState()) {
+    on<UpdateStatusEvent>(
+      (event, emit) => emit(
+        state.copyWith(formState: event.status),
+      ),
+    );
     on<ChangedPhoneLoginEvent>(
-        (event, emit) => emit(state.copyWith(phone: event.phone)));
+      (event, emit) => emit(
+        state.copyWith(phone: event.phone, methodLogin: event.method),
+      ),
+    );
 
     on<ChangedPasswordLoginEvent>(
         (event, emit) => emit(state.copyWith(password: event.password)));

@@ -10,11 +10,11 @@ typedef Parser<T> = T Function(dynamic json);
 class ParserHelper {
   static Future<Either<Failure, T>> singleParseDefault<T>(
       Future<Response<dynamic>> request, Parser<T> parser,
-      {Function(T value)? rightPreCall}) async {
+      {Function(T value)? rightPreCall, String? pickKey}) async {
     try {
       final response = await request;
-      SingleResponse<T> result =
-          SingleResponse<T>(response, (data) => parser(data));
+      SingleResponse<T> result = SingleResponse<T>(
+          response, (data) => parser(pickKey != null ? data[pickKey] : data));
       if (result.error != null) {
         return Left(ServerFailure(result.error!));
       }
@@ -28,11 +28,11 @@ class ParserHelper {
 
   static Future<Either<Failure, List<T>>> listParseDefault<T>(
       Future<Response<dynamic>> request, Parser<T> parser,
-      {Function(List<T> value)? rightPreCall}) async {
+      {Function(List<T> value)? rightPreCall, String? pickKey}) async {
     try {
       final response = await request;
-      ListResponse<T> result =
-          ListResponse<T>(response, (data) => parser(data));
+      ListResponse<T> result = ListResponse<T>(
+          response, (data) => parser(pickKey != null ? data[pickKey] : data));
       if (result.error != null) {
         return Left(ServerFailure(result.error!));
       }

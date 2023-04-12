@@ -1,7 +1,6 @@
 import 'package:exxe/src/utils/export/ui_export.dart';
 
 import '../../../../data/repositories/interfaces/notification_repo_interface.dart';
-import '../../../common/widgets/available_money.dart';
 
 class TopNavBarHome extends StatefulWidget {
   const TopNavBarHome({

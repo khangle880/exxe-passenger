@@ -1,9 +1,6 @@
-import 'package:exxe/src/app/common/widgets/booking/ride_payment_info.dart';
-
 import '../../../data/data.dart';
 import '../../../storage/models/transaction.dart';
 import '../../../utils/export/ui_export.dart';
-import '../../common/widgets/count_down_text.dart';
 import '../deposit_methods/payment_methods_page.dart';
 
 class DepositPage extends StatefulWidget {
