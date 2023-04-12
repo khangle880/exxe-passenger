@@ -50,7 +50,7 @@ class SearchPlaceBloc extends Bloc<SearchPlaceEvent, SearchPlaceState> {
               .fromGoogleAddressToProvinceModel(data.formattedAddress!);
           locationModel = LocationModel(
             address: data.formattedAddress,
-            coordinate: data.coordinate,
+            // coordinate: data.geometry.location,
             provinceId: provinceModel?.provinceId?.ceil(),
             province: provinceModel,
             stations: provinceModel?.pickingUpStations!,

@@ -7,7 +7,7 @@ abstract class IPlacesRepository {
   Future<Either<Failure, List<SuggestivePlaceModel>>> getAutocomplete(
       String searchInput);
 
-  Future<Either<Failure, GooglePlaceModel>> getPlaceById(String placeId);
+  Future<Either<Failure, GoongPlaceModel>> getPlaceById(String placeId);
 
   Future<Either<Failure, DirectionModel>> getDirection({
     required num fromLat,

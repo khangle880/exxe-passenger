@@ -6,33 +6,32 @@ import '../../core/core.dart';
 import '../data.dart';
 
 class PlaceRepository extends IPlacesRepository {
-  final String key = dotenv.maybeGet('GOOGLE_API_KEY', fallback: null) ?? "";
-  final String types = 'geocode';
+  final String key = dotenv.maybeGet('GOONG_API_KEY', fallback: null) ?? "";
+  late final INetworkUtility _networkUtility;
+
+  PlaceRepository()
+      : _networkUtility = GetIt.I
+            .get<INetworkUtility>(instanceName: NetworkConstant.mapDomain);
 
   @override
   Future<Either<Failure, List<SuggestivePlaceModel>>> getAutocomplete(
       String searchInput) async {
     try {
-      const String url =
-          'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-      var response = await Dio().get(url, queryParameters: <String, String>{
-        'input': searchInput,
-        'types': 'establishment|geocode',
-        'components': 'country:vn',
-        'language': 'vi',
-        'locationrestriction': 'rectangle:south,west|north,east',
-        'key': key,
-      });
-      if (response.statusCode == HttpStatus.ok) {
-        var predictionJson = response.data['predictions'] as List;
+      var response = await _networkUtility.request(
+        "/Place/AutoComplete",
+        Method.GET,
+        queryParameters: {'input': searchInput, 'api_key': key},
+      );
+      final data = JsonUtils.getMap(response.data);
 
-        List<SuggestivePlaceModel> result = predictionJson
-            .map((place) => SuggestivePlaceModel.fromJson(place))
-            .toList();
-        log('suggestion places ${result.length}');
-        return Right(result);
+      if (response.statusCode == HttpStatus.ok) {
+        final predictions = data['predictions'] ?? [];
+        final items = List<SuggestivePlaceModel>.from(
+            predictions.map((x) => SuggestivePlaceModel.fromJson(x)));
+
+        return Right(items);
       } else {
-        return Left(UnknownFailure('Google khong tim dc vi dia điểm'));
+        return Left(UnknownFailure(data['error'] ?? 'Goong API bi loi'));
       }
     } catch (e) {
       return Left(UnknownFailure(e.toString()));
@@ -40,25 +39,22 @@ class PlaceRepository extends IPlacesRepository {
   }
 
   @override
-  Future<Either<Failure, GooglePlaceModel>> getPlaceById(String placeId) async {
+  Future<Either<Failure, GoongPlaceModel>> getPlaceById(String placeId) async {
     try {
-      const String url =
-          'https://maps.googleapis.com/maps/api/place/details/json';
-      var response = await Dio().get(url, queryParameters: <String, String>{
-        'place_id': placeId,
-        'types': 'geocode',
-        'language': 'vi',
-        'fields': 'formatted_address,name,geometry',
-        'key': key
-      });
-      if (response.statusCode == HttpStatus.ok) {
-        var predictionJson = response.data['result'];
+      var response = await _networkUtility.request(
+        "/Place/Detail",
+        Method.GET,
+        queryParameters: {'place_id': placeId, 'api_key': key},
+      );
+      final data = JsonUtils.getMap(response.data);
 
-        GooglePlaceModel result = GooglePlaceModel.fromJson(predictionJson);
-        log('google place detail $result');
+      if (response.statusCode == HttpStatus.ok) {
+        var predictionJson = data['result'];
+
+        final result = GoongPlaceModel.fromJson(predictionJson);
         return Right(result);
       } else {
-        return Left(UnknownFailure('Google API bi loi'));
+        return Left(UnknownFailure(data['error'] ?? 'Goong API bi loi'));
       }
     } catch (e) {
       return Left(UnknownFailure(e.toString()));
@@ -73,20 +69,19 @@ class PlaceRepository extends IPlacesRepository {
     required num toLong,
   }) async {
     try {
-      const String baseUrl =
-          'https://maps.googleapis.com/maps/api/directions/json?';
-      final response = await Dio().get(
-        baseUrl,
+      var response = await _networkUtility.request(
+        "/Direction",
+        Method.GET,
         queryParameters: {
           'origin': '$fromLat,$fromLong',
           'destination': '$toLat,$toLong',
-          'mode': 'driving',
-          'language': 'vi',
-          'region': 'vi',
-          'key': key,
+          'api_key': key,
+          'vehicle': 'car',
         },
       );
-      DirectionModel? dataResult = DirectionModel.fromJson(response.data);
+
+      final data = JsonUtils.getMap(response.data);
+      DirectionModel? dataResult = DirectionModel.fromJson(data);
       if (dataResult.routes!.isEmpty) {
         return Left(WarningFailure(
             'Không thể tìm thấy tuyến đường phù hợp.\nVui lòng chọn lại địa điểm khác.'));
