@@ -1,8 +1,4 @@
-import 'dart:async';
-
 import 'package:exxe/src/utils/export/ui_export.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../../../core/base_state.dart';
 import '../../../data/data.dart';
 import 'components/components.dart';
@@ -25,12 +21,6 @@ class _NoCompoundingPageState
   final CoordinateModel coordinateModel =
       GetIt.I.get<AppState>().currentState.currentLocation!.coordinate!;
 
-  final Set<Marker> markers = {};
-
-  final Set<Polyline> polyLines = {};
-
-  final Completer<GoogleMapController> goggleMapController = Completer();
-
   @override
   void initState() {
     bloc = context.read<NoCompoundingBloc>();
@@ -38,7 +28,6 @@ class _NoCompoundingPageState
       bloc.add(MapCarCustomerToState(widget.carCustomer!));
     }
     super.initState();
-    updateGoogleMap(context.read<NoCompoundingBloc>().state);
   }
 
   bool canLoadAvailableTrip(
@@ -56,21 +45,20 @@ class _NoCompoundingPageState
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
-            BlocListener<NoCompoundingBloc, NoCompoundingState>(
-              listenWhen: (previous, current) =>
-                  previous.pickupPoint != current.pickupPoint ||
-                  previous.destinationPoint != current.destinationPoint ||
-                  previous.directionsModel != current.directionsModel,
-              listener: (context, state) {
-                updateGoogleMap(state);
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 300),
-                child: GoogleMapBackground(
-                  controller: goggleMapController,
-                  markers: markers,
-                  polyLines: polyLines,
-                ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 300),
+              child: BlocBuilder<NoCompoundingBloc, NoCompoundingState>(
+                buildWhen: (previous, current) =>
+                    previous.pickupPoint != current.pickupPoint ||
+                    previous.destinationPoint != current.destinationPoint ||
+                    previous.directionsModel != current.directionsModel,
+                builder: (context, state) {
+                  return GoogleMapBackground(
+                    pickupPoint: state.pickupPoint,
+                    destinationPoint: state.destinationPoint,
+                    directionModel: state.directionsModel,
+                  );
+                },
               ),
             ),
             const Positioned(
@@ -110,114 +98,5 @@ class _NoCompoundingPageState
             )
           ],
         ));
-  }
-
-  Future<void> updateGoogleMap(
-    NoCompoundingState state,
-  ) async {
-    markers.clear();
-    final BitmapDescriptor currentLocationIcon =
-        await GetIt.I<LocationHelper>().getMarker(AppIcons.currentLocation, 60);
-    final GoogleMapController controller = await goggleMapController.future;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(
-            coordinateModel.latitude!,
-            coordinateModel.longitude!,
-          ),
-          zoom: 15,
-        ),
-      ),
-    );
-
-    markers.add(
-      Marker(
-        markerId: const MarkerId("home"),
-        position: LatLng(
-          coordinateModel.latitude!,
-          coordinateModel.longitude!,
-        ),
-        draggable: false,
-        zIndex: 2,
-        flat: true,
-        anchor: const Offset(0.5, 0.5),
-        icon: currentLocationIcon,
-      ),
-    );
-
-    if (state.pickupPoint != null) {
-      markers.add(Marker(
-        markerId: const MarkerId("pickup"),
-        position: LatLng(
-          state.pickupPoint!.coordinate!.latitude!,
-          state.pickupPoint!.coordinate!.longitude!,
-        ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose),
-      ));
-      if (state.destinationPoint == null) {
-        controller.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(
-                state.pickupPoint!.coordinate!.latitude!,
-                state.pickupPoint!.coordinate!.longitude!,
-              ),
-              zoom: 15,
-            ),
-          ),
-        );
-      }
-    }
-
-    if (state.destinationPoint != null) {
-      markers.add(Marker(
-        markerId: const MarkerId("destination"),
-        position: LatLng(
-          state.destinationPoint!.coordinate!.latitude!,
-          state.destinationPoint!.coordinate!.longitude!,
-        ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-      ));
-      if (state.pickupPoint == null) {
-        controller.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(
-                state.destinationPoint!.coordinate!.latitude!,
-                state.destinationPoint!.coordinate!.longitude!,
-              ),
-              zoom: 15,
-            ),
-          ),
-        );
-      }
-    }
-
-    if (state.directionsModel != null) {
-      polyLines.clear();
-      polyLines.add(
-        Polyline(
-          polylineId: const PolylineId('overview_polyline'),
-          color: AppColors.secondaryMain,
-          width: 5,
-          points: state.directionsModel!.polylinePoints,
-        ),
-      );
-      if (state.directionsModel?.bound != null) {
-        final bound = state.directionsModel!.bound!;
-        controller.animateCamera(
-          CameraUpdate.newLatLngBounds(
-              LatLngBounds(
-                southwest: bound.southwest!.toLatLng,
-                northeast: bound.northeast!.toLatLng,
-              ),
-              50),
-        );
-      }
-    }
-    if (mounted) {
-      setState(() {});
-    }
   }
 }

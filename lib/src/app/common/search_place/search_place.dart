@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:exxe/src/utils/export/ui_export.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../data/data.dart';
 
@@ -26,12 +26,12 @@ class _SearchPlaceState extends State<SearchPlace> {
   late final StreamController<bool> focusStream;
   FocusNode focusNode = FocusNode();
   late final SearchPlaceBloc bloc;
-  final Completer<GoogleMapController> goggleMapController = Completer();
+  final Completer<MapboxMapController> mapController = Completer();
 
   final LocationModel currentLocation =
       GetIt.I.get<AppState>().currentState.currentLocation!;
 
-  final Set<Marker> markers = {};
+  final List<SymbolOptions> markers = [];
 
   @override
   void dispose() {
@@ -50,20 +50,18 @@ class _SearchPlaceState extends State<SearchPlace> {
     });
     bloc = context.read<SearchPlaceBloc>();
     markers.add(
-      Marker(
-        markerId: const MarkerId('current_location'),
-        position: LatLng(
+      SymbolOptions(
+        geometry: LatLng(
           currentLocation.coordinate!.latitude!,
           currentLocation.coordinate!.longitude!,
         ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose),
+        iconImage: 'assets/images/car_marker.png',
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final userInfo = GetIt.I.get<AppState>().currentState.user;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -77,8 +75,7 @@ class _SearchPlaceState extends State<SearchPlace> {
               onTap: (_) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
-              markers: markers,
-              controller: goggleMapController,
+              symbols: markers,
               coordinateModel: currentLocation.coordinate!,
             ),
             BlocConsumer<SearchPlaceBloc, SearchPlaceState>(
@@ -86,8 +83,8 @@ class _SearchPlaceState extends State<SearchPlace> {
                   previous.locationModel != current.locationModel,
               listener: (context, state) async {
                 if (state.locationModel != null) {
-                  final GoogleMapController controller =
-                      await goggleMapController.future;
+                  final MapboxMapController controller =
+                      await mapController.future;
                   controller.animateCamera(
                     CameraUpdate.newCameraPosition(
                       CameraPosition(
@@ -100,15 +97,15 @@ class _SearchPlaceState extends State<SearchPlace> {
                     ),
                   );
                   markers.clear();
-                  markers.add(Marker(
-                    markerId: const MarkerId('location'),
-                    position: LatLng(
-                      state.locationModel!.coordinate!.latitude!,
-                      state.locationModel!.coordinate!.longitude!,
+                  markers.add(
+                    SymbolOptions(
+                      geometry: LatLng(
+                        state.locationModel!.coordinate!.latitude!,
+                        state.locationModel!.coordinate!.longitude!,
+                      ),
+                      iconImage: 'assets/images/car_marker.png',
                     ),
-                    icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRose),
-                  ));
+                  );
                   if (mounted) {
                     setState(() {});
                   }
@@ -171,121 +168,7 @@ class _SearchPlaceState extends State<SearchPlace> {
                     searchType: widget.searchType,
                   ),
                 ),
-                StreamBuilder<bool>(
-                    stream: focusStream.stream,
-                    builder: (_, snapshot) {
-                      if (snapshot.hasData && snapshot.data!) {
-                        return BlocBuilder<SearchPlaceBloc, SearchPlaceState>(
-                            builder: (_, state) {
-                          if (state.suggestivePlaces == null) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 10),
-                                _buildCard(
-                                  'Vị trí hiện tại của bạn',
-                                  AppIcons.gps,
-                                  currentLocation.address ??
-                                      'Không tìm thấy địa chỉ hiện tại của bãn',
-                                  () {
-                                    if (widget.selectedProvince ==
-                                        currentLocation.provinceId) {
-                                      AppDialog.I.showWarning(
-                                          message:
-                                              'Hệ thống chưa hổ trợ đi trong tỉnh vui lòng chọn khu vực khác');
-                                    } else {
-                                      widget.onSelect(LocationModel(
-                                        address: currentLocation.address,
-                                        provinceId: currentLocation.provinceId,
-                                        coordinate: currentLocation.coordinate,
-                                        province: currentLocation.province,
-                                      ));
-                                      if (mounted) {
-                                        Navigator.pop(context);
-                                      }
-                                    }
-                                    focusNode.unfocus();
-                                  },
-                                ),
-                                const SizedBox(height: 10),
-                                if (userInfo?.provinceId?.provinceId != null &&
-                                    userInfo?.street != null)
-                                  _buildCard(
-                                    'Nhà',
-                                    AppIcons.home,
-                                    '${userInfo!.street}, ${userInfo.wardId?.wardName}, ${userInfo.districtId?.districtName}, ${userInfo.provinceId?.provinceName}, ${userInfo.countryId?.countryName}',
-                                    () async {
-                                      if (widget.selectedProvince ==
-                                          userInfo.provinceId?.provinceId!
-                                              .ceil()) {
-                                        AppDialog.I.showWarning(
-                                            message:
-                                                'Hệ thống chưa hổ trợ đi trong tỉnh vui lòng chọn khu vực khác');
-                                      } else {
-                                        String address =
-                                            '${userInfo.street}, ${userInfo.wardId?.wardName}, ${userInfo.districtId?.districtName}, ${userInfo.provinceId?.provinceName}, ${userInfo.countryId?.countryName}';
-                                        var data =
-                                            await GetIt.I<LocationHelper>()
-                                                .getCoordinateFromAddress(
-                                                    address);
-                                        if (mounted) {
-                                          widget.onSelect(LocationModel(
-                                            address: address,
-                                            provinceId: userInfo
-                                                .provinceId!.provinceId!
-                                                .ceil(),
-                                            coordinate: data,
-                                            province: userInfo.provinceId,
-                                          ));
-                                          Navigator.pop(context);
-                                        }
-                                      }
-                                    },
-                                  ),
-                              ],
-                            );
-                          } else {
-                            return Container(
-                              height: 350,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 24.0),
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: AppStyles.border15,
-                              ),
-                              child: MediaQuery.removePadding(
-                                context: context,
-                                removeTop: true,
-                                child: ListView.builder(
-                                  itemCount: state.suggestivePlaces!.length,
-                                  itemBuilder: (context, index) {
-                                    return _buildResultSearch(
-                                      index,
-                                      state.suggestivePlaces!,
-                                      state.suggestivePlaces![index]
-                                          .structuredFormatting!.mainText!,
-                                      state.suggestivePlaces![index]
-                                          .description!,
-                                      () {
-                                        controller.text = state
-                                            .suggestivePlaces![index]
-                                            .description!;
-                                        bloc.add(PickingNewPosition(state
-                                            .suggestivePlaces![index]
-                                            .placeId!));
-                                        focusNode.unfocus();
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
-                          }
-                        });
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
+                _buildSuggestList(),
               ],
             ),
           ],
@@ -294,8 +177,135 @@ class _SearchPlaceState extends State<SearchPlace> {
     );
   }
 
-  Widget _buildCard(
-      String title, String iconUrl, String subtitle, VoidCallback callback) {
+  _buildSuggestList() {
+    final userInfo = GetIt.I.get<AppState>().currentState.user;
+    return StreamBuilder<bool>(
+      stream: focusStream.stream,
+      builder: (_, snapshot) {
+        if (snapshot.hasData && snapshot.data!) {
+          return BlocBuilder<SearchPlaceBloc, SearchPlaceState>(
+              builder: (_, state) {
+            if (state.suggestivePlaces == null) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  _buildCard(
+                    title: 'Vị trí hiện tại của bạn',
+                    iconUrl: AppIcons.gps,
+                    subtitle: currentLocation.address ??
+                        'Không tìm thấy địa chỉ hiện tại của bạn',
+                    callback: () {
+                      if (widget.selectedProvince ==
+                          currentLocation.provinceId) {
+                        AppDialog.I.showWarning(
+                            message:
+                                'Hệ thống chưa hổ trợ đi trong tỉnh vui lòng chọn khu vực khác');
+                      } else {
+                        widget.onSelect(
+                          LocationModel(
+                            address: currentLocation.address,
+                            provinceId: currentLocation.provinceId,
+                            coordinate: currentLocation.coordinate,
+                            province: currentLocation.province,
+                          ),
+                        );
+                        if (mounted) {
+                          Navigator.pop(context);
+                        }
+                      }
+                      focusNode.unfocus();
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  if (userInfo?.provinceId?.provinceId != null &&
+                      userInfo?.street != null)
+                    _buildCard(
+                      title: 'Nhà',
+                      iconUrl: AppIcons.home,
+                      subtitle:
+                          '${userInfo!.street}, ${userInfo.wardId?.wardName}, ${userInfo.districtId?.districtName}, ${userInfo.provinceId?.provinceName}, ${userInfo.countryId?.countryName}',
+                      callback: () async {
+                        if (widget.selectedProvince ==
+                            userInfo.provinceId?.provinceId!.ceil()) {
+                          AppDialog.I.showWarning(
+                              message:
+                                  'Hệ thống chưa hổ trợ đi trong tỉnh vui lòng chọn khu vực khác');
+                        } else {
+                          String address =
+                              '${userInfo.street}, ${userInfo.wardId?.wardName}, ${userInfo.districtId?.districtName}, ${userInfo.provinceId?.provinceName}, ${userInfo.countryId?.countryName}';
+                          var data = await GetIt.I<LocationHelper>()
+                              .getCoordinateFromAddress(address);
+                          if (mounted) {
+                            widget.onSelect(
+                              LocationModel(
+                                address: address,
+                                provinceId:
+                                    userInfo.provinceId!.provinceId!.ceil(),
+                                coordinate: data,
+                                province: userInfo.provinceId,
+                              ),
+                            );
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+                    ),
+                ],
+              );
+            } else {
+              return Container(
+                height: 350,
+                margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: AppStyles.border15,
+                ),
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: ListView.builder(
+                    itemCount: state.suggestivePlaces!.length,
+                    itemBuilder: (context, index) {
+                      String title = state.suggestivePlaces![index]
+                          .structuredFormatting!.mainText!;
+                      title = title.isEmpty
+                          ? state.suggestivePlaces![index].structuredFormatting!
+                              .secondaryText!
+                          : title;
+
+                      return _buildResultSearch(
+                        index,
+                        state.suggestivePlaces!,
+                        title,
+                        state.suggestivePlaces![index].description!,
+                        () {
+                          controller.text =
+                              state.suggestivePlaces![index].description!;
+                          bloc.add(PickingNewPosition(
+                              state.suggestivePlaces![index].placeId!));
+                          focusNode.unfocus();
+                        },
+                      );
+                    },
+                  ),
+                ),
+              );
+            }
+          });
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
+  }
+
+  Widget _buildCard({
+    required String title,
+    required String iconUrl,
+    required String subtitle,
+    required VoidCallback callback,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [

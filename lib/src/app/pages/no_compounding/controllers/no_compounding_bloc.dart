@@ -51,7 +51,7 @@ class NoCompoundingBloc
 
     on<GetOptionFareTableAndDistance>((event, emit) async {
       List<CarPriceModel>? listCardPrices;
-      DirectionsModel? directionsModel;
+      DirectionModel? directionsModel;
       emit(state.copyWith(currentCarPrice: Nullable(null)));
       var directionsModelResult = await placesRepository.getDirection(
         fromLat: state.pickupPoint!.coordinate!.latitude!,

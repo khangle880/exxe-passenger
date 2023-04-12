@@ -66,7 +66,7 @@ class PlaceRepository extends IPlacesRepository {
   }
 
   @override
-  Future<Either<Failure, DirectionsModel>> getDirection({
+  Future<Either<Failure, DirectionModel>> getDirection({
     required num fromLat,
     required num fromLong,
     required num toLat,
@@ -86,7 +86,7 @@ class PlaceRepository extends IPlacesRepository {
           'key': key,
         },
       );
-      DirectionsModel? dataResult = DirectionsModel.fromJson(response.data);
+      DirectionModel? dataResult = DirectionModel.fromJson(response.data);
       if (dataResult.routes!.isEmpty) {
         return Left(WarningFailure(
             'Không thể tìm thấy tuyến đường phù hợp.\nVui lòng chọn lại địa điểm khác.'));

@@ -1,6 +1,5 @@
 import 'package:exxe/src/app/pages/chat_room/controllers/chat_room_cubit.dart';
 import 'package:exxe/src/app/pages/pages.dart';
-import 'package:exxe/src/app/pages/share_location.dart/share_location_page.dart';
 import 'package:exxe/src/app/pages/trip_rating/view_trip_rating_page.dart';
 import 'package:exxe/src/app/pages/verify/verify_relationship/controllers/verify_relationship_cubit.dart';
 import 'package:exxe/src/app/pages/verify/verify_relationship/relationship_list_page.dart';
@@ -455,13 +454,6 @@ class Routes {
           builder: (context) => BlocProvider<NewsCubit>(
             create: (context) => NewsCubit()..getNewsDetail(args['postId']),
             child: const NewsDetailPage(),
-          ),
-        );
-      case Routes.shareLocationPage:
-        Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (context) => ShareLocationPage(
-            callBack: args['callBack'],
           ),
         );
 

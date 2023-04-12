@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../../data/data.dart';
 import 'dart:math' as math;
@@ -30,15 +30,11 @@ class GoogleMapImageDetailTrip extends StatefulWidget {
 }
 
 class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
-  BitmapDescriptor destinationIcon =
-      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet);
-  final Completer<GoogleMapController> goggleMapController = Completer();
+  MapboxMapController? mapController;
 
   CompoundingCarCustomerState get state => widget.customer.state!;
 
-  final Set<Polyline> polyLines = {};
-  final Set<Marker> markers = {};
-  Polyline? driverIncomingPolyline;
+  LineOptions? driverIncomingPolyline;
   late final RemoveListener listener;
 
   late final LatLng centerLatLng;
@@ -105,18 +101,16 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
         color: Colors.cyanAccent.withOpacity(0.8),
       );
       if (driverIncomingPolyline != null) {
-        polyLines.add(driverIncomingPolyline!);
+        mapController?.addLine(driverIncomingPolyline!);
       }
     }
 
     // update driver marker
-    final icon = await createCurrentMarkerIcon();
 
-    markers.add(
-      Marker(
-        icon: icon,
-        markerId: const MarkerId('current_location'),
-        position: LatLng(lat, long),
+    mapController?.addSymbol(
+      SymbolOptions(
+        iconImage: AppIcons.locationPng,
+        geometry: LatLng(lat, long),
       ),
     );
     if (mounted) {
@@ -145,12 +139,8 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     super.dispose();
   }
 
-  Future<BitmapDescriptor> createCurrentMarkerIcon() async {
-    return GetIt.I<LocationHelper>().getMarker(AppIcons.carMarker, 120);
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    goggleMapController.complete(controller);
+  void _onMapCreated(MapboxMapController controller) {
+    mapController = controller;
 
     LatLng latLng_1 = LatLng(double.parse(widget.startLatitude),
         double.parse(widget.startLongitude));
@@ -158,38 +148,35 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
         double.parse(widget.endLatitude), double.parse(widget.endLongitude));
 
     setState(() {
-      markers.clear();
+      mapController?.clearSymbols();
+      mapController?.symbolManager?.clear();
       if (widget.customer.state!.index >=
               CompoundingCarCustomerState.startReturn.index &&
           widget.customer.compoundingType == CompoundingType.twoWay) {
-        markers.addAll(
-          {
-            Marker(
-              icon: destinationIcon,
-              markerId: const MarkerId('destination'),
-              position: latLng_2,
-              infoWindow: const InfoWindow(title: "Điểm đón của bạn"),
+        mapController?.addSymbols(
+          [
+            SymbolOptions(
+              geometry: latLng_2,
+              iconImage: 'assets/images/car_marker.png',
             ),
-            Marker(
-              markerId: const MarkerId('pickUpPoint'),
-              position: latLng_1,
+            SymbolOptions(
+              geometry: latLng_1,
+              iconImage: 'assets/images/car_marker.png',
             ),
-          },
+          ],
         );
       } else {
-        markers.addAll(
-          {
-            Marker(
-              markerId: const MarkerId('pickUpPoint'),
-              position: latLng_1,
+        mapController?.addSymbols(
+          [
+            SymbolOptions(
+              geometry: latLng_1,
+              iconImage: 'assets/images/car_marker.png',
             ),
-            Marker(
-              icon: destinationIcon,
-              markerId: const MarkerId('destination'),
-              position: latLng_2,
-              infoWindow: const InfoWindow(title: "Điểm đón của bạn"),
+            SymbolOptions(
+              geometry: latLng_2,
+              iconImage: 'assets/images/car_marker.png',
             ),
-          },
+          ],
         );
       }
     });
@@ -198,11 +185,18 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
   }
 
   updateCamera(LatLng start, LatLng end) async {
-    final GoogleMapController controller = await goggleMapController.future;
     LatLngBounds bound = computeBounds([start, end]);
-    CameraUpdate u2 = CameraUpdate.newLatLngBounds(bound, 100);
-    controller.animateCamera(u2).then((void v) {
-      check(u2, controller);
+    CameraUpdate u2 = CameraUpdate.newLatLngBounds(
+      bound,
+      left: 20,
+      bottom: 20,
+      right: 20,
+      top: 20,
+    );
+    mapController?.animateCamera(u2).then((void v) {
+      if (mapController != null) {
+        check(u2, mapController!);
+      }
     });
   }
 
@@ -223,7 +217,7 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     return LatLngBounds(southwest: LatLng(s, w), northeast: LatLng(n, e));
   }
 
-  void check(CameraUpdate u, GoogleMapController c) async {
+  void check(CameraUpdate u, MapboxMapController c) async {
     c.animateCamera(u);
     LatLngBounds l1 = await c.getVisibleRegion();
     LatLngBounds l2 = await c.getVisibleRegion();
@@ -253,11 +247,11 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
       key: 'overview_polyline',
       color: AppColors.secondaryMain,
     );
-    polyLines.add(result);
+    mapController?.addLine(result);
     setState(() {});
   }
 
-  Future<Polyline> getPolyLine({
+  Future<LineOptions> getPolyLine({
     required double startLat,
     required double startLong,
     required double endLat,
@@ -275,12 +269,11 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
       log(failure.toString());
       return Future.error(failure);
     }, (data) {
-      return Polyline(
-        polylineId: PolylineId(key),
-        color: color ?? AppColors.secondaryMain,
-        width: 5,
-        points: data.polylinePoints,
-        geodesic: true,
+      return LineOptions(
+        lineColor: (color ?? AppColors.secondaryMain).toHexStringRGB(),
+        lineWidth: 5,
+        geometry: data.overviewPolylinePoints,
+        draggable: false,
       );
     });
   }
@@ -289,18 +282,14 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GoogleMap(
+        MapboxMap(
           onMapCreated: _onMapCreated,
-          zoomControlsEnabled: true,
+          zoomGesturesEnabled: false,
           myLocationEnabled: false,
-          myLocationButtonEnabled: false,
-          mapType: MapType.normal,
           initialCameraPosition: CameraPosition(
             target: LatLng(centerLatLng.latitude, centerLatLng.longitude),
             zoom: 7,
           ),
-          markers: markers,
-          polylines: polyLines,
         ),
         Positioned(
           bottom: 20.0,
@@ -311,8 +300,6 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
               splashColor: AppColors.gray20,
               borderRadius: BorderRadius.circular(100),
               onTap: () async {
-                final GoogleMapController controller =
-                    await goggleMapController.future;
                 Position? currentLocation;
                 try {
                   currentLocation = await Geolocator.getCurrentPosition();
@@ -320,7 +307,7 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
                   currentLocation = null;
                 }
                 if (currentLocation != null) {
-                  controller.animateCamera(CameraUpdate.newCameraPosition(
+                  mapController?.animateCamera(CameraUpdate.newCameraPosition(
                     CameraPosition(
                       bearing: 0,
                       target: LatLng(

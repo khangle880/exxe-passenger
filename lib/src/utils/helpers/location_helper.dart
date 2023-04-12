@@ -1,14 +1,12 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:app_settings/app_settings.dart';
+import 'package:exxe/src/data/data.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tiengviet/tiengviet.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../data/models/location/location_model.dart';
 import '../export/repo_export.dart'
     show ProvinceModel, GetIt, IDataControllerRepo, CoordinateModel;
 import '../export/ui_export.dart';
@@ -50,6 +48,20 @@ class LocationHelper {
     return list;
   }
 
+  fromGoongToProvinceModel(GoongPlaceModel data) async {
+    if (provinces.isEmpty) {
+      await getListProvince();
+    }
+
+    for (var province in provinces) {
+      if (data.compound?.province?.toLowerCase() ==
+          province.provinceName?.toLowerCase()) {
+        return province;
+      }
+    }
+    return null;
+  }
+
   fromGoogleAddressToProvinceModel(String address) async {
     if (provinces.isEmpty) {
       await getListProvince();
@@ -82,7 +94,7 @@ class LocationHelper {
   Future<CoordinateModel> getCoordinateFromAddress(String address) async {
     List<geocoding.Location> locations =
         await geocoding.locationFromAddress(address);
-    log('Home lat ${locations.first.latitude} - lng ${locations.first.longitude}');
+
     return CoordinateModel(
         longitude: locations.first.longitude,
         latitude: locations.first.latitude);
@@ -98,11 +110,6 @@ class LocationHelper {
         .asUint8List();
   }
 
-  Future<BitmapDescriptor> getMarker(String path, int width) async {
-    final Uint8List imageData = await _getBytesFromAsset(path, width);
-    return BitmapDescriptor.fromBytes(imageData);
-  }
-
   handleLocation(
     BuildContext context, {
     String? routeName,
@@ -112,32 +119,24 @@ class LocationHelper {
   }) async {
     await loadLocation(context).then((value) {
       final permission = value;
-      if (permission == LocationPermissionEnum.permissionDeniedForever) {
+      if (permission == LocationPermissionEnum.couldNotGetLocation) {
         AppDialog.I.showWarning(
           confirmTitle: "Cài đặt",
           message: 'Bạn phải vào cài đặt cấp quyền vị trí cho app',
           onConfirm: () {
-            AppSettings.openLocationSettings();
+            Geolocator.openLocationSettings();
             AppDialog.I.closeDialog();
           },
         );
-      }
-      if (permission == LocationPermissionEnum.locationValid) {
+      } else if (permission == LocationPermissionEnum.locationValid) {
         if (routeName != null) {
           Navigator.pushNamed(context, routeName, arguments: args);
         } else {
           callBack?.call();
         }
-      }
-      if (permission == LocationPermissionEnum.locationInvalid) {
+      } else if (permission == LocationPermissionEnum.locationInvalid) {
         AppDialog.I.showWarning(
-          message: 'Hiện tại không thể tải dữ liệu cho vị trí này',
-        );
-      }
-
-      if (permission == LocationPermissionEnum.couldNotGetLocation) {
-        AppDialog.I.showWarning(
-          message: 'Không lấy được Vị trí hiện tại. Vui lòng thử lại',
+          message: 'Chúng tôi chưa lấy được vị trí hiện tại của bạn.',
         );
       }
     });
@@ -150,7 +149,7 @@ class LocationHelper {
     }
     return await GoogleMapService.instance.enableLocation().then((value) async {
       log('Position: $value');
-      LocationModel? locationModel = await _createLocationModel(value);
+      LocationModel? locationModel = await createLocationModel(value);
       if (isShowLoading) AppDialog.I.closeDialog();
 
       if (locationModel == null) {
@@ -161,11 +160,14 @@ class LocationHelper {
       }
     }).catchError((e) {
       if (isShowLoading) AppDialog.I.closeDialog();
+      if (e is TimeoutException) {
+        return LocationPermissionEnum.locationInvalid;
+      }
       return LocationPermissionEnum.couldNotGetLocation;
     });
   }
 
-  Future<LocationModel?> _createLocationModel(Position position) async {
+  Future<LocationModel?> createLocationModel(Position position) async {
     var addresses = await geocoding.placemarkFromCoordinates(
       position.latitude,
       position.longitude,

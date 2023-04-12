@@ -58,3 +58,6 @@ export './wallet/transaction_detail_model.dart';
 export './wallet/wallet_filter_model.dart';
 export './wallet/wallet_model.dart';
 export 'nullable.dart';
+export './goong_map/goong_place_model.dart';
+export './goong_map/suggest_place_model.dart';
+export './goong_map/direction_model.dart';

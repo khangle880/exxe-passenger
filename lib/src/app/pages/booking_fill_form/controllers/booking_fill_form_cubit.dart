@@ -111,7 +111,7 @@ class BookingFillFormCubit extends BaseCubit<BookingFillFormState> {
 
   getDistanceAndCarFareTable() async {
     List<CarPriceModel>? listCardPrices;
-    DirectionsModel? directionsModel;
+    DirectionModel? directionsModel;
     emitWaiting(true);
     var directionsModelResult = await placesRepository.getDirection(
       fromLat: state.pickupPoint!.coordinate!.latitude!,

@@ -1,32 +1,28 @@
-import 'dart:async';
-
 import 'package:exxe/src/utils/export/ui_export.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../data/data.dart';
 
 class GoogleMapSearchPlace extends StatelessWidget {
-  final Set<Marker> markers;
-  final Completer<GoogleMapController> controller;
+  final List<SymbolOptions> symbols;
   final CoordinateModel coordinateModel;
   final Function(LatLng)? onTap;
 
   const GoogleMapSearchPlace({
     Key? key,
-    required this.markers,
-    required this.controller,
+    required this.symbols,
     required this.coordinateModel,
     this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      onTap: onTap,
-      onMapCreated: (GoogleMapController controller) {
-        this.controller.complete(controller);
+    return MapboxMap(
+      accessToken: "EjG4C6ZIkGkbHriul6aKyPVFGj23m5uHRDiPrjO9",
+      onMapCreated: (MapboxMapController controller) {
+        controller.addSymbols(symbols);
       },
-      zoomControlsEnabled: false,
+      zoomGesturesEnabled: false,
       initialCameraPosition: CameraPosition(
         target: LatLng(
           coordinateModel.latitude!,
@@ -34,7 +30,6 @@ class GoogleMapSearchPlace extends StatelessWidget {
         ),
         zoom: 15.0,
       ),
-      markers: markers,
     );
   }
 }
