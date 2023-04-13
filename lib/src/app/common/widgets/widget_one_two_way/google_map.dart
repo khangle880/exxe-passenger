@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../../config/colors.dart';
@@ -31,7 +32,9 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
 
   @override
   void initState() {
-    updateGoogleMap();
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      updateGoogleMap();
+    });
     super.initState();
   }
 
@@ -64,10 +67,9 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
           coordinateModel.latitude!,
           coordinateModel.longitude!,
         ),
-        draggable: false,
         zIndex: 2,
         iconImage: AppIcons.currentLocation,
-        iconSize: 60,
+        iconSize: 2,
       ),
     );
 
@@ -78,8 +80,8 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
             widget.pickupPoint!.coordinate!.latitude!,
             widget.pickupPoint!.coordinate!.longitude!,
           ),
-          iconImage: AppIcons.locationPng,
-          iconSize: 60,
+          iconImage: AppIcons.pickupLocationPng,
+          iconSize: 1,
         ),
       );
       if (widget.destinationPoint == null) {
@@ -105,7 +107,8 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
             widget.destinationPoint!.coordinate!.longitude!,
           ),
           iconImage: AppIcons.locationPng,
-          iconColor: AppColors.utilRed.toHexStringRGB(),
+          iconSize: 1.5,
+          iconOffset: const Offset(0, -10),
         ),
       );
       if (widget.pickupPoint == null) {
@@ -162,9 +165,15 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
     CoordinateModel? coordinateModel = widget.coordinateModel ??
         GetIt.I.get<AppState>().currentState.currentLocation!.coordinate!;
 
+    final String accessToken =
+        dotenv.maybeGet('MAPBOXTOKEN', fallback: null) ?? "";
+    final String key = dotenv.maybeGet('GOONG_MAP_KEY', fallback: null) ?? "";
     return MapboxMap(
-      zoomGesturesEnabled: false,
-      myLocationEnabled: false,
+      accessToken: accessToken,
+      styleString:
+          'https://tiles.goong.io/assets/goong_map_web.json?api_key=$key',
+      // myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
+      // myLocationEnabled: true,
       onMapCreated: (MapboxMapController controller) {
         mapController = controller;
       },
@@ -175,7 +184,6 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
         ),
         zoom: 15.0,
       ),
-      tiltGesturesEnabled: false,
     );
   }
 }

@@ -171,4 +171,6 @@ class AppIcons {
   static String searchOutline = 'assets/icons/search_outline.svg';
   static String lock = 'assets/icons/lock.png';
   static String locationPng = 'assets/images/location.png';
+  static String pickupLocationPng = 'assets/images/pickup_location.png';
+  static String currentLocationPng = 'assets/images/current_location.png';
 }

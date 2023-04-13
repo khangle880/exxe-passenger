@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:exxe/src/app/common/search_place/components/search_default_card.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../data/data.dart';
+import 'components/search_suggest.dart';
 
 class SearchPlace extends StatefulWidget {
   final SearchType searchType;
@@ -26,12 +29,9 @@ class _SearchPlaceState extends State<SearchPlace> {
   late final StreamController<bool> focusStream;
   FocusNode focusNode = FocusNode();
   late final SearchPlaceBloc bloc;
-  final Completer<MapboxMapController> mapController = Completer();
-
+  MapboxMapController? mapController;
   final LocationModel currentLocation =
       GetIt.I.get<AppState>().currentState.currentLocation!;
-
-  final List<SymbolOptions> markers = [];
 
   @override
   void dispose() {
@@ -49,7 +49,7 @@ class _SearchPlaceState extends State<SearchPlace> {
       focusStream.sink.add(focusNode.hasFocus);
     });
     bloc = context.read<SearchPlaceBloc>();
-    markers.add(
+    mapController?.addSymbol(
       SymbolOptions(
         geometry: LatLng(
           currentLocation.coordinate!.latitude!,
@@ -71,21 +71,35 @@ class _SearchPlaceState extends State<SearchPlace> {
         backgroundColor: AppColors.greyLight,
         body: Stack(
           children: [
-            GoogleMapSearchPlace(
-              onTap: (_) {
-                FocusManager.instance.primaryFocus?.unfocus();
+            Builder(
+              builder: (_) {
+                final String accessToken =
+                    dotenv.maybeGet('MAPBOXTOKEN', fallback: null) ?? "";
+                final String key =
+                    dotenv.maybeGet('GOONG_MAP_KEY', fallback: null) ?? "";
+                return MapboxMap(
+                  accessToken: accessToken,
+                  styleString:
+                      'https://tiles.goong.io/assets/goong_map_web.json?api_key=$key',
+                  onMapCreated: (MapboxMapController controller) {
+                    mapController = controller;
+                  },
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      currentLocation.coordinate!.latitude!,
+                      currentLocation.coordinate!.longitude!,
+                    ),
+                    zoom: 15.0,
+                  ),
+                );
               },
-              symbols: markers,
-              coordinateModel: currentLocation.coordinate!,
             ),
             BlocConsumer<SearchPlaceBloc, SearchPlaceState>(
               listenWhen: (previous, current) =>
                   previous.locationModel != current.locationModel,
               listener: (context, state) async {
                 if (state.locationModel != null) {
-                  final MapboxMapController controller =
-                      await mapController.future;
-                  controller.animateCamera(
+                  mapController?.animateCamera(
                     CameraUpdate.newCameraPosition(
                       CameraPosition(
                         target: LatLng(
@@ -96,14 +110,16 @@ class _SearchPlaceState extends State<SearchPlace> {
                       ),
                     ),
                   );
-                  markers.clear();
-                  markers.add(
+                  mapController?.clearSymbols();
+                  mapController?.addSymbol(
                     SymbolOptions(
                       geometry: LatLng(
                         state.locationModel!.coordinate!.latitude!,
                         state.locationModel!.coordinate!.longitude!,
                       ),
-                      iconImage: 'assets/images/car_marker.png',
+                      iconImage: AppIcons.locationPng,
+                      iconSize: 2,
+                      iconOffset: const Offset(0, -10)
                     ),
                   );
                   if (mounted) {
@@ -190,7 +206,7 @@ class _SearchPlaceState extends State<SearchPlace> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-                  _buildCard(
+                  SearchDefaultCard(
                     title: 'Vị trí hiện tại của bạn',
                     iconUrl: AppIcons.gps,
                     subtitle: currentLocation.address ??
@@ -220,7 +236,7 @@ class _SearchPlaceState extends State<SearchPlace> {
                   const SizedBox(height: 10),
                   if (userInfo?.provinceId?.provinceId != null &&
                       userInfo?.street != null)
-                    _buildCard(
+                    SearchDefaultCard(
                       title: 'Nhà',
                       iconUrl: AppIcons.home,
                       subtitle:
@@ -274,12 +290,12 @@ class _SearchPlaceState extends State<SearchPlace> {
                               .secondaryText!
                           : title;
 
-                      return _buildResultSearch(
-                        index,
-                        state.suggestivePlaces!,
-                        title,
-                        state.suggestivePlaces![index].description!,
-                        () {
+                      return SearchSuggest(
+                        index: index,
+                        suggestivePlaces: state.suggestivePlaces!,
+                        title: title,
+                        subtitle: state.suggestivePlaces![index].description!,
+                        callback: () {
                           controller.text =
                               state.suggestivePlaces![index].description!;
                           bloc.add(PickingNewPosition(
@@ -297,114 +313,6 @@ class _SearchPlaceState extends State<SearchPlace> {
           return const SizedBox();
         }
       },
-    );
-  }
-
-  Widget _buildCard({
-    required String title,
-    required String iconUrl,
-    required String subtitle,
-    required VoidCallback callback,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          iconUrl,
-          color: AppColors.primaryButton,
-          width: 20,
-          height: 20,
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextWidget(
-                  text: title,
-                  fontSize: 16.0,
-                  weight: FontWeight.w700,
-                ),
-                const SizedBox(height: 5),
-                TextWidget(
-                  text: subtitle,
-                  fontSize: 14.0,
-                  colorText: AppColors.gray70x76,
-                  maxLine: 3,
-                )
-              ],
-            ),
-          ),
-        )
-      ],
-    )
-        .inkWell(
-          onTap: callback,
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            color: AppColors.greyLight,
-            borderRadius: AppStyles.border15,
-          ),
-        )
-        .margin(
-          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-        );
-  }
-
-  Widget _buildResultSearch(
-      int index,
-      List<SuggestivePlaceModel> suggestivePlaces,
-      String title,
-      String subtitle,
-      VoidCallback callback) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          AppIcons.locationPurple,
-          color: AppColors.primaryButton,
-          width: 20,
-          height: 20,
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextWidget(
-                  text: title,
-                  fontSize: 16.0,
-                  weight: FontWeight.w700,
-                ),
-                const SizedBox(height: 5),
-                TextWidget(
-                  text: subtitle,
-                  fontSize: 14.0,
-                  colorText: AppColors.gray70x76,
-                  maxLine: 3,
-                )
-              ],
-            ),
-          ),
-        )
-      ],
-    ).inkWell(
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-          color: AppColors.greyLight,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.zero,
-            topRight: Radius.zero,
-            bottomLeft: index == suggestivePlaces.length - 1
-                ? const Radius.circular(15)
-                : Radius.zero,
-            bottomRight: index == suggestivePlaces.length - 1
-                ? const Radius.circular(15)
-                : Radius.zero,
-          )),
-      onTap: callback,
     );
   }
 }

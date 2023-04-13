@@ -100,7 +100,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation ('com.mapbox.maps:android:10.12.1'){
-        exclude group: 'group_name', module: 'module_name'
-    }
 }

@@ -30,6 +30,7 @@ flutter_ios_podfile_setup
 target 'Runner' do
   use_frameworks!
   use_modular_headers!
+  pod 'MapboxMaps', '10.12.2'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
@@ -38,7 +39,6 @@ target 'OneSignalNotificationServiceExtension' do
   use_frameworks!
   pod 'OneSignalXCFramework', '>= 3.4.3', '< 4.0'
 end
-
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|

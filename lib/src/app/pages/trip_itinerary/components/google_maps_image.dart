@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
@@ -106,11 +107,11 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     }
 
     // update driver marker
-
     mapController?.addSymbol(
       SymbolOptions(
-        iconImage: AppIcons.locationPng,
+        iconImage: AppIcons.carMarker,
         geometry: LatLng(lat, long),
+        iconSize: 1.5,
       ),
     );
     if (mounted) {
@@ -157,11 +158,14 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
           [
             SymbolOptions(
               geometry: latLng_2,
-              iconImage: 'assets/images/car_marker.png',
+              iconImage: AppIcons.pickupLocationPng,
+              iconSize: 1,
             ),
             SymbolOptions(
               geometry: latLng_1,
-              iconImage: 'assets/images/car_marker.png',
+              iconImage: AppIcons.locationPng,
+              iconSize: 1.5,
+              iconOffset: const Offset(0, -10),
             ),
           ],
         );
@@ -170,11 +174,14 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
           [
             SymbolOptions(
               geometry: latLng_1,
-              iconImage: 'assets/images/car_marker.png',
+              iconImage: AppIcons.pickupLocationPng,
+              iconSize: 1,
             ),
             SymbolOptions(
               geometry: latLng_2,
-              iconImage: 'assets/images/car_marker.png',
+              iconImage: AppIcons.locationPng,
+              iconSize: 1.5,
+              iconOffset: const Offset(0, -10),
             ),
           ],
         );
@@ -280,9 +287,15 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
 
   @override
   Widget build(BuildContext context) {
+    final String accessToken =
+        dotenv.maybeGet('MAPBOXTOKEN', fallback: null) ?? "";
+    final String key = dotenv.maybeGet('GOONG_MAP_KEY', fallback: null) ?? "";
     return Stack(
       children: [
         MapboxMap(
+          accessToken: accessToken,
+          styleString:
+              'https://tiles.goong.io/assets/goong_map_web.json?api_key=$key',
           onMapCreated: _onMapCreated,
           zoomGesturesEnabled: false,
           myLocationEnabled: false,

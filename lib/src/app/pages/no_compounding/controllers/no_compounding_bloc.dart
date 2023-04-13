@@ -57,7 +57,6 @@ class NoCompoundingBloc
     on<GetOptionFareTableAndDistance>((event, emit) async {
       List<CarPriceModel>? listCardPrices;
       DirectionModel? directionsModel;
-      DirectionModel? directionsModel;
 
       final currentCarPrice = state.currentCarPrice;
       emit(state.copyWith(currentCarPrice: Nullable(null)));

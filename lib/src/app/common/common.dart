@@ -62,7 +62,6 @@ export './popup/popup_control.dart';
 export './search_place/app_bar_search_place.dart';
 export './search_place/controller/search_place_bloc.dart';
 export './search_place/form_search_place.dart';
-export './search_place/google_maps_search.dart';
 export './search_place/search_place.dart';
 export './select_country/country.dart';
 export './select_country/country_codes.dart';

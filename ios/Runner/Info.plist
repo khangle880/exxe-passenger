@@ -8,6 +8,8 @@
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>MBXAccessToken</key>
+	<string>pk.eyJ1Ijoia2hhbmdleHhlZGV2IiwiYSI6ImNsZ2Q0eHY5ODBndTQzcnM5aWs2a2pkMzIifQ.bMfhFD7B8LALZwqqFgr07g</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
