@@ -36,6 +36,22 @@ extension StringX on String {
         .hasMatch(this);
   }
 
+  bool isHas8Character() {
+    return RegExp(r'.{8,}').hasMatch(this);
+  }
+
+  bool isHasUpper() {
+    return RegExp(r'(?=.*?[A-Z])').hasMatch(this);
+  }
+
+  bool isHasLower() {
+    return RegExp(r'(?=.*?[a-z])').hasMatch(this);
+  }
+
+  bool isHasDigit() {
+    return RegExp(r'(?=.*?\d)').hasMatch(this);
+  }
+
   String convertPhone() {
     var phone = replaceRange(3, 3, ' ');
     phone = phone.replaceRange(7, 7, ' ');

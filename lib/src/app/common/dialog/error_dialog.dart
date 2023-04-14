@@ -30,7 +30,7 @@ class ErrorDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SvgPicture.asset(
-                AppIcons.warning,
+                AppIcons.alert,
                 height: 87,
                 width: 87,
               ),

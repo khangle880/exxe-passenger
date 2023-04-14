@@ -61,6 +61,17 @@ class DirectionModel {
     return duration == null ? 0 : (duration / (60 * 60));
   }
 
+  LatLngBounds boundLatLng(LatLng from, LatLng to) {
+    double minLat = min(from.latitude, to.latitude);
+    double maxLat = max(from.latitude, to.latitude);
+    double minLng = min(from.longitude, to.longitude);
+    double maxLng = max(from.longitude, to.longitude);
+    return LatLngBounds(
+      southwest: LatLng(minLat, minLng),
+      northeast: LatLng(maxLat, maxLng),
+    );
+  }
+
   BoundModel? bound(CoordinateModel from, CoordinateModel to) {
     double minLat = min(from.latitude ?? 0, to.latitude ?? 0);
     double maxLat = max(from.latitude ?? 0, to.latitude ?? 0);

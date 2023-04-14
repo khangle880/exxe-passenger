@@ -26,7 +26,7 @@ class FormChangePass extends StatelessWidget {
                   children: [
                     const SizedBox(height: 16),
                     Text(
-                      "Mật khẩu phải dài 8 ký tự với chữ hoa và chữ thường, chữ số và ký hiệu (!@#\$,-_.)",
+                      "Mật khẩu bao gồm: tối thiểu 8 kí tự, chữ viết hoa, chữ thường và số.",
                       style: AppStyles.s14w4.withColor(AppColors.gray60x9d),
                       textAlign: TextAlign.center,
                     ),
@@ -69,8 +69,15 @@ class FormChangePass extends StatelessWidget {
                           return 'Vui lòng điền mật khẩu';
                         } else if (value == state.oldPass) {
                           return "Mật khẩu mới của bạn phải khác với mật khẩu đã sử dụng trước đó.";
-                        } else if (!value.isValidPassword()) {
-                          return 'Mật khẩu không hợp lệ';
+                        }
+                        final miss = [
+                          value.isHas8Character() ? null : "tối thiểu 8 kí tự",
+                          value.isHasUpper() ? null : "chữ viết hoa",
+                          value.isHasLower() ? null : "chữ viết thường",
+                          value.isHasDigit() ? null : "chữ số",
+                        ].whereNotNull().join(', ').replaceLast(",", " và");
+                        if (miss.isNotEmpty) {
+                          return "Mật khẩu phải bao gồm: $miss";
                         }
                         return null;
                       },

@@ -23,19 +23,9 @@ class TextFormFieldPhone extends StatefulWidget {
 
 class _TextFormFieldPhoneState extends State<TextFormFieldPhone> {
   @override
-  void dispose() {
-    widget.controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildCountryCodePhone(),
-        const SizedBox(width: 10),
         Expanded(
           child: TextFormFieldBuilder.none(
             key: const ValueKey('phone'),
@@ -58,34 +48,6 @@ class _TextFormFieldPhoneState extends State<TextFormFieldPhone> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildCountryCodePhone() {
-    return Container(
-      height: 49.0,
-      padding: const EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        color: AppColors.primaryLight,
-        borderRadius: AppStyles.border10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FittedBox(
-            child: TextWidget(
-              text: '+84',
-              fontSize: 14,
-              colorText: AppColors.gray70x76,
-            ),
-          ),
-          SvgPicture.asset(
-            AppIcons.directionDown,
-            color: AppColors.gray70x76,
-          )
-        ],
-      ),
     );
   }
 }

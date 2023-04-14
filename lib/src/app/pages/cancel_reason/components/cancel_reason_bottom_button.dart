@@ -21,38 +21,7 @@ class CancelReasonBottomButton extends StatelessWidget {
                     (state.selectedItem?.reason == "Khác" &&
                         (state.otherReason ?? "").isNotEmpty)
                 ? () async {
-                    final returnStatus = await bloc.getReturnedDepositState(
-                        compoundingCarCustomerModel.compoundingCarCustomerId!);
-                    if (returnStatus != null) {
-                      AppDialog.I.showCancelDeposit(
-                        countdownNumber:
-                            ((returnStatus.remainsSecond ?? 0) * 1000).ceil(),
-                        canReturned: returnStatus.returnedDeposit ?? false,
-                        onConfirm: () async {
-                          AppDialog.I.closeDialog();
-
-                          // cancel
-                          AppDialog.I.showLoading();
-                          final result = await bloc.repo.cancelCompoundingCar(
-                            compoundingCarCustomerModel,
-                            reasonId: state.selectedItem?.cancelReasonId,
-                            reasonOther: state.otherReason,
-                          );
-                          AppDialog.I.closeDialog();
-                          result.fold((failure) {
-                            failure.showDefaultDialog();
-                          }, (data) {
-                            AppDialog.I.showCancelReasonSuccess(
-                              onConfirm: () {
-                                AppDialog.I.closeDialog();
-                                Navigator.pop(context, true);
-                              },
-                              barrierDismissible: false,
-                            );
-                          });
-                        },
-                      );
-                    }
+                    _showConfirmCancel(bloc, state, context);
                   }
                 : null,
             child: Text(
@@ -63,5 +32,49 @@ class CancelReasonBottomButton extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _showConfirmCancel(CancelReasonCubit bloc, CancelReasonState state,
+      BuildContext context) async {
+    final returnStatus = await bloc.getReturnedDepositState(
+        compoundingCarCustomerModel.compoundingCarCustomerId!);
+    if (returnStatus != null) {
+      AppDialog.I.showCancelDeposit(
+        countdownNumber: ((returnStatus.remainsSecond ?? 0) * 1000).ceil(),
+
+        /// 5s space for countdown button
+        // canReturned: ((returnStatus.remainsSecond ?? 0) < 5
+        //     ? false
+        //     : (returnStatus.returnedDeposit ?? false)),
+        canReturned: returnStatus.returnedDeposit ?? false,
+        onDepositReturnedEnd: () {
+          AppDialog.I.closeDialog();
+          _showConfirmCancel(bloc, state, context);
+        },
+        onConfirm: () async {
+          AppDialog.I.closeDialog();
+
+          // cancel
+          AppDialog.I.showLoading();
+          final result = await bloc.repo.cancelCompoundingCar(
+            compoundingCarCustomerModel,
+            reasonId: state.selectedItem?.cancelReasonId,
+            reasonOther: state.otherReason,
+          );
+          AppDialog.I.closeDialog();
+          result.fold((failure) {
+            failure.showDefaultDialog();
+          }, (data) {
+            AppDialog.I.showCancelReasonSuccess(
+              onConfirm: () {
+                AppDialog.I.closeDialog();
+                Navigator.pop(context, true);
+              },
+              barrierDismissible: false,
+            );
+          });
+        },
+      );
+    }
   }
 }

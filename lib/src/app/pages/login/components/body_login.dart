@@ -21,25 +21,9 @@ class BodyLogin extends StatelessWidget {
                     fit: BoxFit.fitWidth,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 24),
-                      Text(
-                        "Dành cho khách hàng",
-                        style: AppStyles.s20w7.withColor(AppColors.primaryMain),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "Ứng dụng cho khách hàng ExxeVN",
-                        style: AppStyles.s14w4.withColor(AppColors.gray60),
-                      ),
-                      const SizedBox(height: 24),
-                      const FormPhoneLogin(),
-                    ],
-                  ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: FormPhoneLogin(),
                 ),
                 const Spacer(),
                 Center(

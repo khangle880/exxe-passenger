@@ -8,7 +8,8 @@ class WarningDialog extends StatelessWidget {
       this.cancelTitle,
       this.confirmTitle,
       required this.message,
-      this.hasCancel = false})
+      this.hasCancel = false,
+      this.title})
       : super(key: key);
   final Function()? onConfirm;
   final bool hasCancel;
@@ -16,6 +17,7 @@ class WarningDialog extends StatelessWidget {
   final String? cancelTitle;
   final String? confirmTitle;
   final String message;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +34,12 @@ class WarningDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 8),
-              Text("Cảnh báo",
-                  style: AppStyles.s18w6.withColor(AppColors.orangeMain)),
-              const SizedBox(height: 12),
+              SvgPicture.asset(AppIcons.alert, height: 87, width: 87),
+              const SizedBox(height: 16),
+              if (title != null) ...[
+                Text(title!, style: AppStyles.s18w7),
+                const SizedBox(height: 4),
+              ],
               Text(
                 message,
                 style: AppStyles.s16w6,

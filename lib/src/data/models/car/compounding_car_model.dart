@@ -155,7 +155,7 @@ class CompoundingCarModel {
 
   num? get numberSeat =>
       (numberAvailableSeat != null && numberSeatInCar != null)
-          ? numberSeatInCar! - numberAvailableSeat!
+          ? (numberSeatInCar ?? 0) - (numberAvailableSeat ?? 0)
           : null;
 
   bool get shouldShow => state != null && compoundingType != null;

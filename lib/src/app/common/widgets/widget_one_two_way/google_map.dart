@@ -1,14 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../config/colors.dart';
 import '../../../../config/icons.dart';
-import '../../../../data/data.dart';
 import '../../../../utils/export/logic_export.dart';
-import '../../../app_state.dart';
 
 class GoogleMapBackground extends StatefulWidget {
   final LocationModel? pickupPoint;

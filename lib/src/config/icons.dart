@@ -171,4 +171,5 @@ class AppIcons {
   static String searchOutline = 'assets/icons/search_outline.svg';
   static String lock = 'assets/icons/lock.png';
   static String locationPng = 'assets/images/location.png';
+  static String directionLeftBold = 'assets/icons/direction_left_bold.svg';
 }
