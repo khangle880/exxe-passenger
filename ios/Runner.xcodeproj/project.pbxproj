@@ -13,7 +13,6 @@
 		4CEEB95129A0953900767E8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CEEB95029A0953800767E8A /* GoogleService-Info.plist */; };
 		5287539F29B9FB150098FFF4 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5287539E29B9FB150098FFF4 /* NotificationService.swift */; };
 		528753A329B9FB150098FFF4 /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5287539C29B9FB150098FFF4 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		52F9DB9F29E7F546002B71B0 /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 52F9DB9E29E7F546002B71B0 /* MapboxMaps */; };
 		582F6C28A39910B5E08B6C10 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7641DE5D37B6948725A3A800 /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -102,7 +101,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52F9DB9F29E7F546002B71B0 /* MapboxMaps in Frameworks */,
 				582F6C28A39910B5E08B6C10 /* Pods_Runner.framework in Frameworks */,
 				99F490172926419D00C6DEBE /* CallAppSDK.framework in Frameworks */,
 			);
@@ -236,7 +234,6 @@
 			);
 			name = Runner;
 			packageProductDependencies = (
-				52F9DB9E29E7F546002B71B0 /* MapboxMaps */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
@@ -271,7 +268,6 @@
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
-				52F9DB9D29E7F546002B71B0 /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
@@ -844,25 +840,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		52F9DB9D29E7F546002B71B0 /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mapbox/mapbox-maps-ios.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		52F9DB9E29E7F546002B71B0 /* MapboxMaps */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 52F9DB9D29E7F546002B71B0 /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */;
-			productName = MapboxMaps;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }

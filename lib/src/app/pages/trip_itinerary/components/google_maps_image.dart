@@ -4,9 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-
 import '../../../../data/data.dart';
-import 'dart:math' as math;
 
 class GoogleMapImageDetailTrip extends StatefulWidget {
   const GoogleMapImageDetailTrip({
@@ -32,17 +30,14 @@ class GoogleMapImageDetailTrip extends StatefulWidget {
 
 class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
   MapboxMapController? mapController;
-
-  CompoundingCarCustomerState get state => widget.customer.state!;
-
   LineOptions? driverIncomingPolyline;
   late final RemoveListener listener;
-
   late final LatLng centerLatLng;
   Uint8List? dataBytes;
-
   late StreamSubscription<DatabaseEvent> _locationSubscription;
   late DatabaseReference _locationRef;
+
+  CompoundingCarCustomerState get state => widget.customer.state!;
 
   @override
   void initState() {
@@ -53,17 +48,18 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
         endLat: widget.endLatitude,
         endLong: widget.endLongitude);
 
-    initTripRoute();
-
-    if ([
-      CompoundingCarCustomerState.startRunning,
-      CompoundingCarCustomerState.waitingCustomer,
-      CompoundingCarCustomerState.inProcess,
-      CompoundingCarCustomerState.startReturn,
-      CompoundingCarCustomerState.inReturnProcess,
-    ].contains(state)) {
-      setListener();
-    }
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      initTripRoute();
+      if ([
+        CompoundingCarCustomerState.startRunning,
+        CompoundingCarCustomerState.waitingCustomer,
+        CompoundingCarCustomerState.inProcess,
+        CompoundingCarCustomerState.startReturn,
+        CompoundingCarCustomerState.inReturnProcess,
+      ].contains(state)) {
+        setListener();
+      }
+    });
   }
 
   setListener() async {
@@ -107,16 +103,13 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     }
 
     // update driver marker
-    mapController?.addSymbol(
-      SymbolOptions(
-        iconImage: AppIcons.carMarker,
-        geometry: LatLng(lat, long),
-        iconSize: 1.5,
-      ),
+    addSymbolStartEnd();
+    final symbolOptions = SymbolOptions(
+      iconImage: AppIcons.carMarker,
+      geometry: LatLng(lat, long),
+      iconSize: 0.2,
     );
-    if (mounted) {
-      setState(() {});
-    }
+    mapController?.addSymbol(symbolOptions);
 
     updateCamera(
       LatLng(lat, long),
@@ -136,101 +129,77 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
     ].contains(state)) {
       _locationSubscription.cancel();
     }
-
     super.dispose();
   }
 
   void _onMapCreated(MapboxMapController controller) {
     mapController = controller;
 
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      addSymbolStartEnd();
+      LatLng latLng_1 = LatLng(double.parse(widget.startLatitude),
+          double.parse(widget.startLongitude));
+      LatLng latLng_2 = LatLng(
+          double.parse(widget.endLatitude), double.parse(widget.endLongitude));
+      updateCamera(latLng_1, latLng_2);
+    });
+  }
+
+  addSymbolStartEnd() {
     LatLng latLng_1 = LatLng(double.parse(widget.startLatitude),
         double.parse(widget.startLongitude));
     LatLng latLng_2 = LatLng(
         double.parse(widget.endLatitude), double.parse(widget.endLongitude));
+    mapController?.clearSymbols();
 
-    setState(() {
-      mapController?.clearSymbols();
-      mapController?.symbolManager?.clear();
-      if (widget.customer.state!.index >=
-              CompoundingCarCustomerState.startReturn.index &&
-          widget.customer.compoundingType == CompoundingType.twoWay) {
-        mapController?.addSymbols(
-          [
-            SymbolOptions(
-              geometry: latLng_2,
-              iconImage: AppIcons.pickupLocationPng,
-              iconSize: 1,
-            ),
-            SymbolOptions(
-              geometry: latLng_1,
-              iconImage: AppIcons.locationPng,
-              iconSize: 1.5,
-              iconOffset: const Offset(0, -10),
-            ),
-          ],
-        );
-      } else {
-        mapController?.addSymbols(
-          [
-            SymbolOptions(
-              geometry: latLng_1,
-              iconImage: AppIcons.pickupLocationPng,
-              iconSize: 1,
-            ),
-            SymbolOptions(
-              geometry: latLng_2,
-              iconImage: AppIcons.locationPng,
-              iconSize: 1.5,
-              iconOffset: const Offset(0, -10),
-            ),
-          ],
-        );
-      }
-    });
-
-    updateCamera(latLng_1, latLng_2);
+    if (widget.customer.state!.index >=
+            CompoundingCarCustomerState.startReturn.index &&
+        widget.customer.compoundingType == CompoundingType.twoWay) {
+      mapController?.addSymbols(
+        [
+          SymbolOptions(
+            geometry: latLng_2,
+            iconImage: AppIcons.pickupLocationPng,
+            iconSize: 1,
+          ),
+          SymbolOptions(
+            geometry: latLng_1,
+            iconImage: AppIcons.locationPng,
+            iconSize: 1.5,
+            iconOffset: const Offset(0, -10),
+          ),
+        ],
+      );
+    } else {
+      mapController?.addSymbols(
+        [
+          SymbolOptions(
+            geometry: latLng_1,
+            iconImage: AppIcons.pickupLocationPng,
+            iconSize: 1,
+          ),
+          SymbolOptions(
+            geometry: latLng_2,
+            iconImage: AppIcons.locationPng,
+            iconSize: 1.5,
+            iconOffset: const Offset(0, -10),
+          ),
+        ],
+      );
+    }
   }
 
   updateCamera(LatLng start, LatLng end) async {
-    LatLngBounds bound = computeBounds([start, end]);
-    CameraUpdate u2 = CameraUpdate.newLatLngBounds(
-      bound,
-      left: 20,
-      bottom: 20,
-      right: 20,
-      top: 20,
+    LatLngBounds bound = DirectionModel().boundLatLng(start, end);
+    mapController?.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        bound,
+        left: 20,
+        bottom: 20,
+        right: 20,
+        top: 20,
+      ),
     );
-    mapController?.animateCamera(u2).then((void v) {
-      if (mapController != null) {
-        check(u2, mapController!);
-      }
-    });
-  }
-
-  LatLngBounds computeBounds(List<LatLng> list) {
-    assert(list.isNotEmpty);
-    var firstLatLng = list.first;
-    var s = firstLatLng.latitude,
-        n = firstLatLng.latitude,
-        w = firstLatLng.longitude,
-        e = firstLatLng.longitude;
-    for (var i = 1; i < list.length; i++) {
-      var latLng = list[i];
-      s = math.min(s, latLng.latitude);
-      n = math.max(n, latLng.latitude);
-      w = math.min(w, latLng.longitude);
-      e = math.max(e, latLng.longitude);
-    }
-    return LatLngBounds(southwest: LatLng(s, w), northeast: LatLng(n, e));
-  }
-
-  void check(CameraUpdate u, MapboxMapController c) async {
-    c.animateCamera(u);
-    LatLngBounds l1 = await c.getVisibleRegion();
-    LatLngBounds l2 = await c.getVisibleRegion();
-    if (l1.southwest.latitude == -90 || l2.southwest.latitude == -90) {
-      check(u, c);
-    }
   }
 
   LatLng getCenterPoint({
@@ -297,12 +266,11 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
           styleString:
               'https://tiles.goong.io/assets/goong_map_web.json?api_key=$key',
           onMapCreated: _onMapCreated,
-          zoomGesturesEnabled: false,
-          myLocationEnabled: false,
           initialCameraPosition: CameraPosition(
+            zoom: 8,
             target: LatLng(centerLatLng.latitude, centerLatLng.longitude),
-            zoom: 7,
           ),
+          minMaxZoomPreference: const MinMaxZoomPreference(7, 18),
         ),
         Positioned(
           bottom: 20.0,
@@ -320,14 +288,16 @@ class _GoogleMapImageDetailTripState extends State<GoogleMapImageDetailTrip> {
                   currentLocation = null;
                 }
                 if (currentLocation != null) {
-                  mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                      bearing: 0,
-                      target: LatLng(
-                          currentLocation.latitude, currentLocation.longitude),
-                      zoom: 17.0,
+                  mapController?.animateCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        bearing: 0,
+                        target: LatLng(currentLocation.latitude,
+                            currentLocation.longitude),
+                        zoom: 17.0,
+                      ),
                     ),
-                  ));
+                  );
                 }
               },
               child: Container(

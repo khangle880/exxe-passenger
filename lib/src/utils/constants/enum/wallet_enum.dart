@@ -148,7 +148,7 @@ extension PaymentPurposeEnumExt on PaymentPurpose {
         return AppColors.accOrange;
       case PaymentPurpose.returnPassengerDeposit:
       case PaymentPurpose.returnCarDriverDeposit:
-        return AppColors.accOrange;
+        return AppColors.green60;
       case PaymentPurpose.customerInvoice:
         return AppColors.utilRed;
       case PaymentPurpose.passengerWithdrawing:

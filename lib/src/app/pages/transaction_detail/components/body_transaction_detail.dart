@@ -56,12 +56,16 @@ class BodyTransactionDetail extends StatelessWidget {
                 _buildPaymentInfoRow(
                     "Mã ID", paymentInfo.paymentCode.toString()),
                 const SizedBox(height: 8),
-                _buildPaymentInfoRow(
-                    "Thời gian thanh toán", paymentInfo.date!.getDateTimeString),
+                _buildPaymentInfoRow("Thời gian thanh toán",
+                    paymentInfo.date!.getDateTimeString),
                 const SizedBox(height: 8),
                 _buildPaymentInfoRow("Nguồn tiền", "Tài khoản EXXE"),
                 const SizedBox(height: 8),
                 _buildPaymentInfoRow("Chi phí", "Miễn phí"),
+                if (paymentInfo.ref != null) ...[
+                  const SizedBox(height: 8),
+                  _buildPaymentInfoRow("Nội dung", paymentInfo.ref!),
+                ]
               ],
             ),
           ),

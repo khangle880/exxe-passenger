@@ -100,6 +100,7 @@ class AppDialog {
     bool? barrierDismissible,
     Function()? onConfirm,
     Function()? onCancel,
+    Function()? onDepositReturnedEnd,
 
     /// milliseconds
     int? countdownNumber,
@@ -110,6 +111,7 @@ class AppDialog {
       onConfirm: onConfirm ?? closeDialog,
       canReturned: canReturned,
       countdownNumber: countdownNumber,
+      onDepositReturnedEnd: onDepositReturnedEnd,
     );
     showCustomDialog(content: content);
   }

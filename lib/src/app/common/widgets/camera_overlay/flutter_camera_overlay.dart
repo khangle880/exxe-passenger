@@ -1,5 +1,13 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
-import '../../../../utils/export/ui_export.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image/image.dart' as img;
+
+import '../measure_size.dart';
+import 'overlay_shape.dart';
 
 typedef XFileCallback = void Function(Uint8List bytes);
 
@@ -39,6 +47,8 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
   bool flashEnable = false;
   double bottomLeftWidth = 60;
   final ratio = 1.42;
+  Size? cameraSize;
+  Size? cardSize;
 
   @override
   void initState() {
@@ -79,32 +89,36 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
+      final cardWidth = constraints.maxWidth - 20;
+      cardSize = Size(cardWidth, cardWidth / ratio);
+
       return Column(
         children: [
           if (widget.label != null || widget.info != null)
             Align(
               alignment: Alignment.topCenter,
               child: Container(
-                  margin: widget.infoMargin ??
-                      const EdgeInsets.only(top: 24, left: 24, right: 24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (widget.label != null)
-                        Text(
-                          widget.label!,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      if (widget.info != null)
-                        Flexible(
-                          child: widget.info!,
-                        ),
-                    ],
-                  )),
+                margin: widget.infoMargin ??
+                    const EdgeInsets.only(top: 24, left: 24, right: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (widget.label != null)
+                      Text(
+                        widget.label!,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    if (widget.info != null)
+                      Flexible(
+                        child: widget.info!,
+                      ),
+                  ],
+                ),
+              ),
             ),
           const SizedBox(height: 16),
           Expanded(
@@ -112,9 +126,14 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
               alignment: Alignment.bottomCenter,
               fit: StackFit.expand,
               children: [
-                CameraPreview(controller),
+                MeasureSize(
+                  onChange: (size) {
+                    cameraSize = size;
+                  },
+                  child: CameraPreview(controller),
+                ),
                 if (widget.hasOverlay)
-                  OverlayShape(ratio: ratio, width: constraints.maxWidth - 20),
+                  OverlayShape(ratio: ratio, width: cardWidth),
               ],
             ),
           ),
@@ -202,52 +221,65 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
       widget.onCapture(bytes);
       return;
     }
+
     // CroppedFile? croppedImage = await ImageCropper().cropImage(
     //   sourcePath: file.path,
     //   aspectRatio: CropAspectRatio(
     //     ratioX: 1,
     //     ratioY: 1 / ratio,
     //   ),
-    //   aspectRatioPresets: [
-    //     CropAspectRatioPreset.square,
-    //     CropAspectRatioPreset.ratio3x2,
-    //     CropAspectRatioPreset.original,
-    //     CropAspectRatioPreset.ratio4x3,
-    //     CropAspectRatioPreset.ratio16x9
-    //   ],
-    //   uiSettings: [
-    //     AndroidUiSettings(
-    //       toolbarTitle: 'Cropper',
-    //       toolbarColor: Colors.deepOrange,
-    //       toolbarWidgetColor: Colors.white,
-    //       initAspectRatio: CropAspectRatioPreset.original,
-    //       lockAspectRatio: false,
-    //     ),
-    //     IOSUiSettings(
-    //       title: 'Cropper',
-    //     ),
-    //     WebUiSettings(
-    //       context: context,
-    //     ),
-    //   ],
+    //   compressQuality: 100,
+    //   maxHeight: 2048,
+    //   maxWidth: 2048,
+    //   cropStyle: CropStyle.rectangle,
     // );
-    final bytes = await file.readAsBytes();
+    final captureBytes = await file.readAsBytes();
+    final image = img.decodeImage(captureBytes);
+    final x = (cameraSize!.height - cardSize!.height) / 2;
+    final y = (cameraSize!.height - cardSize!.height) / 2;
+    final trimmed = img.copyCrop(image!, x.ceil(), y.ceil(), cardSize!.width.ceil(),
+        cardSize!.height.ceil());
+
+    // final sampledFile = await ImageCrop.cropImage(
+    //   file: File(file.path),
+    //   area: Rect.fromCenter(
+    //     center: Offset(cameraSize!.width / 2, cameraSize!.height / 2),
+    //     width: cardSize!.width,
+    //     height: cardSize!.height,
+    //   ),
+    // );
     if (mounted) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => CropImagePage(
-            imageData: bytes,
-            ratio: ratio,
-            initialSize: (width - 20) / width,
-          ),
+          builder: (_) {
+            return Center(
+              child: Image.memory(trimmed.data.buffer.asUint8List()),
+            );
+          },
         ),
-      ).then((value) {
-        if (value is Uint8List) {
-          widget.onCapture(value);
-        }
-      });
+      );
     }
+    // if (cropped != null) {
+    //   widget.onCapture(cropped.buffer.asUint8List());
+    //   return;
+    // }
+    // if (mounted) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (_) => CropImagePage(
+    //         filePath: file.path,
+    //         ratio: ratio,
+    //         initialSize: (width - 20) / width,
+    //       ),
+    //     ),
+    //   ).then((value) {
+    //     if (value is Uint8List) {
+    //       widget.onCapture(value);
+    //     }
+    //   });
+    // }
     // if (croppedImage != null) {
     //   widget.onCapture(File(croppedImage.path));
     // }

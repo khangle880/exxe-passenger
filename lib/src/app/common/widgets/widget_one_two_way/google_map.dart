@@ -139,20 +139,19 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
       final bound = widget.directionModel!.bound(
           widget.pickupPoint!.coordinate!,
           widget.destinationPoint!.coordinate!);
-      if (bound != null) {
-        mapController?.animateCamera(
-          CameraUpdate.newLatLngBounds(
-            LatLngBounds(
-              southwest: bound.southwest!.toLatLng,
-              northeast: bound.northeast!.toLatLng,
-            ),
-            left: 20,
-            right: 20,
-            top: 20,
-            bottom: 20,
+
+      mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(
+          LatLngBounds(
+            southwest: bound.southwest!.toLatLng,
+            northeast: bound.northeast!.toLatLng,
           ),
-        );
-      }
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: 20,
+        ),
+      );
     }
 
     if (mounted) {
@@ -172,8 +171,6 @@ class _GoogleMapBackgroundState extends State<GoogleMapBackground> {
       accessToken: accessToken,
       styleString:
           'https://tiles.goong.io/assets/goong_map_web.json?api_key=$key',
-      // myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
-      // myLocationEnabled: true,
       onMapCreated: (MapboxMapController controller) {
         mapController = controller;
       },

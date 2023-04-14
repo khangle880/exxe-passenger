@@ -9,13 +9,13 @@ class CancelDepositDialog extends StatefulWidget {
     Key? key,
     required this.onCancel,
     required this.onConfirm,
-    this.onEnd,
+    this.onDepositReturnedEnd,
     this.countdownNumber,
     required this.canReturned,
   }) : super(key: key);
   final Function() onCancel;
   final Function() onConfirm;
-  final Function()? onEnd;
+  final Function()? onDepositReturnedEnd;
 
   /// milliseconds
   final int? countdownNumber;
@@ -32,14 +32,19 @@ class _CancelDepositDialogState extends State<CancelDepositDialog> {
   @override
   void initState() {
     canReturned = widget.canReturned;
-    if ((widget.countdownNumber ?? 0) != 0) {
-      timer = Timer(Duration(milliseconds: widget.countdownNumber!), () {
-        setState(() {
-          canReturned = false;
-        });
-      });
-    }
+    // 5s space for countdown button
+    // if ((widget.countdownNumber ?? 0) > 5) {
+    //   timer = Timer(Duration(milliseconds: widget.countdownNumber!), () {
+    //     widget.onDepositReturnedEnd?.call();
+    //   });
+    // }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override

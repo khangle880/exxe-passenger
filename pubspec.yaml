@@ -64,8 +64,6 @@ dependencies:
   video_player: ^2.4.7
   flutter_image_compress: ^1.1.3
   wechat_assets_picker: ^8.1.3
-  image_cropper: ^3.0.1
-#  crop_your_image: ^0.7.4
 
   # widget
   expandable_page_view: ^1.0.17
@@ -112,12 +110,7 @@ dependencies:
   flutter_speed_dial: ^6.2.0
   shimmer: ^2.0.0
   shared_preferences: ^2.0.17
-
-  mapbox_gl:
-    git:
-      url: https://github.com/flutter-mapbox-gl/maps
-      ref: 9eef30d
-  image_crop: ^0.4.1
+  mapbox_gl: ^0.16.0
 
 dev_dependencies:
   flutter_test:
