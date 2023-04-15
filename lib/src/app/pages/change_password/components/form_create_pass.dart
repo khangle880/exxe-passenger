@@ -77,6 +77,8 @@ class FormCreatePass extends StatelessWidget {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Vui lòng điền mật khẩu';
+                        } else if (value != state.newPass) {
+                          return "Hai mật khẩu phải trùng khớp nhau !";
                         }
                         final miss = [
                           value.isHas8Character() ? null : "tối thiểu 8 kí tự",

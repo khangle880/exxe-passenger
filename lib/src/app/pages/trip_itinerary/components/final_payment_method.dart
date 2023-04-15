@@ -84,7 +84,7 @@ class _FinalPaymentMethodsState extends State<FinalPaymentMethods> {
                         icon: e.provider == "cash"
                             ? SvgPicture.asset(
                                 RemainingPaymentMethod.cash.iconPath,
-                                color: AppColors.accBlueMain,
+                                color: AppColors.primaryMain,
                               )
                             : null,
                       ))

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import '../../../../core/core.dart';
 import '../../../../data_chat/data_chat.dart';
 import '../../../../storage/models/user_chat.dart';
 import '../../../../utils/export/logic_export.dart';
@@ -30,7 +29,7 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
     on<ResetPhoneEvent>((event, emit) => emit(state.copyWith(phone: '')));
 
     on<ResetPasswordEvent>((event, emit) async {
-      emit(state.copyWith(formState: FormLoginStatus.submitting));
+      emitWaiting(true);
       final token = event.token;
       if (token.carAccountType != null &&
           token.carAccountType != CarAccountType.customer) {
@@ -40,8 +39,7 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
       }
       final either = await GetIt.I<IUserInfoRepo>().getUserInfo();
       either.fold((failure) {
-        log(failure.toString());
-        emit(state.copyWith(formState: FormLoginStatus.failed));
+        emitWaiting(false);
         emitError(failure);
       }, (data) async {
         GetIt.I.get<AppState>().updateUser(data);
@@ -58,15 +56,20 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
     on<SubmitFormOTPEvent>((event, emit) => _handleAuthOtpSubmit(event, emit));
 
     on<CheckHasPassEvent>((event, emit) async {
-      emit(state.copyWith(formState: FormLoginStatus.submitting));
-      if (await _checkHasPassword()) {
+      emitWaiting(true);
+      final hasPass = await _checkHasPassword();
+      if (hasPass == null) {
+        emitWaiting(false);
+        return;
+      }
+      if (hasPass) {
         add(LoginEvent());
       } else {
+        emitWaiting(false);
         emit(state.copyWith(formState: FormLoginStatus.needPassword));
       }
     });
     on<LoginEvent>((event, emit) async {
-      emit(state.copyWith(formState: FormLoginStatus.submitting));
       final playerId = await OneSignalNotificationHelper.I.id;
 
       if (playerId != null) {
@@ -74,8 +77,8 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
       }
 
       final generalInfoEither = await userRepo.getGeneralUserInfo();
+      emitWaiting(false);
       generalInfoEither.fold((failure) {
-        log(failure.toString());
         emitError(failure);
       }, (data) {
         if (data.userInformation ?? false) {
@@ -91,11 +94,11 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
     });
   }
 
-  Future<bool> _checkHasPassword() async {
+  Future<bool?> _checkHasPassword() async {
     final result = await UserRepo().checkHasPassword();
     return result.fold((failure) {
-      log(failure.toString());
-      return Future.error(failure);
+      emitError(failure);
+      return null;
     }, (hasPass) {
       return hasPass;
     });
@@ -103,16 +106,13 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
 
   _handleAuthOtpSubmit(
       SubmitFormOTPEvent event, Emitter<AuthLoginState> emit) async {
-    emit(state.copyWith(formState: FormLoginStatus.submitting));
+    emitWaiting(true);
     final result =
         await userRepo.authWithPhoneOtp(stringeeAccessToken: event.accessToken);
+
     result.fold((failure) {
-      emit(state.copyWith(
-        formState: FormLoginStatus.failed,
-        message: (failure is ServerFailure)
-            ? failure.serverMessage
-            : "Đã có lỗi, vui lòng thử lại sau",
-      ));
+      emitWaiting(false);
+      emitError(failure);
     }, (user) async {
       final token = TokenModel(
         token: user.token,
@@ -121,6 +121,7 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
       );
       if (token.carAccountType != null &&
           token.carAccountType != CarAccountType.customer) {
+        emitWaiting(false);
         emit(state.copyWith(formState: FormLoginStatus.notCompatible));
       } else {
         await _handleLoginRegisterChat(user);
@@ -136,18 +137,14 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
   //handle auth login passs
   _handleAuthPasswordSubmit(
       SubmitFormPhonePasswordEvent event, Emitter<AuthLoginState> emit) async {
-    emit(state.copyWith(formState: FormLoginStatus.submitting));
+    emitWaiting(true);
     final result =
         await userRepo.login(phone: state.phone, password: state.password);
 
     TokenModel? token;
     result.fold((failure) {
-      emit(state.copyWith(
-        formState: FormLoginStatus.failed,
-        message: (failure is ServerFailure)
-            ? failure.serverMessage
-            : "Đã có lỗi, vui lòng thử lại sau",
-      ));
+      emitWaiting(false);
+      emitError(failure);
     }, (tokenModel) {
       if (tokenModel.carAccountType != null &&
           tokenModel.carAccountType != CarAccountType.customer) {
@@ -160,8 +157,8 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
     if (token != null) {
       final either = await userInfoRepo.getUserInfo();
       either.fold((failure) {
+        emitWaiting(false);
         emitError(failure);
-        log(failure.toString());
       }, (user) async {
         await _handleLoginRegisterChat(user);
         await GetIt.I.get<AppState>().updateUser(user);

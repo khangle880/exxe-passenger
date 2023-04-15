@@ -1,10 +1,25 @@
 import 'package:exxe/src/app/pages/login/components/body_login.dart';
 import 'package:exxe/src/app/pages/login/controller/auth_login_bloc.dart';
+import 'package:exxe/src/core/base_state.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends BaseState<LoginPage, AuthLoginBloc> {
+  @override
+  late final AuthLoginBloc bloc;
+
+  @override
+  void initState() {
+    bloc = context.read<AuthLoginBloc>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +29,9 @@ class LoginPage extends StatelessWidget {
         body: BlocListener<AuthLoginBloc, AuthLoginState>(
           listenWhen: (old, current) => old.formState != current.formState,
           listener: (context, state) {
-            if (state.formState != FormLoginStatus.submitting) {
-              AppDialog.I.closeDialog();
-            }
             log(state.formState.toString());
             switch (state.formState) {
               case FormLoginStatus.none:
-                break;
-              case FormLoginStatus.submitting:
-                AppDialog.I.showLoading();
-                break;
-              case FormLoginStatus.failed:
-                AppDialog.I.showWarning(message: state.message);
                 break;
               case FormLoginStatus.success:
                 Navigator.pushNamedAndRemoveUntil(
@@ -36,7 +42,9 @@ class LoginPage extends StatelessWidget {
                   message:
                       'Đây là ứng dụng dành cho khách hàng. Tài khoản của bạn đã đăng ký với vai trò khác. Vui lòng đăng nhập tài khoản khác hoặc đăng ký tài khoản mới.',
                   onConfirm: () async {
-                    AppDialog.I.closeDialog();
+                    context
+                        .read<AuthLoginBloc>()
+                        .add(const UpdateStatusEvent(FormLoginStatus.none));
                     const bundleId = 'com.exxe.driver';
                     const appId = '6446149125';
                     final url = Uri.parse(

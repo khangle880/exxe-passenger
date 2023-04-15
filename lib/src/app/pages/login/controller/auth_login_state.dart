@@ -59,8 +59,6 @@ class AuthLoginState extends Equatable {
 
 enum FormLoginStatus {
   none,
-  submitting,
-  failed,
   success,
   notCompatible,
   needPassword,

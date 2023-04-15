@@ -160,31 +160,25 @@ class ResetPassButton extends StatelessWidget {
     return GestureDetector(
       onTap: canReset
           ? () async {
-              AppDialog.I.showLoading();
-              final result =
-                  await GetIt.I<IUserRepo>().checkPhoneRegistered(phoneNumber);
-              AppDialog.I.closeDialog();
-              result.fold((failure) => failure.showDefaultDialog(), (data) {
-                Navigator.pushNamed(
-                  context,
-                  Routes.otp,
-                  arguments: {
-                    "phoneNumber": phoneNumber.convertToCountryPhoneCode(),
-                    "sendPurpose": "reset_password",
-                  },
-                ).then((value) {
-                  if (value is String) {
-                    Navigator.pushNamed(
-                      context,
-                      Routes.changePassword,
-                      arguments: {'token': value},
-                    ).then((value) {
-                      if (value is TokenModel) {
-                        authLoginBloc.add(ResetPasswordEvent(token: value));
-                      }
-                    });
-                  }
-                });
+              Navigator.pushNamed(
+                context,
+                Routes.otp,
+                arguments: {
+                  "phoneNumber": phoneNumber.convertToCountryPhoneCode(),
+                  "sendPurpose": "reset_password",
+                },
+              ).then((value) {
+                if (value is String) {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.changePassword,
+                    arguments: {'stringeeToken': value},
+                  ).then((value) {
+                    if (value is TokenModel) {
+                      authLoginBloc.add(ResetPasswordEvent(token: value));
+                    }
+                  });
+                }
               });
             }
           : null,

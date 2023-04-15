@@ -119,13 +119,13 @@ class CompoundingCarCustomerModel {
           ? fromAddress
           : (isPickingUpFromStart ?? false)
               ? fromAddress
-              : fromPickUpStation?.stationName;
+              : (fromPickUpStation?.stationName?? fromAddress);
 
   /// address available can show view
   String? get toAddressShow =>
       [CompoundingType.oneWay, CompoundingType.twoWay].contains(compoundingType)
           ? toAddress
-          : toPickUpStation?.stationName;
+          : (toPickUpStation?.stationName ?? toAddress);
 
   LocationModel get fromLocation => LocationModel(
         coordinate: CoordinateModel(

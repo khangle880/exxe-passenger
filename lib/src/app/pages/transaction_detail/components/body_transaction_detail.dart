@@ -91,13 +91,30 @@ class BodyTransactionDetail extends StatelessWidget {
     );
   }
 
-  _buildPaymentInfoRow(String title, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: AppStyles.s12w4.withColor(AppColors.gray70x76)),
-        Text(value, style: AppStyles.s12w6),
-      ],
+  _buildPaymentInfoRow(String title, String value, {bool hasPad = true}) {
+    return Padding(
+      padding: hasPad ? const EdgeInsets.only(bottom: 8.0) : EdgeInsets.zero,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              title,
+              style: AppStyles.s12w4.withColor(AppColors.gray70x76),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: AppStyles.s12w6,
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
