@@ -53,7 +53,7 @@ class _FormCheckPhoneState extends State<FormCheckPhone> {
           children: [
             const SizedBox(height: 24),
             Text(
-              "Dành cho tài xế",
+              "Dành cho khách hàng",
               style: AppStyles.s20w7.withColor(AppColors.primaryMain),
             ),
             const SizedBox(height: 4),

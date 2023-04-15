@@ -15,10 +15,9 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
   AuthLoginBloc(this.userRepo, this.userInfoRepo)
       : super(const AuthLoginState()) {
     on<UpdateStatusEvent>(
-      (event, emit) => emit(
-        state.copyWith(formState: event.status),
-      ),
+      (event, emit) => emit(state.copyWith(formState: event.status)),
     );
+
     on<ChangedPhoneLoginEvent>(
       (event, emit) => emit(
         state.copyWith(phone: event.phone, methodLogin: event.method),

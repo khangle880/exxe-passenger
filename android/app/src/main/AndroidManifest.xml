@@ -106,7 +106,7 @@
         <!-- set up google map -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="" />
+            android:value="AIzaSyC4OI79qDL5sN7ziz4dW4OUX_surdHP1YI" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

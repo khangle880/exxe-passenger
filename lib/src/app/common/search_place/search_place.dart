@@ -63,7 +63,6 @@ class _SearchPlaceState extends State<SearchPlace> {
 
   @override
   Widget build(BuildContext context) {
-    final userInfo = GetIt.I.get<AppState>().currentState.user;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();

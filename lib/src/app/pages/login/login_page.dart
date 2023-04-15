@@ -14,6 +14,10 @@ class LoginPage extends StatelessWidget {
         body: BlocListener<AuthLoginBloc, AuthLoginState>(
           listenWhen: (old, current) => old.formState != current.formState,
           listener: (context, state) {
+            if (state.formState != FormLoginStatus.submitting) {
+              AppDialog.I.closeDialog();
+            }
+            log(state.formState.toString());
             switch (state.formState) {
               case FormLoginStatus.none:
                 break;
