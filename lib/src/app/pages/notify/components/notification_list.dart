@@ -261,11 +261,8 @@ class _NotificationListWidgetState extends State<NotificationListWidget> {
                 },
               );
             } else if (item.type == NotificationType.promotionNotification) {
-              Navigator.pushNamed(
-                context,
-                Routes.promotionDetailPage,
-                arguments: item.id!,
-              );
+              Navigator.pushNamed(context, Routes.promotionDetailPage,
+                  arguments: {"promotionId": item.id!});
             } else {
               Navigator.pushNamed(
                 context,

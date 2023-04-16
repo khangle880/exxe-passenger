@@ -9,9 +9,11 @@ class PromotionDetailPage extends StatefulWidget {
     required this.promotionId,
     this.apply,
     this.canApply,
+    this.currentPromoId,
   }) : super(key: key);
 
   final int promotionId;
+  final int? currentPromoId;
   final bool? canApply;
   final Function()? apply;
 
@@ -60,7 +62,9 @@ class _PromotionDetailPageState extends State<PromotionDetailPage> {
                     }
                   : null,
               child: Text(
-                "Áp dụng",
+                (widget.currentPromoId == widget.promotionId)
+                    ? "Bỏ chọn"
+                    : "Áp dụng",
                 style: AppStyles.s16w6.withColor(AppColors.primaryLight),
               ),
             ).bottomSingle(),

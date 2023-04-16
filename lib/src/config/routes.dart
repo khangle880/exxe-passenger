@@ -438,11 +438,13 @@ class Routes {
       case Routes.promotionDetailPage:
         final args = settings.arguments as Map<String, dynamic>;
         int promotionId = args['promotionId'];
+        int? currentPromoId = args['currentPromoId'];
         final apply = args['apply'];
         final canApply = args['canApply'];
         return MaterialPageRoute(
           builder: (context) => PromotionDetailPage(
             promotionId: promotionId,
+            currentPromoId: currentPromoId,
             canApply: canApply,
             apply: apply,
           ),

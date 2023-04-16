@@ -86,6 +86,8 @@ class _PromotionPageState extends BaseState<PromotionPage, PromotionCubit> {
                                           state.promotions![index].promotionId,
                                       'canApply':
                                           item.isPromotionApplied ?? false,
+                                      'currentPromoId':
+                                          widget.currentPromo?.promotionId!,
                                       'apply': () {
                                         Navigator.pop(context);
                                         bloc.applyPromotion(

@@ -30,7 +30,7 @@ class PromoItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(6.0),
         ),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.fill,
@@ -42,58 +42,58 @@ class PromoItem extends StatelessWidget {
               Flexible(
                 fit: FlexFit.tight,
                 flex: 114,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${promo.promotionName}',
-                      style: AppStyles.s14w7.withColor(
-                        AppColors.secondaryMain,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    promo.promotionBrief != null
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              promo.promotionBrief!,
-                              style: AppStyles.s12w4
-                                  .withColor(AppColors.gray70x3b),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: Image.asset(AppIcons.voucherVerticalLine),
-              ),
-              Flexible(
-                flex: 29,
-                fit: FlexFit.tight,
-                child: InkWell(
-                  onTap: isCanApplied ? onTap : null,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Builder(builder: (context) {
-                      final content =
-                          (currentPromo?.promotionId == promo.promotionId)
-                              ? "Bỏ chọn"
-                              : "Áp dụng";
-                      return Text(
-                        content,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${promo.promotionName}',
                         style: AppStyles.s14w7.withColor(
                           AppColors.secondaryMain,
                         ),
-                      );
-                    }),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      promo.promotionBrief != null
+                          ? Container(
+                              margin: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                promo.promotionBrief!,
+                                style: AppStyles.s12w4
+                                    .withColor(AppColors.gray70x3b),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
                   ),
                 ),
+              ),
+              Image.asset(AppIcons.voucherVerticalLine),
+              Flexible(
+                flex: 40,
+                fit: FlexFit.tight,
+                child: Builder(builder: (context) {
+                  final content =
+                      (currentPromo?.promotionId == promo.promotionId)
+                          ? "Bỏ chọn"
+                          : "Áp dụng";
+                  return IntrinsicHeight(
+                    child: Text(
+                      content,
+                      style: AppStyles.s14w7.withColor(
+                        AppColors.secondaryMain,
+                      ),
+                    ).inkWell(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 16),
+                      onTap: isCanApplied ? onTap : null,
+                    ),
+                  );
+                }),
               )
             ],
           ),
