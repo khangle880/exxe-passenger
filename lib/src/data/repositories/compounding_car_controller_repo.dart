@@ -322,7 +322,7 @@ class CompoundingCarControllerRepo extends ICompoundingCarCtrlRepo {
   Future<Either<Failure, CompoundingPaymentRequest>> createVNPayPayment({
     required num methodId,
     required num customerId,
-    required String returnUrl,
+    required String returnedUrl,
   }) async {
     final token = await BoxesUser.instance.getDataTokenUser();
     final request =
@@ -331,7 +331,7 @@ class CompoundingCarControllerRepo extends ICompoundingCarCtrlRepo {
         "token": token,
         "acquirer_id": methodId,
         "compounding_car_customer_id": customerId,
-        "returned_url": returnUrl,
+        "returned_url": returnedUrl,
       }
     });
     return ParserHelper.singleParseDefault(

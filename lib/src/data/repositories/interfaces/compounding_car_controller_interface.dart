@@ -91,7 +91,7 @@ abstract class ICompoundingCarCtrlRepo {
   Future<Either<Failure, CompoundingPaymentRequest>> createVNPayPayment({
     required num methodId,
     required num customerId,
-    required String returnUrl,
+    required String returnedUrl,
   });
 
   Future<Either<Failure, PaymentModel>> confirmCompoundingPayment(

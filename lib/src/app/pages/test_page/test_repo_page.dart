@@ -139,7 +139,7 @@ class _TestRepoPageState extends State<TestRepoPage> {
     var result = await repo.createVNPayPayment(
       customerId: customer!.compoundingCarCustomerId!,
       methodId: currentPaymentMethod!.acquirerId!,
-      returnUrl: "exxe://vnpay",
+      returnedUrl: "exxe://vnpay",
     );
     result.fold((failure) {
       errorMessage = failure.toString();

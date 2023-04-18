@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:exxe/src/utils/constants/app_constant.dart';
 
 import '../../../../storage/models/transaction.dart';
 import '../../../../utils/export/logic_export.dart';
@@ -51,7 +52,7 @@ class RechargeMoneyCubit extends BaseCubit<RechargeMoneyState> {
       amount: state.amount!,
       acquirerId: state.currentMethod!.acquirerId!,
       journalId: state.cashJournal!.journalId,
-      returnedUrl: 'https://blog-client-alpha.vercel.app/checking-checkout-status',
+      returnedUrl: AppConstant.vnPayReturnedUrl,
     );
     emitWaiting(false);
     result.fold((failure) {

@@ -104,8 +104,7 @@ class _DepositPageState extends State<DepositPage> {
         var result = await CompoundingCarControllerRepo().createVNPayPayment(
           customerId: customer!.compoundingCarCustomerId!,
           methodId: currentPaymentMethod!.acquirerId!,
-          returnUrl:
-              "https://blog-client-alpha.vercel.app/checking-checkout-status",
+          returnedUrl: AppConstant.vnPayReturnedUrl,
         );
         AppDialog.I.closeDialog();
 
