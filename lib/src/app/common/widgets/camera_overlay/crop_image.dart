@@ -1,5 +1,4 @@
-import 'package:image_crop/image_crop.dart';
-
+import 'package:crop_your_image/crop_your_image.dart';
 import '../../../../utils/export/ui_export.dart';
 
 class CropImagePage extends StatefulWidget {
@@ -18,50 +17,42 @@ class CropImagePage extends StatefulWidget {
 }
 
 class _CropImagePageState extends State<CropImagePage> {
-  final cropKey = GlobalKey<CropState>();
-  late final File file;
-
-  @override
-  void initState() {
-    file = File.fromRawPath(widget.imageData);
-    super.initState();
-  }
+  final _controller = CropController();
+  bool readyCrop = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          AppDialog.I.showLoading();
-          final scale = cropKey.currentState?.scale;
-          final area = cropKey.currentState?.area;
-          if (area == null) {
-            return;
-          }
-
-          final sample = await ImageCrop.sampleImage(
-            file: file,
-            preferredSize: (2048 / (scale ?? 1)).round(),
-          );
-
-          final croppedFile = await ImageCrop.cropImage(
-            file: sample,
-            area: area,
-          );
-
-          sample.delete();
-          if (mounted) {
-            Navigator.pop<Uint8List>(context, croppedFile.readAsBytesSync());
-          }
-        },
-        child: const Icon(Icons.cut, color: AppColors.primaryLight),
-      ),
+      floatingActionButton: readyCrop
+          ? FloatingActionButton(
+              onPressed: () {
+                AppDialog.I.showLoading();
+                _controller.crop();
+              },
+              child: const Icon(Icons.cut, color: AppColors.primaryLight),
+            )
+          : null,
       backgroundColor: Colors.black.withAlpha(100),
-      body: Crop.file(
-        File.fromRawPath(widget.imageData),
+      body: Crop(
+        controller: _controller,
+        image: widget.imageData,
+        onCropped: (cropped) {
+          AppDialog.I.closeDialog();
+          Navigator.pop<Uint8List>(context, cropped);
+        },
+        onStatusChanged: (status) => setState(() {
+          readyCrop = status == CropStatus.ready;
+        }),
         aspectRatio: widget.ratio,
-        key: cropKey,
+        initialSize: widget.initialSize,
+        // initialAreaBuilder: (rect) => Rect.fromLTRB(rect.left + 24,
+        //     rect.top + 32, rect.right - 24, rect.bottom - 32),
+        // initialArea: initialArea,
+        cornerDotBuilder: (size, cornerIndex) {
+          return const DotControl();
+        },
+        interactive: true,
       ),
     );
   }

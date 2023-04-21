@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'src/app/app.dart';
 import 'src/dependencies/app_dependencies.dart';
@@ -39,6 +40,7 @@ void main() async {
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   // Hive.init();
   await AppDependencies.init();
+  await Upgrader.clearSavedSettings();
 
   // await precachePicture(
   //   ExactAssetPicture(

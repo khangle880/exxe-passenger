@@ -236,19 +236,26 @@ class _SearchPlaceState extends State<SearchPlace> {
                         } else {
                           String address =
                               '${userInfo.street}, ${userInfo.wardId?.wardName}, ${userInfo.districtId?.districtName}, ${userInfo.provinceId?.provinceName}, ${userInfo.countryId?.countryName}';
-                          var data = await GetIt.I<LocationHelper>()
-                              .getCoordinateFromAddress(address);
-                          if (mounted) {
-                            widget.onSelect(
-                              LocationModel(
-                                address: address,
-                                provinceId:
-                                    userInfo.provinceId!.provinceId!.ceil(),
-                                coordinate: data,
-                                province: userInfo.provinceId,
-                              ),
-                            );
-                            Navigator.pop(context);
+                          try {
+                            var data = await GetIt.I<LocationHelper>()
+                                .getCoordinateFromAddress(address);
+
+                            if (mounted) {
+                              widget.onSelect(
+                                LocationModel(
+                                  address: address,
+                                  provinceId:
+                                      userInfo.provinceId!.provinceId!.ceil(),
+                                  coordinate: data,
+                                  province: userInfo.provinceId,
+                                ),
+                              );
+                              Navigator.pop(context);
+                            }
+                          } catch (e) {
+                            log(e.toString());
+                            AppDialog.I.showError(
+                                message: "Không tìm thấy địa chỉ này!");
                           }
                         }
                       },

@@ -138,8 +138,9 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                         enableFeedback: true,
                         onTap: () async {
                           flashEnable = !flashEnable;
-                          controller.setFlashMode(
-                              flashEnable ? FlashMode.always : FlashMode.off);
+                          controller.setFlashMode(flashEnable == true
+                              ? FlashMode.always
+                              : FlashMode.off);
                           setState(() {});
                         },
                         child: widget.flashIcon?.call(flashEnable) ??

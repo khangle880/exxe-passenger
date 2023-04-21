@@ -56,7 +56,7 @@ class VerifyIdentityCardBloc
           );
           emitWaiting(false);
           result.fold((failure) {
-            log(failure.toString());
+            emitError(failure);
           }, (data) {
             GetIt.I<AppState>()
                 .updateUser(userInfo.copyWith(identityCardId: data));

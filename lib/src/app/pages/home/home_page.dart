@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:exxe/src/app/pages/pages.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../../../controllers/token/token_cubit.dart';
 
@@ -61,6 +62,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // check connectivity
     // initConnectivity();
+
     ChatSocketHelper.I.loadSocket();
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
@@ -88,56 +90,63 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          backgroundColor: AppColors.greyLight,
-          body: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (page) {
-              _index.value = page;
-            },
-            controller: _pageController,
-            children: [
-              KeepAlivePage(
-                child: BodyHomePage(
-                  jumpToWallet: () {
-                    _pageController.jumpToPage(2);
+    return UpgradeAlert(
+      upgrader: Upgrader(
+        countryCode: "VN",
+        languageCode: "vi",
+        messages: UpgraderMessages(code: 'vi'),
+      ),
+      child: Stack(
+        children: [
+          Scaffold(
+            backgroundColor: AppColors.greyLight,
+            body: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (page) {
+                _index.value = page;
+              },
+              controller: _pageController,
+              children: [
+                KeepAlivePage(
+                  child: BodyHomePage(
+                    jumpToWallet: () {
+                      _pageController.jumpToPage(2);
+                    },
+                  ),
+                ),
+                const KeepAlivePage(child: MyTripPage()),
+                KeepAlivePage(
+                  child: BlocProvider(
+                    create: (_) =>
+                        MyWalletBloc(GetIt.I())..add(const LoadWalletEvent()),
+                    child: const WalletPage(),
+                  ),
+                ),
+                const KeepAlivePage(child: ChatPage()),
+                KeepAlivePage(
+                  child: ProfilePage(
+                    jumpToWallet: () {
+                      _pageController.jumpToPage(2);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            bottomNavigationBar: ValueListenableBuilder(
+              valueListenable: _index,
+              builder: (context, int index, child) {
+                return BottomNavigatorWidget(
+                  currentIndexPage: index,
+                  onClick: (index) {
+                    _pageController.jumpToPage(index);
                   },
-                ),
-              ),
-              const KeepAlivePage(child: MyTripPage()),
-              KeepAlivePage(
-                child: BlocProvider(
-                  create: (_) =>
-                      MyWalletBloc(GetIt.I())..add(const LoadWalletEvent()),
-                  child: const WalletPage(),
-                ),
-              ),
-              const KeepAlivePage(child: ChatPage()),
-              KeepAlivePage(
-                child: ProfilePage(
-                  jumpToWallet: () {
-                    _pageController.jumpToPage(2);
-                  },
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
-          bottomNavigationBar: ValueListenableBuilder(
-            valueListenable: _index,
-            builder: (context, int index, child) {
-              return BottomNavigatorWidget(
-                currentIndexPage: index,
-                onClick: (index) {
-                  _pageController.jumpToPage(index);
-                },
-              );
-            },
-          ),
-        ),
-        const DraggableSupportButton(),
-      ],
+          const DraggableSupportButton(),
+        ],
+      ),
     );
   }
 }

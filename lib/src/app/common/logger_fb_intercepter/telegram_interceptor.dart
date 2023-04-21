@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../app_state.dart';
+import 'package:http/http.dart' as http;
 
 String prettyJsonStr(Map<dynamic, dynamic> json) {
   final encoder = JsonEncoder.withIndent('  ', (data) => data.toString());
@@ -38,12 +38,10 @@ class LoggerFbInterceptor extends Interceptor {
     final user = GetIt.I<AppState>().currentState.user;
 
     try {
-      final decoded = jsonDecode(text);
+      final url =
+          'https://exxe-47e9d-default-rtdb.asia-southeast1.firebasedatabase.app/passenger/${user?.partnerId}_${user?.partnerName}/${now.toString().replaceAll(':', "-").replaceAll(".", " ")}.json';
 
-      FirebaseDatabase.instance
-          .ref(
-              "passenger/${user?.partnerId}_${user?.partnerName}/${now.toString().replaceAll(':', "-").replaceAll(".", " ")}")
-          .set(decoded is Map ? decoded : text);
+      http.put(Uri.parse(url), body: text);
     } catch (e) {
       log(e.toString());
     }
