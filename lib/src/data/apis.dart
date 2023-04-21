@@ -370,6 +370,9 @@ class Apis {
   static const String logoutDeviceForPartner =
       "/push_notification/logout_device_for_partner";
 
+  static const String sendNotiMessage =
+      "/user_information_controller/action_send_message";
+
   static const String call = "/compounding_car_controller/calling_notification";
 
   static const String missedCall =

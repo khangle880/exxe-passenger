@@ -44,14 +44,19 @@ class ChatFbRepo {
     String? avatar,
   }) async {
     try {
-      await FirebaseChatCore.instance.createUserInFirestore(
-        types.User(
-          id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
-        ).copyWith(
-          firstName: userName,
-          imageUrl: avatar,
-        ),
+      final me = await FirebaseChatCore.instance.getMe();
+      final defaultUser = types.User(
+        id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
       );
+      var newUser = me ?? defaultUser;
+      if ((userName ?? "").isNotEmpty) {
+        newUser = newUser.copyWith(firstName: userName);
+      }
+      if ((avatar ?? "").isNotEmpty) {
+        newUser = newUser.copyWith(imageUrl: avatar);
+      }
+
+      await FirebaseChatCore.instance.createUserInFirestore(newUser);
 
       return true;
     } catch (e, stackTrace) {
@@ -124,7 +129,9 @@ class ChatFbRepo {
       } else {
         final user = await FirebaseChatCore.instance.getUser(partnerId);
         if (user != null) {
-          return await FirebaseChatCore.instance.createRoom(user);
+          final room = await FirebaseChatCore.instance
+              .createRoom(user, metadata: {"dependId": dependId});
+          return FirebaseChatCore.instance.room(room.id).first;
         }
         return Future.error("Không tồn tại");
       }

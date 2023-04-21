@@ -2,6 +2,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
+import '../../app/app_state.dart';
+
 class OneSignalNotificationHelper {
   OSNotification? notiSaved;
   Function(OSNotification noti)? openedHandler;
@@ -23,7 +25,9 @@ class OneSignalNotificationHelper {
         (OSNotificationReceivedEvent event) {
       // Will be called whenever a notification is received in foreground
       // Display Notification, pass null param for not displaying the notification
-      if (event.notification.title == "CUỘC GỌI MỚI") {
+      if (event.notification.title == "CUỘC GỌI MỚI" ||
+          event.notification.additionalData?['room_id'] ==
+              GetIt.I<AppState>().currentChatRoomId) {
         event.complete(null);
       } else {
         event.complete(event.notification);
@@ -63,7 +67,8 @@ class OneSignalNotificationHelper {
 
   static OneSignalNotificationHelper instance = OneSignalNotificationHelper();
 
-  static OneSignalNotificationHelper get I => GetIt.I<OneSignalNotificationHelper>();
+  static OneSignalNotificationHelper get I =>
+      GetIt.I<OneSignalNotificationHelper>();
 
   OneSignalNotificationHelper();
 }

@@ -13,7 +13,10 @@ class AppThemes {
     primaryColorLight: AppColors.textLight,
     scaffoldBackgroundColor: AppColors.greyLight,
     splashColor: Colors.transparent,
-    disabledColor: AppColors.disable,
-    indicatorColor: AppColors.primaryButton,
+    disabledColor: AppColors.gray60x9d,
+    indicatorColor: AppColors.primaryMain,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    primaryColorDark: AppColors.primaryMain,
+    canvasColor: Colors.transparent,
   );
 }

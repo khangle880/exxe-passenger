@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
+import 'package:exxe/src/data/data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:get_it/get_it.dart';
 
 import 'firebase_chat_core_config.dart';
 import 'util.dart';
@@ -113,6 +116,7 @@ class FirebaseChatCore {
         .collection(config.roomsCollectionName)
         .where('type', isEqualTo: types.RoomType.direct.toShortString())
         .where('userIds', isEqualTo: userIds)
+        .where('metadata.dependId', isEqualTo: metadata?['dependId'])
         .where('metadata.status', isEqualTo: 'active')
         .limit(1)
         .get();
@@ -136,6 +140,7 @@ class FirebaseChatCore {
         .collection(config.roomsCollectionName)
         .where('type', isEqualTo: types.RoomType.direct.toShortString())
         .where('userIds', isEqualTo: userIds.reversed.toList())
+        .where('metadata.dependId', isEqualTo: metadata?['dependId'])
         .where('metadata.status', isEqualTo: 'active')
         .limit(1)
         .get();
@@ -162,12 +167,13 @@ class FirebaseChatCore {
     final users = [types.User.fromJson(currentUser), otherUser];
 
     // Create new room with sorted user ids array.
+    final meta = {"status": "active", ...?metadata};
     final room = await getFirebaseFirestore()
         .collection(config.roomsCollectionName)
         .add({
       'createdAt': FieldValue.serverTimestamp(),
       'imageUrl': null,
-      'metadata': (metadata ?? {})..addAll({"status": "active"}),
+      'metadata': meta,
       'name': null,
       'type': types.RoomType.direct.toShortString(),
       'updatedAt': FieldValue.serverTimestamp(),
@@ -177,7 +183,7 @@ class FirebaseChatCore {
 
     return types.Room(
       id: room.id,
-      metadata: (metadata ?? {})..addAll({"status": "active"}),
+      metadata: meta,
       type: types.RoomType.direct,
       users: users,
     );
@@ -387,11 +393,12 @@ class FirebaseChatCore {
   /// Sends a message to the Firestore. Accepts any partial message and a
   /// room ID. If arbitraty data is provided in the [partialMessage]
   /// does nothing.
-  void sendMessage(dynamic partialMessage, String roomId) async {
+  Future sendMessage(dynamic partialMessage, types.Room room) async {
     if (firebaseUser == null) return;
 
     types.Message? message;
 
+    String content = "Tin nhắn mới";
     if (partialMessage is types.PartialCustom) {
       message = types.CustomMessage.fromPartial(
         author: types.User(id: firebaseUser!.uid),
@@ -404,18 +411,21 @@ class FirebaseChatCore {
         id: '',
         partialFile: partialMessage,
       );
+      content = "Tệp tin";
     } else if (partialMessage is types.PartialImage) {
       message = types.ImageMessage.fromPartial(
         author: types.User(id: firebaseUser!.uid),
         id: '',
         partialImage: partialMessage,
       );
+      content = "Hình ảnh";
     } else if (partialMessage is types.PartialText) {
       message = types.TextMessage.fromPartial(
         author: types.User(id: firebaseUser!.uid),
         id: '',
         partialText: partialMessage,
       );
+      content = partialMessage.text;
     }
 
     if (message != null) {
@@ -426,13 +436,29 @@ class FirebaseChatCore {
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
 
       await getFirebaseFirestore()
-          .collection('${config.roomsCollectionName}/$roomId/messages')
+          .collection('${config.roomsCollectionName}/${room.id}/messages')
           .add(messageMap);
 
       await getFirebaseFirestore()
           .collection(config.roomsCollectionName)
-          .doc(roomId)
+          .doc(room.id)
           .update({'updatedAt': FieldValue.serverTimestamp()});
+
+      // push notification
+
+      final me = await getMe();
+      GetIt.I<IPushNotificationRepo>().actionSendMessage(
+        receiveIds: room.users
+            .where(
+              (u) => u.id != firebaseUser?.uid,
+            )
+            .map((e) => e.metadata?['partnerId'] as int?)
+            .whereNotNull()
+            .toList(),
+        title: "Tin nhắn mới từ ${me?.firstName ?? ""}",
+        content: content,
+        roomId: room.id,
+      );
     }
   }
 
@@ -519,6 +545,25 @@ class FirebaseChatCore {
         );
   }
 
+  Future<types.User?> getMe() async {
+    final fu = firebaseUser;
+
+    if (fu == null) return Future.value(null);
+
+    final doc = await getFirebaseFirestore()
+        .collection(config.usersCollectionName)
+        .doc(firebaseUser!.uid)
+        .get();
+
+    final data = doc.data() ?? {};
+    data['createdAt'] = data['createdAt']?.millisecondsSinceEpoch;
+    data['id'] = doc.id;
+    data['lastSeen'] = data['lastSeen']?.millisecondsSinceEpoch;
+    data['updatedAt'] = data['updatedAt']?.millisecondsSinceEpoch;
+    if (data['role'] == "") data['role'] = null;
+    return types.User.fromJson(data);
+  }
+
   Future<types.User?> getUser(num partnerId) async {
     final fu = firebaseUser;
 
@@ -539,6 +584,7 @@ class FirebaseChatCore {
       data['id'] = doc.id;
       data['lastSeen'] = data['lastSeen']?.millisecondsSinceEpoch;
       data['updatedAt'] = data['updatedAt']?.millisecondsSinceEpoch;
+      if (data['role'] == "") data['role'] = null;
       return types.User.fromJson(data);
     } else {
       return null;

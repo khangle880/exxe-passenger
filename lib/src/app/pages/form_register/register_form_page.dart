@@ -253,39 +253,30 @@ class _RegisterFormPageState
             const SizedBox(height: 24),
 
             /// Phone
-            CustomFormField(
-              validator: (value) {
-                if (!state.phoneConfirmed) {
-                  return "Số điện thoại cần được xác minh, chọn “Xác minh”.";
-                }
-                return null;
-              },
-              child: TextFieldReadOnly(
-                label: 'Số điện thoại ',
-                hintText: bloc.userInfo.phone!,
-                textStyle: AppStyles.s16w4.withColor(AppColors.gray60x9d),
-                trailing: state.phoneConfirmed
-                    ? SvgPicture.asset(
-                        AppIcons.check,
-                        height: 24,
-                        width: 24,
-                        color: AppColors.green60,
-                      )
-                    : InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, Routes.verifyPhoneNumber)
-                              .then((value) {
-                            bloc.add(
-                                VerifyPhoneNumberEvent(value is bool && value));
-                          });
-                        },
-                        child: Text(
-                          "Xác minh",
-                          style:
-                              AppStyles.s14w5.withColor(AppColors.primaryMain),
-                        ),
+            TextFieldReadOnly(
+              label: 'Số điện thoại ',
+              hintText: bloc.userInfo.phone!,
+              textStyle: AppStyles.s16w4.withColor(AppColors.gray60x9d),
+              trailing: state.phoneConfirmed
+                  ? SvgPicture.asset(
+                      AppIcons.check,
+                      height: 24,
+                      width: 24,
+                      color: AppColors.green60,
+                    )
+                  : InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.verifyPhoneNumber)
+                            .then((value) {
+                          bloc.add(
+                              VerifyPhoneNumberEvent(value is bool && value));
+                        });
+                      },
+                      child: Text(
+                        "Xác minh",
+                        style: AppStyles.s14w5.withColor(AppColors.primaryMain),
                       ),
-              ),
+                    ),
             ),
             const SizedBox(height: 24),
 

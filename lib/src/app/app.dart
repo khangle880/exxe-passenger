@@ -108,7 +108,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _openChatRoom(roomId, OSNotification data) async {
-    var room = FirebaseChatCore.instance.room(roomId);
+    var room = await FirebaseChatCore.instance.room(roomId).first;
     Future.delayed(const Duration(seconds: 2), () {
       navigatorKey.currentState?.pushNamed(
         Routes.chatRoom,

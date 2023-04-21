@@ -41,4 +41,29 @@ class PushNotificationRepo extends IPushNotificationRepo {
       (value) => null,
     );
   }
+
+  @override
+  Future<Either<Failure, dynamic>> actionSendMessage({
+    required List<int> receiveIds,
+    required String title,
+    required String content,
+    required String roomId,
+  }) async {
+    final token = await BoxesUser.instance.getDataTokenUser();
+    final request = _networkUtility
+        .request(Apis.sendNotiMessage, Method.POST, data: {
+      "params": {
+        "token": token,
+        "receive_ids": receiveIds,
+        "message_title": title,
+        "message_content": content,
+        "room_id": roomId,
+      }
+    });
+
+    return ParserHelper.listParseDefault(
+      request,
+      (value) => null,
+    );
+  }
 }

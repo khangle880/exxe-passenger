@@ -62,58 +62,85 @@ class _BodyChatHomeState extends State<BodyChatHome> {
 
               return ListView.separated(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 itemCount: snapshot.data!.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 16),
                 itemBuilder: (context, index) {
                   final room = snapshot.data![index];
                   final lastMessage = room.lastMessages?.firstOrNull;
 
-                  return GestureDetector(
+                  return Row(
+                    children: [
+                      _buildAvatar(room),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    room.name ?? "",
+                                    style: AppStyles.s16w7,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  room.metadata?['dependId'] ?? "",
+                                  style: AppStyles.s12w4
+                                      .withColor(AppColors.gray70x76),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            if (lastMessage != null)
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Builder(builder: (context) {
+                                    String content = "";
+                                    if (lastMessage is types.TextMessage) {
+                                      content = lastMessage.text;
+                                      if (content.contains("maps/dir")) {
+                                        content = "Vị trí";
+                                      }
+                                    } else if (lastMessage
+                                        is types.ImageMessage) {
+                                      content = "Hình ảnh";
+                                    } else {
+                                      content = "Tin nhắn mới";
+                                    }
+                                    return Text(
+                                      content,
+                                      style: AppStyles.s15w5
+                                          .withColor(AppColors.gray70x76),
+                                    );
+                                  }),
+                                  Text(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                            lastMessage.createdAt!)
+                                        .toFormat('hh:mm a'),
+                                    style: AppStyles.s12w4
+                                        .withColor(AppColors.gray70x76),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ).inkWell(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     onTap: () {
                       Navigator.of(context)
                           .pushNamed(Routes.chatRoom, arguments: room);
                     },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: Row(
-                        children: [
-                          _buildAvatar(room),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        room.name ?? "",
-                                        style: AppStyles.s16w7,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    if (lastMessage != null)
-                                      Text(
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                                lastMessage.createdAt!)
-                                            .toFormat('hh:mm a'),
-                                        style: AppStyles.s12w4
-                                            .withColor(AppColors.gray70x76),
-                                      ),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
                   );
                 },
               );

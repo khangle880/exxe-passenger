@@ -23,12 +23,26 @@ class _ChatPageState extends State<ChatPage> {
   bool _isAttachmentUploading = false;
 
   @override
+  void initState() {
+    GetIt.I<AppState>().currentChatRoomId = widget.room.id;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    GetIt.I<AppState>().currentChatRoomId = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Container(
           margin: const EdgeInsets.only(left: 16),
-          child: SvgPicture.asset(AppIcons.chevronLeft).inkWell(
+          child: SvgPicture.asset(AppIcons.chevronLeft,
+                  color: AppColors.primaryMain)
+              .inkWell(
             padding: const EdgeInsets.all(4),
             onTap: () {
               if (Navigator.canPop(context)) {
@@ -45,7 +59,7 @@ class _ChatPageState extends State<ChatPage> {
           child: _buildHeader(widget.room),
         ),
         elevation: .5,
-        backgroundColor: AppColors.gray10,
+        backgroundColor: AppColors.primaryLight,
       ),
       body: StreamBuilder<types.Room>(
         initialData: widget.room,
@@ -53,17 +67,26 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
           initialData: const [],
           stream: FirebaseChatCore.instance.messages(snapshot.data!),
-          builder: (context, snapshot) => Chat(
-            isAttachmentUploading: _isAttachmentUploading,
-            messages: snapshot.data ?? [],
-            onAttachmentPressed: _handleAttachmentPressed,
-            onMessageTap: _handleMessageTap,
-            onPreviewDataFetched: _handlePreviewDataFetched,
-            onSendPressed: _handleSendPressed,
-            user: types.User(
-              id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
-            ),
-          ),
+          builder: (context, snapshot) {
+            return Chat(
+              theme: const DefaultChatTheme(
+                inputBackgroundColor: AppColors.gray10,
+                inputTextColor: AppColors.gray60x9d,
+                primaryColor: AppColors.primaryMain,
+                messageInsetsHorizontal: 16,
+                messageInsetsVertical: 12,
+              ),
+              isAttachmentUploading: _isAttachmentUploading,
+              messages: snapshot.data ?? [],
+              onAttachmentPressed: _handleAttachmentPressed,
+              onMessageTap: _handleMessageTap,
+              onPreviewDataFetched: _handlePreviewDataFetched,
+              onSendPressed: _handleSendPressed,
+              user: types.User(
+                id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+              ),
+            );
+          },
         ),
       ),
     );
@@ -88,6 +111,7 @@ class _ChatPageState extends State<ChatPage> {
               final dependId = room.metadata?['dependId'];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(room.name ?? "", style: AppStyles.s18w7),
                   if (dependId != null)
@@ -148,6 +172,41 @@ class _ChatPageState extends State<ChatPage> {
                     color: AppColors.primaryLight,
                   ),
                   child: Text(
+                    'Vị trí',
+                    style: AppStyles.s16w6.withColor(AppColors.primaryMain),
+                  ),
+                ).inkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+
+                    GetIt.I<LocationHelper>().handleLocation(
+                      context,
+                      callBack: () {
+                        final location =
+                            GetIt.I<AppState>().currentState.currentLocation;
+                        final message = types.PartialText(
+                          text:
+                              'https://www.google.com/maps/dir/?api=1&destination=${location!.coordinate!.latitude},${location.coordinate!.longitude}&travelmode=driving&dir_action=navigate',
+                        );
+                        FirebaseChatCore.instance.sendMessage(
+                          message,
+                          widget.room,
+                        );
+                      },
+                    );
+                  },
+                ),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.primaryLight,
+                  ),
+                  child: Text(
                     'Đóng',
                     style: AppStyles.s16w6.withColor(AppColors.primaryMain),
                   ),
@@ -194,7 +253,7 @@ class _ChatPageState extends State<ChatPage> {
 
         FirebaseChatCore.instance.sendMessage(
           message,
-          widget.room.id,
+          widget.room,
         );
         _setAttachmentUploading(false);
       } finally {
@@ -250,7 +309,7 @@ class _ChatPageState extends State<ChatPage> {
   void _handleSendPressed(types.PartialText message) {
     FirebaseChatCore.instance.sendMessage(
       message,
-      widget.room.id,
+      widget.room,
     );
   }
 

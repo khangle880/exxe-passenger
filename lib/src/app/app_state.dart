@@ -42,6 +42,7 @@ class AppState extends StateNotifier<UserState> {
   AppState() : super(UserState(state: UserStateEnum.notSignIn));
 
   String? callingCompoundingCustomerCode;
+  String? currentChatRoomId;
 
   UserState get currentState => state;
 
