@@ -1,8 +1,8 @@
 import '../../../utils/export/ui_export.dart';
-import 'components/body_chat_home.dart';
+import 'body_chat_home.dart';
 
-class ChatPage extends StatelessWidget {
-  const ChatPage({Key? key}) : super(key: key);
+class ChatRoomsPage extends StatelessWidget {
+  const ChatRoomsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

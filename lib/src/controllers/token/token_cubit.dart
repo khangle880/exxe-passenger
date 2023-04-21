@@ -4,7 +4,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:exxe/src/data_chat/data_chat.dart';
+import 'package:exxe/src/app/pages/chat_fb/chat_fb_core/chat_fb_repo.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../app/app_state.dart';
@@ -135,7 +135,7 @@ class TokenCubit extends Cubit<TokenState> {
     if (playerId != null) {
       GetIt.I<IPushNotificationRepo>().logoutDeviceForPartner(playerId);
     }
-    GetIt.I<IChatUserRepo>().logout();
+    GetIt.I<ChatFbRepo>().logout();
     await BoxesUser.instance.deleteDataUser();
     await TransactionHiveBox.instance.clearAllTransaction();
     GetIt.I.get<AppState>().logOut();

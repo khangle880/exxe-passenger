@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import '../data/data.dart';
-import '../data_chat/data_chat.dart';
 import '../storage/models/user.dart';
 export 'package:state_notifier/state_notifier.dart' show RemoveListener;
 
@@ -103,20 +102,6 @@ class AppState extends StateNotifier<UserState> {
       state =
           state.copyWith(user: user, action: ActionStateEnum.updateUserInfo);
     }
-    return updateChatUser();
-  }
-
-  updateChatUser() {
-    return GetIt.I<IChatUserRepo>().getProfile(null).then(
-      (value) {
-        value.fold((l) {
-          log(l.toString());
-        }, (data) {
-          state = state.copyWith(chatUser: data);
-          createAction(ActionStateEnum.updateChatUserInfo);
-        });
-      },
-    );
   }
 
   void updateCurrentLocation(LocationModel newLocation) {
@@ -171,7 +156,7 @@ class UserState extends Equatable {
   final WalletModel? wallet;
   final int notificationCount;
   final int messageCount;
-  final ChatUserModel? chatUser;
+  final User? chatUser;
 
   bool get isNewAction =>
       DateTime.now().millisecondsSinceEpoch - timeStamp < 1000;
@@ -206,7 +191,7 @@ class UserState extends Equatable {
     WalletModel? wallet,
     int? notificationCount,
     int? messageCount,
-    ChatUserModel? chatUser,
+    User? chatUser,
   }) {
     return UserState(
       user: isLogout ? user : user ?? this.user,

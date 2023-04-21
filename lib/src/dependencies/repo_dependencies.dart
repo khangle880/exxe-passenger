@@ -1,5 +1,7 @@
 import 'package:exxe/src/utils/export/logic_export.dart';
 
+import '../app/pages/chat_fb/chat_fb_core/chat_fb_repo.dart';
+
 class RepoDependencies {
   static Future setup(GetIt injector) async {
     injector.registerFactory<UserInfoRepo>(() => UserInfoRepo());
@@ -25,7 +27,8 @@ class RepoDependencies {
     //google map helper
     injector
         .registerSingleton<LocationHelper>(LocationHelper()..getListProvince());
-    injector
-        .registerSingleton<OneSignalNotificationHelper>(OneSignalNotificationHelper());
+    injector.registerSingleton<OneSignalNotificationHelper>(
+        OneSignalNotificationHelper());
+    injector.registerFactory<ChatFbRepo>(() => ChatFbRepo());
   }
 }

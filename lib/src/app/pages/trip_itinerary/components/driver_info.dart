@@ -1,8 +1,9 @@
+import 'package:exxe/src/app/pages/chat_fb/chat_fb_core/chat_fb_repo.dart';
 import 'package:exxe/src/app/pages/driver_detail/driver_detail_page.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 
 import '../../../../data/models/models.dart';
-import '../../../../data_chat/data_chat.dart';
 
 class DriverInfo extends StatelessWidget {
   const DriverInfo({
@@ -13,7 +14,7 @@ class DriverInfo extends StatelessWidget {
   });
 
   final CarDriverModel? carDriver;
-  final Future<ChatRoomModel> Function()? createChat;
+  final Future<Room> Function()? createChat;
   final CompoundingCarCustomerModel? customerModel;
 
   @override
@@ -88,7 +89,7 @@ class DriverInfo extends StatelessWidget {
               ).inkWell(
                 onTap: () async {
                   if (createChat != null) {
-                    ChatSocketHelper.I
+                    GetIt.I<ChatFbRepo>()
                         .openRoomChat(createChat!.call(), context);
                   }
                 },

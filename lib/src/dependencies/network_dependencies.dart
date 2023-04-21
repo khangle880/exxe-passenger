@@ -2,10 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../app/common/common.dart';
-import '../core/interceptors/authorization_interceptor.dart';
 import '../core/network/network.dart';
 import '../data/apis.dart';
-import '../data_chat/apis_chat.dart';
 
 class NetworkDependencies {
   static Future setup(GetIt injector) async {
@@ -37,13 +35,6 @@ class NetworkDependencies {
       () => NetworkUtility(Apis.baseNewsUrl),
       instanceName: NetworkConstant.newsDomain,
     );
-
-    injector.registerLazySingleton<INetworkUtility>(
-        () => NetworkUtility(ChatApis.baseUrl, interceptors: [
-              ChatAuthorizationInterceptor(),
-              injector<LoggerFbInterceptor>(),
-            ]),
-        instanceName: NetworkConstant.chatDomain);
 
     injector.registerLazySingleton<INetworkUtility>(
       () => NetworkUtility("https://rsapi.goong.io"),

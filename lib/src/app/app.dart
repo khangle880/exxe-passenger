@@ -6,8 +6,8 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../config/themes.dart';
 import '../controllers/token/token_cubit.dart';
 import '../data/data.dart';
-import '../data_chat/data_chat.dart';
 import '../utils/export/main_app.dart';
+import 'pages/chat_fb/chat_fb_core/chat_fb_core.dart';
 import 'pages/pages.dart';
 
 class MyApp extends StatefulWidget {
@@ -108,26 +108,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _openChatRoom(roomId, OSNotification data) async {
-    var room = ChatSocketHelper.I.controller.items
-        .firstWhereOrNull((element) => element.roomId == roomId);
-    if (room == null) {
-      final result = await GetIt.I<IChatRoomRepo>().getRoom(roomId);
-      result.fold((l) {
-        return AppDialog.I.showWarning(
-          message: "Phòng chat này không tồn tại",
-        );
-      }, (r) {
-        room = r;
-      });
-    }
-    if (room != null) {
-      Future.delayed(const Duration(seconds: 2), () {
-        navigatorKey.currentState?.pushNamed(
-          Routes.chatRoom,
-          arguments: room,
-        );
-      });
-    }
+    var room = FirebaseChatCore.instance.room(roomId);
+    Future.delayed(const Duration(seconds: 2), () {
+      navigatorKey.currentState?.pushNamed(
+        Routes.chatRoom,
+        arguments: room,
+      );
+    });
   }
 
   @override

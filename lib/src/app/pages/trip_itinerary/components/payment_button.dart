@@ -1,10 +1,14 @@
 import 'package:exxe/src/data/data.dart';
 
 import '../../../../utils/export/ui_export.dart';
+import '../../chat_fb/chat_fb_core/chat_fb_repo.dart';
 
 class PaymentButton extends StatelessWidget {
   const PaymentButton(
-      {Key? key, required this.carCustomer, this.onRefresh, required this.onPayment})
+      {Key? key,
+      required this.carCustomer,
+      this.onRefresh,
+      required this.onPayment})
       : super(key: key);
   final CompoundingCarCustomerModel carCustomer;
   final Function()? onRefresh;
@@ -80,7 +84,7 @@ class PaymentButton extends StatelessWidget {
               Expanded(
                 child: ButtonWidgetOld(
                   onClick: () {
-                    ChatSocketHelper.I.openAdminRoomChat(context);
+                    GetIt.I<ChatFbRepo>().openAdminRoomChat(context);
                   },
                   backgroundColor: AppColors.primaryButton,
                   radius: 12,

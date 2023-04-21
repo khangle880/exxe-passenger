@@ -1,6 +1,7 @@
 import 'package:exxe/src/utils/export/ui_export.dart';
-import '../app/pages/chat_room/chat_room_page.dart';
-import '../app/pages/chat_room/controllers/chat_room_cubit.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart';
+import '../app/pages/chat_fb/chat.dart';
+import '../app/pages/chat_fb/chat_page.dart';
 import '../app/pages/home/components/promotion/promotion_home_page.dart';
 import '../app/pages/my_trip/components/ride_detail.dart';
 import '../app/pages/pages.dart';
@@ -11,7 +12,6 @@ import '../app/pages/verify/verify_relationship/controllers/verify_relationship_
 import '../app/pages/verify/verify_relationship/relationship_list_page.dart';
 import '../app/pages/verify/verify_relationship/verify_relationship_page.dart';
 import '../data/data.dart';
-import '../data_chat/data_chat.dart';
 
 class Routes {
   Routes._internal();
@@ -177,15 +177,14 @@ class Routes {
 
       //chat
       case Routes.chat:
-        return mPage(const ChatPage());
+        return mPage(const ChatRoomsPage());
       case Routes.relationList:
         return mPage(const RelationshipListPage());
 
       case Routes.chatRoom:
-        var data = settings.arguments as ChatRoomModel;
+        var data = settings.arguments as Room;
         return MaterialPageRoute(
-          builder: (context) => ChatRoomPage(
-              ChatRoomCubit(GetIt.I(), GetIt.I(), GetIt.I(), GetIt.I(), data)),
+          builder: (context) => ChatPage(room: data),
         );
       case Routes.cancelReason:
         var data = settings.arguments as CompoundingCarCustomerModel;

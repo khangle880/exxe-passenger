@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../../../../data_chat/data_chat.dart';
-import '../../../../storage/models/user_chat.dart';
 import '../../../../utils/export/logic_export.dart';
+import '../../chat_fb/chat_fb_core/chat_fb_repo.dart';
 
 part 'auth_login_event.dart';
 
@@ -168,43 +167,21 @@ class AuthLoginBloc extends BaseBloc<AuthLoginEvent, AuthLoginState> {
   }
 
   _registerChat(PartnerModel user) {
-    return ChatUserRepo()
-        .register(
-      userId: user.partnerId!,
+    return GetIt.I<ChatFbRepo>().register(
+      partnerId: user.partnerId!,
       phone: user.phone!,
-      avatar: user.avatarUrl?.imageUrl ?? "",
+      avatar: user.avatarUrl?.imageUrl == null
+          ? ""
+          : (Apis.baseUrl + user.avatarUrl!.imageUrl!),
       userName: user.partnerName ?? "",
-    )
-        .then((either) {
-      either.fold((l) {
-        log(l.toString());
-      }, (chatUser) {
-        // update chatSecretKey to Exxe
-        final chatSecretKey = EncryptDataHelper.encryptAES(chatUser.userId);
-        userInfoRepo.updateUserInformation(chatSecretKey: chatSecretKey);
-        ChatUserRepo().generateToken(chatSecretKey, user.phone!);
-        BoxesChatUser.instance.setUser(
-          ChatUserHive(
-            token: chatUser.accessToken!,
-            refreshToken: chatUser.refreshToken!,
-          ),
-        );
-        GetIt.I<AppState>().updateChatUser();
-      });
-    });
+    );
   }
 
   /// login/register chat
   Future _handleLoginRegisterChat(PartnerModel user) async {
-    if (user.chatSecretKey != null) {
-      final result =
-          await ChatUserRepo().generateToken(user.chatSecretKey!, user.phone!);
-      await result.fold((l) {
-        if (l.toString() == "User not found, please register first") {
-          return _registerChat(user);
-        }
-      }, (data) {});
-    } else {
+    final result = await GetIt.I<ChatFbRepo>()
+        .login(user.partnerId.toString(), user.phone!);
+    if (!result) {
       _registerChat(user);
     }
   }

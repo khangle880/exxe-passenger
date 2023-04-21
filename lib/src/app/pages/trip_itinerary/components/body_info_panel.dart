@@ -1,5 +1,6 @@
 import '../../../../data/data.dart';
 import '../../../../utils/export/ui_export.dart';
+import '../../chat_fb/chat_fb_core/chat_fb_repo.dart';
 import 'driver_info.dart';
 import 'final_payment_method.dart';
 import 'payment_button.dart';
@@ -86,9 +87,10 @@ class _BodyInfoPanelState extends State<BodyInfoPanel> {
             : DriverInfo(
                 carDriver: carCustomer.carDriverId,
                 createChat: () {
-                  return ChatSocketHelper.I.getRoomChat(
-                      carCustomer.carDriverId!.partnerId!,
-                      carCustomer.compoundingCarCustomerCode!);
+                  return GetIt.I<ChatFbRepo>().getRoomChat(
+                    carCustomer.compoundingCarCustomerCode!,
+                    carCustomer.carDriverId!.partnerId!,
+                  );
                 },
                 customerModel: carCustomer,
               ),

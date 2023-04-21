@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 
 import '../../app/app_state.dart';
-import '../../data_chat/data_chat.dart';
+import '../../app/pages/chat_fb/chat_fb_core/chat_fb_repo.dart';
 import '../../storage/models/user.dart';
 import '../../utils/export/repo_export.dart';
 
@@ -442,16 +442,8 @@ class CompoundingCarControllerRepo extends ICompoundingCarCtrlRepo {
       rightPreCall: (value) {
         GetIt.I<AppState>()
             .createAction(ActionStateEnum.cancelRide, object: value);
-        ChatRoomRepo()
-            .deleteByDependId(customer.compoundingCarCustomerCode!)
-            .then((either) {
-          either.fold((l) => log(l.toString()), (data) {
-            ChatSocketHelper()
-                .controller
-                .items
-                .removeWhere((element) => element.dependId == data);
-          });
-        });
+        GetIt.I<ChatFbRepo>()
+            .deleteRoomByDependId(value.compoundingCarCustomerCode!);
       },
     );
   }

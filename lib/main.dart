@@ -4,7 +4,6 @@ import 'package:exxe/src/storage/models/transaction.dart';
 import 'package:exxe/src/storage/models/user.dart';
 import 'package:exxe/src/storage/models/user_chat.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,11 +16,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AwesomeNotificationHelper.init();
   await Firebase.initializeApp();
-  try {
-    await FirebaseAuth.instance.signInAnonymously();
-  } finally {}
-
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await dotenv.load(fileName: ".env");
   Directory appDocDir = await getApplicationDocumentsDirectory();

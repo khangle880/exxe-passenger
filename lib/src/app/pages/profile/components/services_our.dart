@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../controllers/token/token_cubit.dart';
 import '../../../../data/data.dart';
+import '../../chat_fb/chat_fb_core/chat_fb_repo.dart';
 import 'option_row.dart';
 
 class ServicesOurProfile extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ServicesOurProfileState extends State<ServicesOurProfile> {
         OptionRow(
           title: 'Hỗ trợ qua chat',
           onTap: () {
-            ChatSocketHelper.I.openAdminRoomChat(context);
+            GetIt.I<ChatFbRepo>().openAdminRoomChat(context);
           },
         ),
         OptionRow(

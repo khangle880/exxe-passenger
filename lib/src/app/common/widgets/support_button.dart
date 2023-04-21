@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/export/ui_export.dart';
+import '../../pages/chat_fb/chat_fb_core/chat_fb_repo.dart';
 
 class SupportButton extends StatefulWidget {
   const SupportButton({Key? key}) : super(key: key);
@@ -90,7 +91,7 @@ class _SupportButtonState extends State<SupportButton> {
           ),
           label: 'Nhắn tin hỗ trợ',
           onTap: () {
-            ChatSocketHelper.I.openAdminRoomChat(context);
+            GetIt.I<ChatFbRepo>().openAdminRoomChat(context);
           },
         ),
       ],

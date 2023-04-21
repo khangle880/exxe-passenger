@@ -9,7 +9,6 @@ export './change_password/change_password_page.dart';
 export './change_password/components/form_change_pass.dart';
 export './change_password/components/form_create_pass.dart';
 export './change_password/controllers/change_password_cubit.dart';
-export './chat/chat_page.dart';
 export './choose_destination/choose_province_page.dart';
 export './confirm_booking/confirm_booking_page.dart';
 export './confirm_booking/controllers/confirm_booking_cubit.dart';

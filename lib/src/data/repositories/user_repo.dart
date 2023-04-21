@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
 
+import '../../app/pages/chat_fb/chat_fb_core/chat_fb_repo.dart';
 import '../../core/core.dart';
-import '../../data_chat/data_chat.dart';
 import '../../storage/models/user.dart';
-import '../../storage/models/user_chat.dart';
 import '../../utils/export/logic_export.dart';
 
 class UserRepo extends IUserRepo {
@@ -74,9 +73,6 @@ class UserRepo extends IUserRepo {
     return ParserHelper.singleParseDefault(
       request,
       (data) => null,
-      rightPreCall: (value) {
-        ChatUserRepo().deleteAccount();
-      },
     );
   }
 
@@ -136,21 +132,14 @@ class UserRepo extends IUserRepo {
     }.getCleanNull;
     final request = _networkUtility
         .request(Apis.authWithPhoneOtp, Method.POST, data: {"params": params});
-    return ParserHelper.singleParseDefault(request, PartnerModel.fromJson,
-        rightPreCall: (value) async {
-      if (value.chatSecretKey != null) {
-        final result = await ChatUserRepo()
-            .generateToken(value.chatSecretKey!, value.phone!);
-        result.fold((l) => null, (data) {
-          BoxesChatUser.instance.setUser(
-            ChatUserHive(
-              token: data.accessToken!,
-              refreshToken: data.refreshToken!,
-            ),
-          );
-        });
-      }
-    });
+    return ParserHelper.singleParseDefault(
+      request,
+      PartnerModel.fromJson,
+      rightPreCall: (value) async {
+        await GetIt.I<ChatFbRepo>()
+            .login(value.partnerId.toString(), value.phone!);
+      },
+    );
   }
 
   @override

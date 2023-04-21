@@ -6,6 +6,7 @@ import 'package:exxe/src/utils/export/ui_export.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../../../controllers/token/token_cubit.dart';
+import '../chat_fb/chat_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -62,8 +63,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // check connectivity
     // initConnectivity();
-
-    ChatSocketHelper.I.loadSocket();
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {});
@@ -85,7 +84,6 @@ class _HomePageState extends State<HomePage> {
     removeListener();
     _index.dispose();
     _connectivitySubscription.cancel();
-    ChatSocketHelper.I.dispose();
   }
 
   @override
@@ -122,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                     child: const WalletPage(),
                   ),
                 ),
-                const KeepAlivePage(child: ChatPage()),
+                const KeepAlivePage(child: ChatRoomsPage()),
                 KeepAlivePage(
                   child: ProfilePage(
                     jumpToWallet: () {

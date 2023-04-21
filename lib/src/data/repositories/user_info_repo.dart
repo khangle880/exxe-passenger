@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:exxe/src/utils/export/ui_export.dart';
 
+import '../../app/pages/chat_fb/chat_fb_core/chat_fb_repo.dart';
 import '../../core/core.dart';
-import '../../data_chat/data_chat.dart';
 import '../../storage/models/user.dart';
 import '../data.dart';
 
@@ -71,10 +71,12 @@ class UserInfoRepo extends IUserInfoRepo {
     return ParserHelper.singleParseDefault(
       request,
       PartnerModel.fromJson,
-      rightPreCall: (value) async => ChatUserRepo().register(
-        userId: value.partnerId!,
+      rightPreCall: (value) async => GetIt.I<ChatFbRepo>().register(
+        partnerId: value.partnerId!,
         phone: value.phone!,
-        avatar: value.avatarUrl?.imageUrl ?? "",
+        avatar: value.avatarUrl?.imageUrl == null
+            ? ""
+            : (Apis.baseUrl + value.avatarUrl!.imageUrl!),
         userName: value.partnerName ?? "",
       ),
     );
@@ -118,14 +120,11 @@ class UserInfoRepo extends IUserInfoRepo {
     return ParserHelper.singleParseDefault(
       request,
       PartnerModel.fromJson,
-      rightPreCall: (value) async => ChatUserRepo().updateProfile(
+      rightPreCall: (value) async => GetIt.I<ChatFbRepo>().updateProfile(
         userName: name,
         avatar: avatarAttachment == null
             ? null
             : Apis.baseUrl + avatarAttachment.attachmentUrl.toString(),
-        bio: description,
-        dateOfBirth: birthDate,
-        gender: gender,
       ),
     );
   }
