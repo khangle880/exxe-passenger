@@ -112,7 +112,8 @@ class ChatFbRepo {
       } else {
         final admin = await FirebaseChatCore.instance.getUserAdmin();
         if (admin != null) {
-          return await FirebaseChatCore.instance.createRoom(admin);
+          final room = await FirebaseChatCore.instance.createRoom(admin);
+          return FirebaseChatCore.instance.room(room.id).first;
         }
         return Future.error("Không tồn tại");
       }

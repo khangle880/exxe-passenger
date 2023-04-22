@@ -117,6 +117,7 @@ class _BodyChatHomeState extends State<BodyChatHome> {
                                       content,
                                       style: AppStyles.s15w5
                                           .withColor(AppColors.gray70x76),
+                                      overflow: TextOverflow.ellipsis,
                                     );
                                   }),
                                   Text(
