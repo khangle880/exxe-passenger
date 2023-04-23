@@ -25,11 +25,15 @@ class ChatFbRepo {
       );
       await FirebaseChatCore.instance.createUserInFirestore(
         types.User(
-            firstName: userName,
-            id: credential.user!.uid,
-            imageUrl: avatar,
-            lastName: "",
-            metadata: {"partnerId": partnerId}),
+          firstName: userName,
+          id: credential.user!.uid,
+          imageUrl: avatar,
+          lastName: "",
+          metadata: {
+            "partnerId": partnerId,
+            "phone": phone,
+          },
+        ),
       );
 
       return true;
@@ -122,7 +126,8 @@ class ChatFbRepo {
     }
   }
 
-  Future<types.Room> getRoomChat(String dependId, num partnerId) async {
+  Future<types.Room> getRoomChat(
+      String dependId, String rideId, num partnerId) async {
     try {
       final room = await FirebaseChatCore.instance.getRoomByDependId(dependId);
       if (room != null) {
@@ -130,8 +135,10 @@ class ChatFbRepo {
       } else {
         final user = await FirebaseChatCore.instance.getUser(partnerId);
         if (user != null) {
-          final room = await FirebaseChatCore.instance
-              .createRoom(user, metadata: {"dependId": dependId});
+          final room = await FirebaseChatCore.instance.createRoom(
+            user,
+            metadata: {"dependId": dependId, "rideId": rideId},
+          );
           return FirebaseChatCore.instance.room(room.id).first;
         }
         return Future.error("Không tồn tại");

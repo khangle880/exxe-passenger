@@ -36,6 +36,12 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    final otherUser = widget.room.users.firstWhereOrNull(
+      (u) => u.id != FirebaseChatCore.instance.firebaseUser?.uid,
+    );
+    final phone = otherUser?.metadata?['phone'];
+    final dependId = widget.room.metadata?['dependId'];
+
     return Scaffold(
       appBar: AppBar(
         leading: Container(
@@ -60,6 +66,20 @@ class _ChatPageState extends State<ChatPage> {
         ),
         elevation: .5,
         backgroundColor: AppColors.primaryLight,
+        actions: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (phone != null && dependId != null)
+                InviteVoiceButton(
+                  phone: phone,
+                  name: otherUser?.firstName ?? "",
+                  compoundingCarCustomerCode: dependId,
+                ),
+              const SizedBox(width: 16),
+            ],
+          )
+        ],
       ),
       body: StreamBuilder<types.Room>(
         initialData: widget.room,

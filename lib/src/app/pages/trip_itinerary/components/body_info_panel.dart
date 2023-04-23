@@ -89,6 +89,7 @@ class _BodyInfoPanelState extends State<BodyInfoPanel> {
                 createChat: () {
                   return GetIt.I<ChatFbRepo>().getRoomChat(
                     carCustomer.compoundingCarCustomerCode!,
+                    carCustomer.compoundingCarCustomerId.toString(),
                     carCustomer.carDriverId!.partnerId!,
                   );
                 },
