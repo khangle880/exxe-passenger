@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:exxe/src/data/data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -616,4 +617,68 @@ class FirebaseChatCore {
       return null;
     }
   }
+
+  Future<List<InstantMessage>> instantMessages() {
+    final fu = firebaseUser;
+
+    if (fu == null) return Future.value([]);
+
+    final query = getFirebaseFirestore().collection('instant_messages');
+
+    return query.get().then(
+      (snapshot) {
+        return snapshot.docs.map<InstantMessage>(
+          (doc) {
+            final data = doc.data();
+
+            data['createdAt'] = data['createdAt']?.millisecondsSinceEpoch;
+            data['id'] = doc.id;
+            data['updatedAt'] = data['updatedAt']?.millisecondsSinceEpoch;
+
+            return InstantMessage.fromJson(data);
+          },
+        ).toList();
+      },
+    );
+  }
+}
+
+/// 'instant_message',
+class InstantMessage extends Equatable {
+  final int? createdAt;
+  final String id;
+  final String text;
+  final Map<String, dynamic>? metadata;
+  final int? updatedAt;
+
+  const InstantMessage({
+    this.createdAt,
+    required this.id,
+    required this.text,
+    this.metadata,
+    this.updatedAt,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'createdAt': createdAt,
+      'id': id,
+      'text': text,
+      'metadata': metadata,
+      'updatedAt': updatedAt,
+    };
+  }
+
+  factory InstantMessage.fromJson(Map<String, dynamic> map) {
+    return InstantMessage(
+      createdAt: map['createdAt'] as int?,
+      id: map['id'] as String,
+      text: map['text'] as String,
+      metadata: map['metadata'] as Map<String, dynamic>?,
+      updatedAt: map['updatedAt'] as int?,
+    );
+  }
+
+  @override
+  List<Object?> get props => [createdAt, id, text, metadata, updatedAt];
 }

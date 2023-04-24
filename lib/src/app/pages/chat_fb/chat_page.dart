@@ -1,5 +1,6 @@
 import '../../../utils/export/ui_export.dart';
 import 'body_chat_home.dart';
+import 'users.dart';
 
 class ChatRoomsPage extends StatelessWidget {
   const ChatRoomsPage({Key? key}) : super(key: key);
@@ -16,6 +17,23 @@ class ChatRoomsPage extends StatelessWidget {
         context: context,
         backgroundColor:
             AppColors.primaryMain + AppColors.primaryLight.withOpacity(0.95),
+        //TODO: only for agent
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => const UsersPage(),
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: Column(
         children: [

@@ -151,16 +151,39 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleAttachmentPressed() {
+    final instantMessages = GetIt.I<AppState>().listInstantMessages;
+
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => Row(
         children: [
           SizedBox(
-            height: 150,
             width: 200,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                if (instantMessages.isNotEmpty)
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.primaryLight,
+                    ),
+                    child: Text(
+                      'Tin nhắn nhanh',
+                      style: AppStyles.s16w6.withColor(AppColors.primaryMain),
+                    ),
+                  ).inkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      _showInstantMessage(instantMessages);
+                    },
+                  ),
                 Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -235,11 +258,58 @@ class _ChatPageState extends State<ChatPage> {
                     Navigator.pop(context);
                   },
                 ),
+                const SizedBox(height: 60),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showInstantMessage(List<InstantMessage> messages) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: AppColors.primaryLight,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(24),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: 50,
+              maxHeight: MediaQuery.of(context).size.height * 0.4,
+            ),
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    messages[index].text,
+                    style: AppStyles.s14w5,
+                  ),
+                ).inkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    final partialText =
+                        types.PartialText(text: messages[index].text);
+                    _handleSendPressed(partialText);
+                  },
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                );
+              },
+              separatorBuilder: (_, __) => const SizedBox(height: 4),
+              itemCount: messages.length,
+            ),
+          ),
+        );
+      },
     );
   }
 

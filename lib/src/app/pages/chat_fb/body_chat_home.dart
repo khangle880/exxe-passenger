@@ -100,26 +100,28 @@ class _BodyChatHomeState extends State<BodyChatHome> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Builder(builder: (context) {
-                                    String content = "";
-                                    if (lastMessage is types.TextMessage) {
-                                      content = lastMessage.text;
-                                      if (content.contains("maps/dir")) {
-                                        content = "Vị trí";
+                                  Expanded(
+                                    child: Builder(builder: (context) {
+                                      String content = "";
+                                      if (lastMessage is types.TextMessage) {
+                                        content = lastMessage.text;
+                                        if (content.contains("maps/dir")) {
+                                          content = "Vị trí";
+                                        }
+                                      } else if (lastMessage
+                                          is types.ImageMessage) {
+                                        content = "Hình ảnh";
+                                      } else {
+                                        content = "Tin nhắn mới";
                                       }
-                                    } else if (lastMessage
-                                        is types.ImageMessage) {
-                                      content = "Hình ảnh";
-                                    } else {
-                                      content = "Tin nhắn mới";
-                                    }
-                                    return Text(
-                                      content,
-                                      style: AppStyles.s15w5
-                                          .withColor(AppColors.gray70x76),
-                                      overflow: TextOverflow.ellipsis,
-                                    );
-                                  }),
+                                      return Text(
+                                        content,
+                                        style: AppStyles.s15w5
+                                            .withColor(AppColors.gray70x76),
+                                        overflow: TextOverflow.ellipsis,
+                                      );
+                                    }),
+                                  ),
                                   Text(
                                     DateTime.fromMillisecondsSinceEpoch(
                                             lastMessage.createdAt!)
@@ -152,8 +154,15 @@ class _BodyChatHomeState extends State<BodyChatHome> {
   void initializeFlutterFire() async {
     try {
       await Firebase.initializeApp();
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) async {
         _user = user;
+        if (user != null && GetIt.I<AppState>().listInstantMessages.isEmpty) {
+          final me = await FirebaseChatCore.instance.getMe();
+          if (me?.role == types.Role.agent) {
+            FirebaseChatCore.instance.instantMessages().then(
+                (value) => GetIt.I<AppState>().listInstantMessages = value);
+          }
+        }
         if (mounted) {
           setState(() {});
         }

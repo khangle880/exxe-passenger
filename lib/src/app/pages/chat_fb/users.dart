@@ -1,8 +1,9 @@
+import 'package:exxe/src/app/common/common.dart';
+import 'package:exxe/src/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-import 'chat.dart';
+import '../../../config/routes.dart';
 import 'chat_fb_core/firebase_chat_core.dart';
 import 'util.dart';
 
@@ -10,52 +11,51 @@ class UsersPage extends StatelessWidget {
   const UsersPage({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: const Text('Users'),
-        ),
-        body: StreamBuilder<List<types.User>>(
-          stream: FirebaseChatCore.instance.users(),
-          initialData: const [],
-          builder: (context, snapshot) {
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.only(
-                  bottom: 200,
-                ),
-                child: const Text('No users'),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final user = snapshot.data![index];
-
-                return GestureDetector(
-                  onTap: () {
-                    _handlePressed(user, context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      children: [
-                        _buildAvatar(user),
-                        Text(getUserName(user)),
-                      ],
-                    ),
-                  ),
-                );
-              },
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBarWidget(
+        context: context,
+        title: "Người dùng",
+      ),
+      body: StreamBuilder<List<types.User>>(
+        stream: FirebaseChatCore.instance.users(),
+        initialData: const [],
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(
+                bottom: 200,
+              ),
+              child: const Text('No users'),
             );
-          },
-        ),
-      );
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              final user = snapshot.data![index];
+
+              return Row(
+                children: [
+                  _buildAvatar(user),
+                  Text(getUserName(user)),
+                ],
+              ).inkWell(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                onTap: () {
+                  _handlePressed(user, context);
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
 
   Widget _buildAvatar(types.User user) {
     final color = getUserAvatarNameColor(user);
@@ -83,12 +83,9 @@ class UsersPage extends StatelessWidget {
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
 
     navigator.pop();
-    await navigator.push(
-      MaterialPageRoute(
-        builder: (context) => ChatPage(
-          room: room,
-        ),
-      ),
+    await navigator.pushNamed(
+      Routes.chatRoom,
+      arguments: room,
     );
   }
 }

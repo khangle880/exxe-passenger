@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
+import 'package:exxe/src/app/pages/chat_fb/chat_fb_core/chat_fb_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:state_notifier/state_notifier.dart';
 
@@ -43,6 +44,7 @@ class AppState extends StateNotifier<UserState> {
 
   String? callingCompoundingCustomerCode;
   String? currentChatRoomId;
+  List<InstantMessage> listInstantMessages = [];
 
   UserState get currentState => state;
 
